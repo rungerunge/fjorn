@@ -1,0 +1,799 @@
+{%- liquid
+  assign options = section.settings
+  assign color_scheme = settings.default_color_scheme
+  if options.color_scheme_variant == 'own'
+    assign color_scheme = options.color_scheme
+  endif
+
+  assign title = options.title
+  assign heading_size = options.heading_size
+  assign section_spacing_top = options.section_spacing_top
+  assign section_spacing_bottom = options.section_spacing_bottom
+  assign container_size = options.container_size
+  assign img_ratio = options.img_ratio | default: 'portrait'
+  assign desktop_columns = options.desktop_columns
+  assign mobile_columns = options.mobile_columns
+  assign button_style = settings.button_style
+  assign add_to_cart_label = options.add_to_cart_label | default: 'Laeg i kurv'
+
+  assign with_media_mix_mode = false
+  if settings.enable_product_darken_background and settings.darken_background_mix_mode != 'none'
+    assign with_media_mix_mode = true
+  endif
+
+  assign step_count = 0
+  assign steps_json = ''
+  for i in (1..5)
+    assign qty_key = 'step_' | append: i | append: '_qty'
+    assign price_key = 'step_' | append: i | append: '_price'
+    assign qty_val = options[qty_key]
+    assign price_val = options[price_key]
+    if qty_val != blank and qty_val > 0
+      assign step_count = step_count | plus: 1
+      if steps_json != ''
+        assign steps_json = steps_json | append: ','
+      endif
+      assign steps_json = steps_json | append: '{"qty":' | append: qty_val | append: ',"price":"' | append: price_val | append: '"}'
+    endif
+  endfor
+  assign steps_json = '[' | append: steps_json | append: ']'
+
+  assign product_blocks = section.blocks | where: 'type', 'product_item'
+-%}
+
+{% capture css %}
+  {% style %}
+    .section-{{ section.id }} {
+      --gsc-section-spacing-top: var(--gsc-padding-block-{{ section_spacing_top }});
+      --gsc-section-spacing-bottom: var(--gsc-padding-block-{{ section_spacing_bottom }});
+      --gsc-space-between-cards: var(--gsc-gap-{{ options.space_between_cards_mobile }});
+      --gsc-columns: {{ mobile_columns }};
+    }
+
+    @media {% render 'media-queries', screen: 'md' %} {
+      .section-{{ section.id }} {
+        --gsc-space-between-cards: var(--gsc-gap-{{ options.space_between_cards }});
+        --gsc-columns: {{ desktop_columns }};
+      }
+    }
+
+    .section-{{ section.id }} .bundle-builder__steps {
+      display: flex;
+      gap: var(--gsc-gap-m);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--gsc-padding-block-m);
+    }
+
+    .section-{{ section.id }} .bundle-builder__step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--gsc-padding-block-xxs) var(--gsc-padding-inline-s);
+      border: 2px solid var(--gsc-border-color-100);
+      border-radius: var(--gsc-button-radii);
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+      min-width: 10rem;
+      text-align: center;
+    }
+
+    .section-{{ section.id }} .bundle-builder__step.is-active {
+      border-color: var(--gsc-text-color-100);
+      background-color: var(--gsc-foreground-color-100);
+      color: var(--gsc-background-color-100);
+    }
+
+    .section-{{ section.id }} .bundle-builder__step-qty {
+      font-weight: 700;
+      font-size: var(--gsc-body-font-size-l);
+    }
+
+    .section-{{ section.id }} .bundle-builder__step-price {
+      font-size: var(--gsc-body-font-size-s);
+      opacity: 0.8;
+    }
+
+    .section-{{ section.id }} .bundle-builder__products-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--gsc-columns), 1fr);
+      gap: var(--gsc-space-between-cards);
+    }
+
+    .section-{{ section.id }} .bundle-builder__card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--gsc-gap-s);
+      margin-top: var(--gsc-gap-xs);
+    }
+
+    .section-{{ section.id }} .bundle-builder__qty-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.2rem;
+      height: 3.2rem;
+      border-radius: var(--gsc-button-radii);
+      border: 1px solid var(--gsc-border-color-100);
+      background: var(--gsc-background-color-100);
+      color: var(--gsc-text-color-100);
+      font-size: var(--gsc-body-font-size-l);
+      line-height: 1;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .section-{{ section.id }} .bundle-builder__qty-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .section-{{ section.id }} .bundle-builder__qty-count {
+      min-width: 2rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: var(--gsc-body-font-size-m);
+    }
+
+    .section-{{ section.id }} .bundle-builder__badge {
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: var(--gsc-button-radii);
+      background: var(--gsc-foreground-color-100);
+      color: var(--gsc-background-color-100);
+      font-size: var(--gsc-body-font-size-xs);
+      font-weight: 600;
+      margin-top: var(--gsc-gap-xxs);
+    }
+
+    .section-{{ section.id }} .bundle-builder__footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gsc-gap-s);
+      margin-top: var(--gsc-padding-block-m);
+    }
+
+    .section-{{ section.id }} .bundle-builder__summary {
+      font-size: var(--gsc-body-font-size-m);
+      text-align: center;
+    }
+
+    .section-{{ section.id }} .bundle-builder__card.is-maxed .bundle-builder__qty-btn[data-action="add"] {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  {% endstyle %}
+{% endcapture %}
+
+{% render 'inline-css-minifier', css: css %}
+
+<div class='collection section section-{{ section.id }} color-{{ color_scheme }} spacing-block spacing-inline-mobile spacing-inline-desktop'>
+  <div class='collection__container container container--{{ container_size }}'>
+
+    {%- if title != blank -%}
+      <div class='collection__header collection__header--center'>
+        <h2 class='collection__title {{ heading_size }}'>{{ title }}</h2>
+      </div>
+    {%- endif -%}
+
+    <bundle-builder
+      class='bundle-builder'
+      data-section-id='{{ section.id }}'
+      data-steps='{{ steps_json | escape }}'
+    >
+      {%- if step_count > 0 -%}
+        <div class='bundle-builder__steps'>
+          {%- for i in (1..5) -%}
+            {%- liquid
+              assign qty_key = 'step_' | append: i | append: '_qty'
+              assign price_key = 'step_' | append: i | append: '_price'
+              assign label_key = 'step_' | append: i | append: '_label'
+              assign qty_val = options[qty_key]
+              assign price_val = options[price_key]
+              assign label_val = options[label_key]
+            -%}
+            {%- if qty_val != blank and qty_val > 0 -%}
+              <button
+                type='button'
+                class='bundle-builder__step {% if forloop.first %}is-active{% endif %}'
+                data-bundle-step
+                data-step-qty='{{ qty_val }}'
+                data-step-price='{{ price_val }}'
+              >
+                <span class='bundle-builder__step-qty'>{{ label_val | default: qty_val }}</span>
+                <span class='bundle-builder__step-price'>{{ price_val }}</span>
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <div class='bundle-builder__products-grid'>
+        {%- for block in product_blocks -%}
+          {%- liquid
+            assign card_product = block.settings.product
+            assign card_variant = blank
+            assign card_image = blank
+            assign card_title = ''
+            assign badge_text = block.settings.badge
+
+            if card_product != blank
+              for v in card_product.variants
+                if v.id == block.settings.variant_id
+                  assign card_variant = v
+                  break
+                endif
+              endfor
+
+              if card_variant == blank
+                assign card_variant = card_product.selected_or_first_available_variant
+              endif
+
+              if card_variant.image != blank
+                assign card_image = card_variant.image
+              elsif card_product.featured_image != blank
+                assign card_image = card_product.featured_image
+              endif
+
+              assign card_title = card_product.title
+              if card_variant.title != 'Default Title'
+                assign card_title = card_product.title | append: ' - ' | append: card_variant.title
+              endif
+            endif
+
+            if block.settings.custom_image != blank
+              assign card_image = block.settings.custom_image
+            endif
+            if block.settings.custom_title != blank
+              assign card_title = block.settings.custom_title
+            endif
+          -%}
+
+          <div
+            class='bundle-builder__card'
+            data-bundle-card
+            data-variant-id='{{ card_variant.id | default: "" }}'
+            {{ block.shopify_attributes }}
+          >
+            <vertical-product-card class='vertical-product-card'>
+              <div class='vertical-product-card__inner shape shape--{{ img_ratio }}'>
+                <div class='vertical-product-card__image-wrapper {% if with_media_mix_mode %}multiply-mode{% endif %}'>
+                  {%- if card_image != blank -%}
+                    <img
+                      {% render 'image-attributes',
+                        image: card_image,
+                        size: 'medium',
+                        is_multiply_target: with_media_mix_mode,
+                        class: 'vertical-product-card__image shape__target-image'
+                      %}
+                    >
+                  {%- else -%}
+                    {{ 'product-4' | placeholder_svg_tag: 'vertical-product-card__image vertical-product-card__image--placeholder shape__target-image' }}
+                  {%- endif -%}
+                </div>
+              </div>
+
+              <div class='vertical-product-card__info vertical-product-card__info--align-center'>
+                <span class='vertical-product-card__title'>
+                  {{ card_title | default: 'Product title' }}
+                </span>
+                {%- if badge_text != blank -%}
+                  <span class='bundle-builder__badge'>{{ badge_text }}</span>
+                {%- endif -%}
+              </div>
+            </vertical-product-card>
+
+            <div class='bundle-builder__card-actions'>
+              <button type='button' class='bundle-builder__qty-btn' data-action='remove' aria-label='Fjern' disabled>
+                &minus;
+              </button>
+              <span class='bundle-builder__qty-count' data-card-qty>0</span>
+              <button type='button' class='bundle-builder__qty-btn' data-action='add' aria-label='Tilfoej'>
+                &plus;
+              </button>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class='bundle-builder__footer'>
+        <p class='bundle-builder__summary' data-bundle-summary>
+          Valgt: <strong data-bundle-current>0</strong> / <strong data-bundle-max>{{ options.step_1_qty | default: 0 }}</strong>
+        </p>
+        <button
+          type='button'
+          class='btn btn--primary btn--lg bundle-builder__submit'
+          data-bundle-submit
+          disabled
+        >
+          <span>{{ add_to_cart_label }}</span>
+          <div class='loading-spinner btn__loading-spinner'></div>
+        </button>
+      </div>
+    </bundle-builder>
+
+  </div>
+</div>
+
+<script>
+  if (!customElements.get('bundle-builder')) {
+    class BundleBuilder extends HTMLElement {
+      constructor() {
+        super();
+        this.steps = JSON.parse(this.dataset.steps || '[]');
+        this.currentStepIndex = 0;
+        this.selections = {};
+      }
+
+      connectedCallback() {
+        this.stepButtons = this.querySelectorAll('[data-bundle-step]');
+        this.cards = this.querySelectorAll('[data-bundle-card]');
+        this.submitBtn = this.querySelector('[data-bundle-submit]');
+        this.currentEl = this.querySelector('[data-bundle-current]');
+        this.maxEl = this.querySelector('[data-bundle-max]');
+
+        if (this.steps.length > 0) {
+          this.maxQty = parseInt(this.steps[0].qty);
+        }
+
+        this.cards.forEach(card => {
+          const variantId = card.dataset.variantId;
+          if (variantId) this.selections[variantId] = 0;
+        });
+
+        this.stepButtons.forEach((btn, idx) => {
+          btn.addEventListener('click', () => this.selectStep(idx));
+        });
+
+        this.cards.forEach(card => {
+          const addBtn = card.querySelector('[data-action="add"]');
+          const removeBtn = card.querySelector('[data-action="remove"]');
+          if (addBtn) addBtn.addEventListener('click', () => this.addItem(card));
+          if (removeBtn) removeBtn.addEventListener('click', () => this.removeItem(card));
+        });
+
+        if (this.submitBtn) {
+          this.submitBtn.addEventListener('click', () => this.addToCart());
+        }
+
+        this.updateUI();
+      }
+
+      get totalSelected() {
+        return Object.values(this.selections).reduce((sum, q) => sum + q, 0);
+      }
+
+      selectStep(index) {
+        this.currentStepIndex = index;
+        this.maxQty = parseInt(this.steps[index].qty);
+
+        this.stepButtons.forEach((btn, i) => {
+          btn.classList.toggle('is-active', i === index);
+        });
+
+        // Reset selections if total exceeds new max
+        if (this.totalSelected > this.maxQty) {
+          Object.keys(this.selections).forEach(k => this.selections[k] = 0);
+        }
+
+        this.updateUI();
+      }
+
+      addItem(card) {
+        const variantId = card.dataset.variantId;
+        if (!variantId || this.totalSelected >= this.maxQty) return;
+        this.selections[variantId] = (this.selections[variantId] || 0) + 1;
+        this.updateUI();
+      }
+
+      removeItem(card) {
+        const variantId = card.dataset.variantId;
+        if (!variantId || !this.selections[variantId]) return;
+        this.selections[variantId] -= 1;
+        this.updateUI();
+      }
+
+      updateUI() {
+        const total = this.totalSelected;
+        const atMax = total >= this.maxQty;
+
+        this.cards.forEach(card => {
+          const variantId = card.dataset.variantId;
+          const qty = this.selections[variantId] || 0;
+          const qtyEl = card.querySelector('[data-card-qty]');
+          const addBtn = card.querySelector('[data-action="add"]');
+          const removeBtn = card.querySelector('[data-action="remove"]');
+
+          if (qtyEl) qtyEl.textContent = qty;
+          if (addBtn) addBtn.disabled = atMax;
+          if (removeBtn) removeBtn.disabled = qty <= 0;
+          card.classList.toggle('is-maxed', atMax && qty === 0);
+        });
+
+        if (this.currentEl) this.currentEl.textContent = total;
+        if (this.maxEl) this.maxEl.textContent = this.maxQty;
+        if (this.submitBtn) this.submitBtn.disabled = total === 0;
+      }
+
+      async addToCart() {
+        const items = [];
+        Object.entries(this.selections).forEach(([variantId, qty]) => {
+          if (qty > 0) {
+            items.push({ id: parseInt(variantId), quantity: qty });
+          }
+        });
+
+        if (items.length === 0) return;
+
+        this.submitBtn.classList.add('loading');
+        this.submitBtn.disabled = true;
+
+        try {
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items })
+          });
+
+          if (!response.ok) throw new Error('Add to cart failed');
+
+          // Refresh cart state
+          const cartResponse = await fetch('/cart.js');
+          const cart = await cartResponse.json();
+
+          // Dispatch Shopify cart update event
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+
+          // Reset selections
+          Object.keys(this.selections).forEach(k => this.selections[k] = 0);
+          this.updateUI();
+
+          // Try to update cart count in header
+          const countEls = document.querySelectorAll('[data-cart-count]');
+          countEls.forEach(el => el.textContent = cart.item_count);
+
+          // Open cart drawer if available
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer && typeof cartDrawer.open === 'function') {
+            cartDrawer.open();
+          }
+        } catch (error) {
+          console.error('Bundle add to cart error:', error);
+        } finally {
+          this.submitBtn.classList.remove('loading');
+          this.submitBtn.disabled = false;
+        }
+      }
+    }
+
+    customElements.define('bundle-builder', BundleBuilder);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Bundle Builder",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Byg din bundle"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "header",
+      "content": "Step 1"
+    },
+    {
+      "type": "range",
+      "id": "step_1_qty",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 1,
+      "label": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "step_1_label",
+      "label": "Label",
+      "default": "1 parfume"
+    },
+    {
+      "type": "text",
+      "id": "step_1_price",
+      "label": "Price text",
+      "default": "199 kr"
+    },
+    {
+      "type": "header",
+      "content": "Step 2"
+    },
+    {
+      "type": "range",
+      "id": "step_2_qty",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 2,
+      "label": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "step_2_label",
+      "label": "Label",
+      "default": "2 parfumer"
+    },
+    {
+      "type": "text",
+      "id": "step_2_price",
+      "label": "Price text",
+      "default": "349 kr"
+    },
+    {
+      "type": "header",
+      "content": "Step 3"
+    },
+    {
+      "type": "range",
+      "id": "step_3_qty",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 3,
+      "label": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "step_3_label",
+      "label": "Label",
+      "default": "3 parfumer"
+    },
+    {
+      "type": "text",
+      "id": "step_3_price",
+      "label": "Price text",
+      "default": "499 kr"
+    },
+    {
+      "type": "header",
+      "content": "Step 4 (optional)"
+    },
+    {
+      "type": "range",
+      "id": "step_4_qty",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0,
+      "label": "Quantity (0 = disabled)"
+    },
+    {
+      "type": "text",
+      "id": "step_4_label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "step_4_price",
+      "label": "Price text"
+    },
+    {
+      "type": "header",
+      "content": "Step 5 (optional)"
+    },
+    {
+      "type": "range",
+      "id": "step_5_qty",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0,
+      "label": "Quantity (0 = disabled)"
+    },
+    {
+      "type": "text",
+      "id": "step_5_label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "step_5_price",
+      "label": "Price text"
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2",
+      "label": "Mobile columns"
+    },
+    {
+      "type": "select",
+      "id": "img_ratio",
+      "options": [
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" },
+        { "value": "portrait-xl", "label": "Portrait XL" },
+        { "value": "landscape", "label": "Landscape" }
+      ],
+      "default": "portrait",
+      "label": "Image ratio"
+    },
+    {
+      "type": "select",
+      "id": "space_between_cards",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "xs", "label": "XS" },
+        { "value": "s", "label": "S" },
+        { "value": "m", "label": "M" },
+        { "value": "l", "label": "L" },
+        { "value": "xl", "label": "XL" }
+      ],
+      "default": "xs",
+      "label": "Gap between cards (desktop)"
+    },
+    {
+      "type": "select",
+      "id": "space_between_cards_mobile",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "xxs", "label": "XXS" },
+        { "value": "xs", "label": "XS" },
+        { "value": "m", "label": "M" },
+        { "value": "l", "label": "L" }
+      ],
+      "default": "m",
+      "label": "Gap between cards (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Add to cart button label",
+      "default": "Laeg i kurv"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "container_size",
+      "options": [
+        { "value": "full-screen", "label": "Full screen" },
+        { "value": "page-width", "label": "Page width" },
+        { "value": "large", "label": "Large" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "small", "label": "Small" }
+      ],
+      "default": "page-width",
+      "label": "Container size"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme_variant",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "own", "label": "Custom" }
+      ],
+      "default": "default",
+      "label": "Color scheme"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "2",
+      "label": "Color scheme",
+      "visible_if": "{{ section.settings.color_scheme_variant == 'own' }}"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing_top",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "xs", "label": "XS" },
+        { "value": "s", "label": "S" },
+        { "value": "m", "label": "M" },
+        { "value": "l", "label": "L" },
+        { "value": "xl", "label": "XL" },
+        { "value": "xxl", "label": "XXL" }
+      ],
+      "default": "l",
+      "label": "Top spacing"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing_bottom",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "xs", "label": "XS" },
+        { "value": "s", "label": "S" },
+        { "value": "m", "label": "M" },
+        { "value": "l", "label": "L" },
+        { "value": "xl", "label": "XL" },
+        { "value": "xxl", "label": "XXL" }
+      ],
+      "default": "l",
+      "label": "Bottom spacing"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_item",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant ID",
+          "info": "Enter variant ID for a specific variant. Leave blank for default."
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "info": "e.g. 'Til hende', 'Bestseller'"
+        },
+        {
+          "type": "header",
+          "content": "Manual override"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom image"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Builder",
+      "blocks": []
+    }
+  ],
+  "max_blocks": 24
+}
+{% endschema %}
