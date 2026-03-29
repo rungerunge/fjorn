@@ -480,6 +480,110 @@
         "section_spacing_bottom": "l"
       }
     },
+    "variant_collection_grid_HQbELJ": {
+      "type": "variant-collection-grid",
+      "blocks": {
+        "variant_card_rWxKaR": {
+          "type": "variant_card",
+          "settings": {
+            "product": "luma-kuffert-gron",
+            "variant_id": "57669996904793",
+            "badge_text": "",
+            "custom_title": "",
+            "custom_price": "",
+            "custom_link": ""
+          }
+        },
+        "variant_card_RfijxC": {
+          "type": "variant_card",
+          "settings": {
+            "product": "luma-kuffert-gron",
+            "variant_id": "57669996839257",
+            "badge_text": "",
+            "custom_title": "",
+            "custom_price": "",
+            "custom_link": ""
+          }
+        },
+        "variant_card_XghqcX": {
+          "type": "variant_card",
+          "settings": {
+            "product": "luma-kuffert-gron",
+            "variant_id": "57669996970329",
+            "badge_text": "",
+            "custom_title": "Luma Kuffert - Lilla",
+            "custom_price": "399,00 kr",
+            "custom_link": ""
+          }
+        },
+        "variant_card_RAwzdA": {
+          "type": "variant_card",
+          "settings": {
+            "product": "",
+            "variant_id": "",
+            "badge_text": "",
+            "custom_title": "",
+            "custom_price": "",
+            "custom_link": ""
+          }
+        },
+        "variant_card_f7wf3F": {
+          "type": "variant_card",
+          "settings": {
+            "product": "",
+            "variant_id": "",
+            "badge_text": "",
+            "custom_title": "",
+            "custom_price": "",
+            "custom_link": ""
+          }
+        },
+        "variant_card_c8xGtJ": {
+          "type": "variant_card",
+          "settings": {
+            "product": "",
+            "variant_id": "",
+            "badge_text": "",
+            "custom_title": "",
+            "custom_price": "",
+            "custom_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "variant_card_rWxKaR",
+        "variant_card_RfijxC",
+        "variant_card_XghqcX",
+        "variant_card_RAwzdA",
+        "variant_card_f7wf3F",
+        "variant_card_c8xGtJ"
+      ],
+      "name": "Variant Collection Grid",
+      "settings": {
+        "heading": "Vores varianter",
+        "heading_size": "h5",
+        "alignment": "center",
+        "desktop_columns": 4,
+        "mobile_columns": "2",
+        "space_between_cards": "xs",
+        "space_between_cards_mobile": "m",
+        "img_ratio": "default",
+        "img_ratio_resize": "fill",
+        "product_card_align": "left",
+        "enable_bundle": false,
+        "bundle_button_label": "Læg i kurv",
+        "bundle_button_style": "primary",
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "l",
+        "section_spacing_bottom": "l"
+      }
+    },
     "collection_list": {
       "type": "collection-list",
       "settings": {
@@ -1483,6 +1587,7 @@
     "featured_navigation_hDXUgg",
     "d31e75db-2f94-49b3-9015-a319fb18aa66",
     "collection_text",
+    "variant_collection_grid_HQbELJ",
     "collection_list",
     "image_scroller_eGkKhT",
     "collage_2",
