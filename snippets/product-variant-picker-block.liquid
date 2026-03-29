@@ -1,4 +1,12 @@
 {%- liquid
+  assign enable_bundle_builder = block.settings.enable_bundle_builder
+-%}
+
+{% if enable_bundle_builder %}
+  {% render 'product-bundle-builder-block', product: product, section: section, block: block, sectionId: sectionId %}
+{% else %}
+
+{%- liquid
   assign options = block.settings
   assign option_type = options.option_type
   assign show_swatches = options.show_swatches
@@ -351,3 +359,5 @@
     font-weight: 400;
   }
 {% endstylesheet %}
+
+{% endif %}

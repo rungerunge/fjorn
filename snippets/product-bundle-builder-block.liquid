@@ -1,0 +1,370 @@
+{%- liquid
+  assign opts = block.settings
+  assign desktop_columns = opts.bundle_desktop_columns | default: 4
+  assign mobile_columns = opts.bundle_mobile_columns | default: 2
+  assign img_ratio = opts.bundle_img_ratio | default: 'square'
+  assign add_to_cart_label = opts.bundle_add_to_cart_label | default: 'Læg i kurv'
+  assign bundle_products = opts.bundle_products
+  assign badge_lines_raw = opts.bundle_badges | newline_to_br | split: '<br />'
+
+  assign with_media_mix_mode = false
+  if settings.enable_product_darken_background and settings.darken_background_mix_mode != 'none'
+    assign with_media_mix_mode = true
+  endif
+
+  assign step_count = 0
+  assign steps_json = ''
+  for i in (1..5)
+    assign qty_key = 'bundle_step_' | append: i | append: '_qty'
+    assign price_key = 'bundle_step_' | append: i | append: '_price'
+    assign qty_val = opts[qty_key]
+    assign price_val = opts[price_key]
+    if qty_val != blank and qty_val > 0
+      assign step_count = step_count | plus: 1
+      if steps_json != ''
+        assign steps_json = steps_json | append: ','
+      endif
+      assign steps_json = steps_json | append: '{"qty":' | append: qty_val | append: ',"price":"' | append: price_val | append: '"}'
+    endif
+  endfor
+  assign steps_json = '[' | append: steps_json | append: ']'
+-%}
+
+{% style %}
+  .bundle-block-{{ block.id }} {
+    --bundle-columns: {{ mobile_columns }};
+  }
+  @media {% render 'media-queries', screen: 'md' %} {
+    .bundle-block-{{ block.id }} {
+      --bundle-columns: {{ desktop_columns }};
+    }
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__steps {
+    display: flex;
+    gap: var(--gsc-gap-s);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--gsc-padding-block-xs);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--gsc-padding-block-xxs) var(--gsc-padding-inline-s);
+    border: 2px solid var(--gsc-border-color-100);
+    border-radius: var(--gsc-button-radii);
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+    min-width: 8rem;
+    text-align: center;
+    background: transparent;
+    color: var(--gsc-text-color-100);
+    font-family: var(--gsc-button-font-family);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__step.is-active {
+    border-color: var(--gsc-text-color-100);
+    background-color: var(--gsc-foreground-color-100);
+    color: var(--gsc-background-color-100);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__step-qty {
+    font-weight: 700;
+    font-size: var(--gsc-body-font-size-m);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__step-price {
+    font-size: var(--gsc-body-font-size-xs);
+    opacity: 0.8;
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__products-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--bundle-columns), 1fr);
+    gap: var(--gsc-gap-xs);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gsc-gap-s);
+    margin-top: var(--gsc-gap-xxs);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--gsc-button-radii);
+    border: 1px solid var(--gsc-border-color-100);
+    background: var(--gsc-background-color-100);
+    color: var(--gsc-text-color-100);
+    font-size: var(--gsc-body-font-size-l);
+    line-height: 1;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__qty-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__qty-count {
+    min-width: 1.6rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: var(--gsc-body-font-size-m);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--gsc-button-radii);
+    background: var(--gsc-foreground-color-100);
+    color: var(--gsc-background-color-100);
+    font-size: var(--gsc-body-font-size-xxs);
+    font-weight: 600;
+    margin-top: var(--gsc-gap-xxs);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gsc-gap-s);
+    margin-top: var(--gsc-padding-block-xs);
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__summary {
+    font-size: var(--gsc-body-font-size-s);
+    text-align: center;
+  }
+  .bundle-block-{{ block.id }} .bundle-builder__submit {
+    width: 100%;
+  }
+{% endstyle %}
+
+<div class='bundle-block-{{ block.id }}' {{ block.shopify_attributes }}>
+  <bundle-builder
+    class='bundle-builder'
+    data-section-id='{{ section.id }}'
+    data-block-id='{{ block.id }}'
+    data-steps='{{ steps_json | escape }}'
+  >
+    {%- if step_count > 0 -%}
+      <div class='bundle-builder__steps'>
+        {%- for i in (1..5) -%}
+          {%- liquid
+            assign qty_key = 'bundle_step_' | append: i | append: '_qty'
+            assign price_key = 'bundle_step_' | append: i | append: '_price'
+            assign label_key = 'bundle_step_' | append: i | append: '_label'
+            assign qty_val = opts[qty_key]
+            assign price_val = opts[price_key]
+            assign label_val = opts[label_key]
+          -%}
+          {%- if qty_val != blank and qty_val > 0 -%}
+            <button
+              type='button'
+              class='bundle-builder__step {% if forloop.first %}is-active{% endif %}'
+              data-bundle-step
+              data-step-qty='{{ qty_val }}'
+              data-step-price='{{ price_val }}'
+            >
+              <span class='bundle-builder__step-qty'>{{ label_val | default: qty_val }}</span>
+              <span class='bundle-builder__step-price'>{{ price_val }}</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class='bundle-builder__products-grid'>
+      {%- for bp in bundle_products -%}
+        {%- liquid
+          assign card_variant = bp.selected_or_first_available_variant
+          assign card_image = card_variant.image | default: bp.featured_image
+          assign card_title = bp.title
+
+          assign badge_index = forloop.index0
+          assign badge_text = badge_lines_raw[badge_index] | strip
+        -%}
+
+        <div
+          class='bundle-builder__card'
+          data-bundle-card
+          data-variant-id='{{ card_variant.id }}'
+        >
+          <vertical-product-card class='vertical-product-card'>
+            <div class='vertical-product-card__inner shape shape--{{ img_ratio }}'>
+              <div class='vertical-product-card__image-wrapper {% if with_media_mix_mode %}multiply-mode{% endif %}'>
+                {%- if card_image != blank -%}
+                  <img
+                    {% render 'image-attributes',
+                      image: card_image,
+                      size: 'medium',
+                      is_multiply_target: with_media_mix_mode,
+                      class: 'vertical-product-card__image shape__target-image'
+                    %}
+                  >
+                {%- else -%}
+                  {{ 'product-4' | placeholder_svg_tag: 'vertical-product-card__image vertical-product-card__image--placeholder shape__target-image' }}
+                {%- endif -%}
+              </div>
+            </div>
+            <div class='vertical-product-card__info vertical-product-card__info--align-center'>
+              <span class='vertical-product-card__title'>{{ card_title }}</span>
+              {%- if badge_text != blank -%}
+                <span class='bundle-builder__badge'>{{ badge_text }}</span>
+              {%- endif -%}
+            </div>
+          </vertical-product-card>
+
+          <div class='bundle-builder__card-actions'>
+            <button type='button' class='bundle-builder__qty-btn' data-action='remove' aria-label='Fjern' disabled>&minus;</button>
+            <span class='bundle-builder__qty-count' data-card-qty>0</span>
+            <button type='button' class='bundle-builder__qty-btn' data-action='add' aria-label='Tilføj'>&plus;</button>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class='bundle-builder__footer'>
+      <p class='bundle-builder__summary' data-bundle-summary>
+        Valgt: <strong data-bundle-current>0</strong> / <strong data-bundle-max>{{ opts.bundle_step_1_qty | default: 0 }}</strong>
+      </p>
+      <button
+        type='button'
+        class='btn btn--primary btn--lg bundle-builder__submit'
+        data-bundle-submit
+        disabled
+      >
+        <span>{{ add_to_cart_label }}</span>
+        <div class='loading-spinner btn__loading-spinner'></div>
+      </button>
+    </div>
+  </bundle-builder>
+</div>
+
+<script>
+  if (!customElements.get('bundle-builder')) {
+    class BundleBuilder extends HTMLElement {
+      constructor() {
+        super();
+        this.steps = JSON.parse(this.dataset.steps || '[]');
+        this.currentStepIndex = 0;
+        this.selections = {};
+      }
+
+      connectedCallback() {
+        this.stepButtons = this.querySelectorAll('[data-bundle-step]');
+        this.cards = this.querySelectorAll('[data-bundle-card]');
+        this.submitBtn = this.querySelector('[data-bundle-submit]');
+        this.currentEl = this.querySelector('[data-bundle-current]');
+        this.maxEl = this.querySelector('[data-bundle-max]');
+
+        this.maxQty = this.steps.length > 0 ? parseInt(this.steps[0].qty) : 1;
+
+        this.cards.forEach(card => {
+          const vid = card.dataset.variantId;
+          if (vid) this.selections[vid] = 0;
+        });
+
+        this.stepButtons.forEach((btn, idx) => {
+          btn.addEventListener('click', () => this.selectStep(idx));
+        });
+
+        this.cards.forEach(card => {
+          const addBtn = card.querySelector('[data-action="add"]');
+          const removeBtn = card.querySelector('[data-action="remove"]');
+          if (addBtn) addBtn.addEventListener('click', () => this.addItem(card));
+          if (removeBtn) removeBtn.addEventListener('click', () => this.removeItem(card));
+        });
+
+        if (this.submitBtn) {
+          this.submitBtn.addEventListener('click', () => this.addToCart());
+        }
+
+        this.updateUI();
+      }
+
+      get totalSelected() {
+        return Object.values(this.selections).reduce((s, q) => s + q, 0);
+      }
+
+      selectStep(index) {
+        this.currentStepIndex = index;
+        this.maxQty = parseInt(this.steps[index].qty);
+        this.stepButtons.forEach((btn, i) => btn.classList.toggle('is-active', i === index));
+        if (this.totalSelected > this.maxQty) {
+          Object.keys(this.selections).forEach(k => this.selections[k] = 0);
+        }
+        this.updateUI();
+      }
+
+      addItem(card) {
+        const vid = card.dataset.variantId;
+        if (!vid || this.totalSelected >= this.maxQty) return;
+        this.selections[vid] = (this.selections[vid] || 0) + 1;
+        this.updateUI();
+      }
+
+      removeItem(card) {
+        const vid = card.dataset.variantId;
+        if (!vid || !this.selections[vid]) return;
+        this.selections[vid]--;
+        this.updateUI();
+      }
+
+      updateUI() {
+        const total = this.totalSelected;
+        const atMax = total >= this.maxQty;
+
+        this.cards.forEach(card => {
+          const vid = card.dataset.variantId;
+          const qty = this.selections[vid] || 0;
+          const qtyEl = card.querySelector('[data-card-qty]');
+          const addBtn = card.querySelector('[data-action="add"]');
+          const removeBtn = card.querySelector('[data-action="remove"]');
+          if (qtyEl) qtyEl.textContent = qty;
+          if (addBtn) addBtn.disabled = atMax;
+          if (removeBtn) removeBtn.disabled = qty <= 0;
+        });
+
+        if (this.currentEl) this.currentEl.textContent = total;
+        if (this.maxEl) this.maxEl.textContent = this.maxQty;
+        if (this.submitBtn) this.submitBtn.disabled = total === 0;
+      }
+
+      async addToCart() {
+        const items = [];
+        Object.entries(this.selections).forEach(([vid, qty]) => {
+          if (qty > 0) items.push({ id: parseInt(vid), quantity: qty });
+        });
+        if (!items.length) return;
+
+        this.submitBtn.classList.add('loading');
+        this.submitBtn.disabled = true;
+
+        try {
+          const res = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items })
+          });
+          if (!res.ok) throw new Error('Failed');
+
+          const cartRes = await fetch('/cart.js');
+          const cart = await cartRes.json();
+
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          Object.keys(this.selections).forEach(k => this.selections[k] = 0);
+          this.updateUI();
+
+          document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = cart.item_count);
+
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer && typeof cartDrawer.open === 'function') cartDrawer.open();
+        } catch (e) {
+          console.error('Bundle add to cart error:', e);
+        } finally {
+          this.submitBtn.classList.remove('loading');
+          this.submitBtn.disabled = false;
+        }
+      }
+    }
+    customElements.define('bundle-builder', BundleBuilder);
+  }
+</script>

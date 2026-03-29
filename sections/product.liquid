@@ -1769,6 +1769,216 @@
           "default": 60,
           "unit": "t:sections.product.variant_picker.information_drawer_image_width.unit",
           "label": "t:sections.product.variant_picker.information_drawer_image_width.label"
+        },
+        {
+          "type": "header",
+          "content": "Bundle Builder"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_bundle_builder",
+          "default": false,
+          "label": "Enable bundle builder mode"
+        },
+        {
+          "type": "text",
+          "id": "bundle_add_to_cart_label",
+          "label": "Add to cart button label",
+          "default": "Læg i kurv",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_desktop_columns",
+          "min": 2,
+          "max": 6,
+          "step": 1,
+          "default": 4,
+          "label": "Product grid columns (desktop)",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "select",
+          "id": "bundle_mobile_columns",
+          "options": [
+            { "value": "2", "label": "2" },
+            { "value": "3", "label": "3" }
+          ],
+          "default": "2",
+          "label": "Product grid columns (mobile)",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "select",
+          "id": "bundle_img_ratio",
+          "options": [
+            { "value": "portrait", "label": "Portrait" },
+            { "value": "square", "label": "Square" },
+            { "value": "portrait-xl", "label": "Portrait XL" },
+            { "value": "landscape", "label": "Landscape" }
+          ],
+          "default": "square",
+          "label": "Image ratio",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle step 1",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_1_qty",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 1,
+          "label": "Quantity",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_1_label",
+          "label": "Label",
+          "default": "1 parfume",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_1_price",
+          "label": "Price text",
+          "default": "199 kr",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle step 2",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_2_qty",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 2,
+          "label": "Quantity",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_2_label",
+          "label": "Label",
+          "default": "2 parfumer",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_2_price",
+          "label": "Price text",
+          "default": "349 kr",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle step 3",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_3_qty",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 3,
+          "label": "Quantity",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_3_label",
+          "label": "Label",
+          "default": "3 parfumer",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_3_price",
+          "label": "Price text",
+          "default": "499 kr",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle step 4 (optional)",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_4_qty",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 0,
+          "label": "Quantity (0 = disabled)",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_4_label",
+          "label": "Label",
+          "visible_if": "{{ block.settings.enable_bundle_builder and block.settings.bundle_step_4_qty > 0 }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_4_price",
+          "label": "Price text",
+          "visible_if": "{{ block.settings.enable_bundle_builder and block.settings.bundle_step_4_qty > 0 }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle step 5 (optional)",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_5_qty",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 0,
+          "label": "Quantity (0 = disabled)",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_5_label",
+          "label": "Label",
+          "visible_if": "{{ block.settings.enable_bundle_builder and block.settings.bundle_step_5_qty > 0 }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_5_price",
+          "label": "Price text",
+          "visible_if": "{{ block.settings.enable_bundle_builder and block.settings.bundle_step_5_qty > 0 }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle products",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "product_list",
+          "id": "bundle_products",
+          "label": "Products for bundle",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
+        },
+        {
+          "type": "textarea",
+          "id": "bundle_badges",
+          "label": "Badges (one per line, matches product order)",
+          "info": "e.g. Til hende, Til ham, Bestseller — one badge per line matching product order",
+          "visible_if": "{{ block.settings.enable_bundle_builder }}"
         }
       ]
     },
