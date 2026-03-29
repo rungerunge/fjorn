@@ -517,72 +517,6 @@
         "section_spacing_bottom": "xxl"
       }
     },
-    "rich_text_yBeAP8": {
-      "type": "rich-text",
-      "blocks": {
-        "icon_nt7Eyy": {
-          "type": "icon",
-          "settings": {
-            "icon_type": "preset",
-            "icon": "settings",
-            "icon_size": 48
-          }
-        },
-        "caption_MV8y3X": {
-          "type": "caption",
-          "settings": {
-            "caption": "RICH TEXT"
-          }
-        },
-        "heading_bNmip8": {
-          "type": "heading",
-          "settings": {
-            "title": "Gør ligesom 1000+ andre danskere",
-            "heading_size": "display3"
-          }
-        },
-        "text_gzwmRr": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements or welcome customers to your store.</p>",
-            "text_2": "",
-            "text_3": "",
-            "body_size": "body3"
-          }
-        },
-        "buttons_KqQbCP": {
-          "type": "buttons",
-          "settings": {
-            "btn_text": "Button label",
-            "btn_url": "",
-            "btn_style": "primary",
-            "extra_btn_text": "",
-            "extra_btn_url": "",
-            "extra_btn_style": "secondary"
-          }
-        }
-      },
-      "block_order": [
-        "icon_nt7Eyy",
-        "caption_MV8y3X",
-        "heading_bNmip8",
-        "text_gzwmRr",
-        "buttons_KqQbCP"
-      ],
-      "name": "t:sections.rich_text.name",
-      "settings": {
-        "content_align": "center",
-        "container_size": "page-width",
-        "round_level": "default",
-        "color_scheme_variant": "default",
-        "color_scheme": "",
-        "show_background": false,
-        "add_desktop_side_paddings": true,
-        "add_mobile_side_paddings": true,
-        "section_spacing_top": "l",
-        "section_spacing_bottom": "l"
-      }
-    },
     "image_scroller_eGkKhT": {
       "type": "image-scroller",
       "blocks": {
@@ -1550,7 +1484,6 @@
     "d31e75db-2f94-49b3-9015-a319fb18aa66",
     "collection_text",
     "collection_list",
-    "rich_text_yBeAP8",
     "image_scroller_eGkKhT",
     "collage_2",
     "7416e7d5-e0aa-4ea7-b4c9-65bea69b6c94",
