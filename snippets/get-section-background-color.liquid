@@ -1,0 +1,8 @@
+{%- liquid
+  assign color_scheme = settings.default_color_scheme
+  if section.settings.color_scheme_variant == 'own'
+    assign color_scheme = section.settings.color_scheme
+  endif
+-%}
+
+{{- color_scheme.settings.background -}}

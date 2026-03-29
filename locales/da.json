@@ -1,0 +1,984 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "accessibility": {
+    "skip_to_text": "Spring til indhold"
+  },
+  "general": {
+    "localization_selector": {
+      "store_front": {
+        "search_title": "Søg"
+      }
+    },
+    "gift_recipient_form": {
+      "store_front": {
+        "send_gift_checkbox_label": "Jeg vil sende dette som en gave",
+        "recipient_email_input_placeholder": "Modtagers e-mail",
+        "recipient_name_input_placeholder": "Modtagers navn (valgfrit)",
+        "message_input_placeholder": "Besked (valgfrit)",
+        "date_input_placeholder": "Send den (valgfrit)"
+      },
+      "screen_reader": {
+        "send_gift_checkbox_label": "Jeg vil sende dette som en gave",
+        "recipient_email_input_placeholder": "Modtagers e-mail",
+        "recipient_name_input_placeholder": "Modtagers navn (valgfrit)",
+        "message_input_placeholder": "Besked (valgfrit)",
+        "date_input_placeholder": "Send den (valgfrit)"
+      }
+    },
+    "cart_notification_popup": {
+      "store_front": {
+        "title": "Tilføjet til kurven",
+        "text_for_go_to_cart_button": "Gå til kurv",
+        "text_for_checkout_button": "Gå til betaling"
+      },
+      "screen_reader": {
+        "text_for_go_to_cart_button": "Gå til kurv",
+        "text_for_checkout_button": "Gå til betaling"
+      }
+    },
+    "quote": {
+      "store_front": {},
+      "screen_reader": {
+        "aria_label_for_close_drawer_button": "Luk"
+      }
+    },
+    "back_to_top_button": {
+      "store_front": {},
+      "screen_reader": {
+        "aria_label": "Tilbage til toppen"
+      }
+    },
+    "free_shipping_bar": {
+      "store_front": {
+        "progress_message": "Kun [value] til gratis fragt!",
+        "achieved_message": "Gratis fragt er opnået!"
+      },
+      "screen_reader": {}
+    },
+    "logo": {
+      "store_front": {},
+      "screen_reader": {
+        "aria_label": "Logo"
+      }
+    },
+    "rating": {
+      "store_front": {
+        "review_count": {
+          "one": "{{ count }} anmeldelse",
+          "other": "{{ count }} anmeldelser"
+        }
+      },
+      "screen_reader": {}
+    },
+    "password_page": {
+      "store_front": {
+        "placeholder_for_password_input": "Din adgangskode",
+        "placeholder_for_email_input": "Din e-mail",
+        "text_for_link_to_admin_at_html": "<span>Er du butiksejeren? <a href=\"/admin\" class=\"{{ class }}\">Log ind her</a></span>",
+        "text_for_element_which_open_modal": "Gå ind med adgangskode",
+        "text_for_title_in_login_modal": "Indtast butikkens adgangskode",
+        "incorrect_password_error_message": "Forkert adgangskode"
+      },
+      "screen_reader": {
+        "label_for_password_input": "Adgangskode",
+        "label_for_email_input": "E-mail",
+        "subscribe_button_label": "Tilmeld",
+        "text_for_title_in_login_modal": "Indtast butikkens adgangskode",
+        "aria_label_for_forgot_password": "Glemt adgangskode",
+        "aria_label_for_submit_password": "Send adgangskode",
+        "incorrect_password_error_message": "Forkert adgangskode"
+      }
+    },
+    "empty_cart_page": {
+      "store_front": {
+        "link_to_continue_shopping": "Begynd at handle",
+        "title": "Din kurv er tom"
+      },
+      "screen_reader": {
+        "link_to_continue_shopping": "Begynd at handle"
+      }
+    },
+    "cart_items": {
+      "store_front": {
+        "title": "Kurv",
+        "product_count": {
+          "one": "{{ count }} vare i kurven",
+          "other": "{{ count }} varer i kurven"
+        },
+        "product_label": "Vare",
+        "quantity_label": "Antal",
+        "total_label": "I alt"
+      },
+      "screen_reader": {
+        "quantity_label": "Antal"
+      }
+    },
+    "discount_code": {
+      "store_front": {
+        "error_title": "Rabatkoden kan ikke anvendes på din kurv"
+      }
+    },
+    "shipping_calculator": {
+      "store_front": {
+        "title": "Beregn fragt",
+        "country": "Land/region",
+        "province": "Region",
+        "zip": "Postnummer",
+        "calculate": "Beregn",
+        "error_title": "Der opstod en eller flere fejl ved hentning af fragtpriser:",
+        "success_title": "Der findes en eller flere fragtpriser for din adresse:"
+      },
+      "screen_reader": {
+        "calculate": "Beregn"
+      }
+    },
+    "cart_note": {
+      "store_front": {
+        "title": "Tilføj bemærkning til ordre",
+        "note_for_seller": "Besked til sælger",
+        "apply": "Anvend"
+      },
+      "screen_reader": {
+        "apply": "Anvend"
+      }
+    },
+    "subtotal": {
+      "store_front": {
+        "add_order_notes_button": "Tilføj bemærkning",
+        "order_note_button": "Bemærkninger",
+        "discount_code": "Rabat",
+        "add_discount_code": "Tilføj rabatkode",
+        "shipping_calculator_button": "Fragt",
+        "label_for_subtotal_price_html": {
+          "one": "Subtotal <span class=\"cart-subtotal__subtotals-cart-item-count\">({{ count }} vare)</span>",
+          "other": "Subtotal <span class=\"cart-subtotal__subtotals-cart-item-count\">({{ count }} varer)</span>"
+        },
+        "label_for_sale_price": "Udsalgspris",
+        "label_for_total_price": "I alt",
+        "text_for_go_to_cart_button": "Gå til kurv",
+        "text_for_checkout_button": "Gå til betaling",
+        "taxes_and_shipping_policy_at_checkout_html": "Moms og <a href=\"{{ link }}\">fragt</a> beregnes ved betaling",
+        "taxes_included_but_shipping_at_checkout": "Moms inkluderet og fragt beregnes ved betaling",
+        "taxes_included_and_shipping_policy_html": "Moms inkluderet. <a href=\"{{ link }}\">Fragt</a> beregnes ved betaling.",
+        "taxes_and_shipping_at_checkout": "Moms og fragt beregnes ved betaling",
+        "payment_icon_title": "Vi accepterer"
+      },
+      "screen_reader": {
+        "text_for_checkout_button": "Gå til betaling",
+        "text_for_go_to_cart_button": "Gå til kurv"
+      }
+    },
+    "search_page": {
+      "store_front": {
+        "placeholder_for_search_input": "Hvad leder du efter?",
+        "products_tab": "Produkter ({{ count }})",
+        "blog_posts_tab": "Blogindlæg ({{ count }})",
+        "pages_tab": "Sider ({{ count }})",
+        "label_for_filters_toggler": "Filter",
+        "results_count": {
+          "one": "{{ count }} resultat",
+          "other": "{{ count }} resultater"
+        },
+        "text_for_no_results_found_in_stub": "Ingen resultater fundet.",
+        "text_for_clear_all_in_stub": "ryd alt.",
+        "text_for_use_another_filters": "Brug andre filtermuligheder eller",
+        "text_for_change_query": "Der er ingen resultater for denne søgning.",
+        "text_for_no_results": "Ingen resultater for \"{{ search_query }}\". Tjek stavningen eller prøv en anden søgning."
+      },
+      "screen_reader": {
+        "label_for_search_input": "Søg",
+        "label_for_search_button": "Søg",
+        "label_for_filters_toggler": "Filter",
+        "text_for_change_query": "Der er ingen resultater for denne søgning."
+      }
+    },
+    "filters": {
+      "store_front": {
+        "header": "Filter",
+        "header_with_results_count": {
+          "one": "({{ count }} resultat)",
+          "other": "({{ count }} resultater)"
+        },
+        "expand_options_button_label": "Flere",
+        "collapse_options_button_label": "Færre",
+        "clear_button_label": "Ryd",
+        "clear_all": "Ryd alle",
+        "apply_button_label": "Anvend",
+        "in_stock_only_label": "Kun på lager",
+        "highest_price_label": "Den højeste pris er {{ price }}"
+      },
+      "screen_reader": {
+        "hide_filters": "Skjul"
+      }
+    },
+    "load_button_pagination": {
+      "store_front": {
+        "button_label": "Indlæs flere",
+        "results_label": "Du har set {{ current_count }} af {{ count }} resultater"
+      },
+      "screen_reader": {}
+    },
+    "share": {
+      "store_front": {
+        "facebook_label": "Facebook",
+        "twitter_label": "Twitter",
+        "pinterest_label": "Pinterest",
+        "base_label": "Kopiér link",
+        "button_label": "Del"
+      },
+      "screen_reader": {
+        "facebook_label": "Facebook",
+        "twitter_label": "Twitter",
+        "pinterest_label": "Pinterest"
+      }
+    },
+    "sidebar_cart": {
+      "store_front": {
+        "title": "Kurv",
+        "title_count": {
+          "one": "({{ count }} vare)",
+          "other": "({{ count }} varer)"
+        },
+        "continue_shopping": "Fortsæt med at handle",
+        "subtotal_sale_label": "Alle produktrabatter"
+      },
+      "screen_reader": {
+        "continue_shopping": "Fortsæt med at handle",
+        "drawer_close_button": "Luk"
+      }
+    },
+    "sort_list": {
+      "store_front": {
+        "button_label": "Sortér",
+        "sort_by": "Sortér efter"
+      },
+      "screen_reader": {
+        "button_label": "Sortér",
+        "hide_sort_list": "Skjul"
+      }
+    },
+    "gift_page": {
+      "store_front": {
+        "title": "Her er dit gavekort på {{ value }} hos {{ shop }}!"
+      },
+      "screen_reader": {
+        "subtext": "Dit gavekort"
+      }
+    },
+    "cart_page": {
+      "store_front": {
+        "cart_error": "Der opstod en fejl ved opdatering af kurven. Prøv igen.",
+        "cart_quantity_error_html": "Du kan højst lægge [quantity] varer i kurven.",
+        "subtotal_sale_label": "Alle produktrabatter"
+      },
+      "screen_reader": {}
+    },
+    "badges": {
+      "store_front": {
+        "product_sale_amount_badge": {
+          "variant_1_html": "Tilbud",
+          "variant_2_html": "-{{ amount }}%",
+          "variant_3_html": "Spar {{ amount }}%",
+          "variant_4_html": "-{{ amount }}",
+          "variant_5_html": "Spar {{ amount }}"
+        },
+        "product_sale_badge": {
+          "variant_1_html": "Tilbud",
+          "variant_2_html": "-{{ amount }}%",
+          "variant_3_html": "Spar {{ amount }}%",
+          "variant_4_html": "-{{ amount }}",
+          "variant_5_html": "Spar {{ amount }}"
+        }
+      },
+      "screen_reader": {}
+    }
+  },
+  "blogs": {
+    "blog_post": {
+      "store_front": {
+        "comments": {
+          "one": "{{ count }} kommentar",
+          "other": "{{ count }} kommentarer"
+        },
+        "moderated": "Kommentarer skal godkendes, før de vises.",
+        "comment_form_title": "Skriv en kommentar",
+        "name": "Navn",
+        "email": "E-mail",
+        "success": "Din kommentar er sendt. Tak!",
+        "success_moderated": "Din kommentar er modtaget og vil blive vist, når den er godkendt.",
+        "text_for_send_comment_button": "Skriv en kommentar",
+        "placeholder_for_comment_message_textarea": "Besked"
+      },
+      "screen_reader": {
+        "name": "Navn",
+        "email": "E-mail",
+        "text_for_send_comment_button": "Skriv en kommentar"
+      }
+    }
+  },
+  "shop": {
+    "store_front": {
+      "label_for_filters_toggler": "Filter",
+      "results_count": {
+        "one": "{{ count }} resultat",
+        "other": "{{ count }} resultater"
+      },
+      "text_for_no_results_found_in_stub": "Ingen produkter fundet",
+      "text_for_clear_all_in_stub": "Ryd alle",
+      "text_for_use_another_filters": "Brug andre filtermuligheder eller",
+      "text_for_change_query": "Der er ingen produkter for denne søgning."
+    },
+    "screen_reader": {
+      "label_for_filters_toggler": "Filter",
+      "aria_label_for_max_number_input": "Talinput for maks. pris",
+      "aria_label_for_min_number_input": "Talinput for min. pris",
+      "aria_label_for_max_range_input": "Skyder for maks. pris",
+      "aria_label_for_min_range_input": "Skyder for min. pris"
+    }
+  },
+  "product": {
+    "store_front": {
+      "breadcrumb_home_link_title": "Hjem",
+      "default_title": "Produkttitel",
+      "default_vendor": "Leverandør",
+      "sku": "Varenr.: {{ sku }}",
+      "view_full_details": "Se alle detaljer",
+      "add_to_cart": "Læg i kurv",
+      "add_to_cart_short": "Køb",
+      "payment_icon_title": "Vi accepterer",
+      "pre_order": "Forudbestil",
+      "quantity": {
+        "label": "Antal"
+      },
+      "stock": {
+        "out_of_stock": "Udsolgt",
+        "label_with_counter": {
+          "one": "{{ count }} på lager",
+          "other": "{{ count }} på lager"
+        }
+      },
+      "pickup_availability": {
+        "view_store_info": "Se butiksinfo",
+        "check_other_stores": "Tjek andre butikker",
+        "pick_up_available": "Afhentning mulig",
+        "pick_up_available_at_html": "Afhentning mulig i <span class=\"pickup-availability-info__location-name\">{{ location_name }}</span>",
+        "pick_up_unavailable_at_html": "Afhentning ikke mulig i <span class=\"pickup-availability-info__location-name\">{{ location_name }}</span>",
+        "pick_up_unavailable": "Afhentning ikke mulig lige nu"
+      },
+      "sold_out": "Udsolgt",
+      "sold_out_short": "Udsolgt",
+      "unavailable": "Ikke tilgængelig",
+      "xr_button_label": "Se i dit rum"
+    },
+    "screen_reader": {
+      "view_full_details": "Se alle detaljer",
+      "pickup_availability": {
+        "view_store_info": "Se butiksinfo",
+        "check_other_stores": "Tjek andre butikker",
+        "aria_label_for_sidebar_close_button": "Luk panel for afhentning"
+      },
+      "xr_button_label": "Se i dit rum"
+    }
+  },
+  "contact_form": {
+    "store_front": {
+      "name": "Navn",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "message": "Besked",
+      "send": "Send",
+      "success_sent_message": "Vi har modtaget din besked!"
+    },
+    "screen_reader": {
+      "name": "Navn",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "message": "Besked",
+      "send": "Send",
+      "success_sent_message": "Vi har modtaget din besked!"
+    },
+    "email_fields": {
+      "name": "Navn",
+      "phone": "Telefon",
+      "message": "Kommentar"
+    }
+  },
+  "search_drawer": {
+    "store_front": {
+      "products_tab": "Produkter",
+      "blog_posts_tab": "Blogindlæg",
+      "pages_tab": "Sider",
+      "collections_tab": "Kollektioner",
+      "queries_tab": "Forslag",
+      "button_label": "Se alle resultater"
+    },
+    "screen_reader": {
+      "button_label": "Se alle resultater"
+    }
+  },
+  "gift_card": {
+    "store_front": {
+      "title": "Her er dit gavekort!",
+      "text": "Brug denne kode ved betaling for at indløse gavekortet",
+      "shop_link": "Begynd at handle",
+      "remaining_html": "Resterende {{ balance }}",
+      "copied": "Kopieret",
+      "print": "Udskriv"
+    },
+    "screen_reader": {
+      "shop_link": "Begynd at handle",
+      "add_to_apple_wallet": "Tilføj til Apple Wallet",
+      "gift_card_image": "Gavekortsbillede",
+      "print": "Udskriv"
+    }
+  },
+  "featured_blog_posts": {
+    "store_front": {
+      "read_more_link": "Læs mere",
+      "comments_count": {
+        "one": "{{ count }} kommentar",
+        "other": "{{ count }} kommentarer"
+      },
+      "default_article_title": "Overskrift til indlæg",
+      "default_article_content": "Brug blogindlæg til nyheder, tips og andet om din butik.",
+      "default_article_author": "Forfatternavn"
+    },
+    "screen_reader": {
+      "read_more_link_aria_label": "Blogindlæg: {{ blog_post_title }}"
+    }
+  },
+  "custom_liquid": {
+    "store_front": {
+      "stub_text": "Skriv eller indsæt Liquid-kode"
+    },
+    "screen_reader": {}
+  },
+  "collection_hero_banner": {
+    "store_front": {
+      "breadcrumb_collections_link": "Kollektioner"
+    },
+    "screen_reader": {
+      "breadcrumb_collections_link": "Kollektioner"
+    }
+  },
+  "blog_page": {
+    "store_front": {
+      "link_to_all_tag": "Alle"
+    },
+    "screen_reader": {
+      "link_to_all_tag": "Alle"
+    }
+  },
+  "blog_post": {
+    "store_front": {
+      "breadcrumb_home_link": "Hjem",
+      "breadcrumb_blog_link": "Blog",
+      "next_post_link": "Næste indlæg",
+      "prev_post_link": "Forrige indlæg",
+      "comments_count": {
+        "one": "{{ count }} kommentar",
+        "other": "{{ count }} kommentarer"
+      }
+    },
+    "screen_reader": {
+      "breadcrumb_home_link": "Hjem",
+      "breadcrumb_blog_link": "Blog",
+      "next_post_link": "Næste indlæg",
+      "prev_post_link": "Forrige indlæg"
+    }
+  },
+  "header": {
+    "store_front": {
+      "back_to_home_in_drawer_on_mobile": "Menu",
+      "label_for_search_icon": "Søg",
+      "label_for_account_icon": "Konto",
+      "label_for_login_icon": "Log ind",
+      "label_for_cart_icon": "Kurv",
+      "back_to_login_in_drawer_on_mobile": "Log ind"
+    },
+    "screen_reader": {
+      "aria_label_for_search_icon": "Søgepanel",
+      "aria_label_for_account_icon": "Kontoside",
+      "aria_label_for_cart_icon": "Kurv",
+      "aria_label_for_menu_icon": "Menu"
+    }
+  },
+  "customer": {
+    "menu": {
+      "store_front": {
+        "order_history": "Ordrehistorik",
+        "addresses": "Adresser",
+        "my_account": "Min konto",
+        "log_out": "Log ud"
+      },
+      "screen_reader": {
+        "order_history": "Ordrehistorik",
+        "addresses": "Adresser",
+        "log_out": "Log ud"
+      }
+    },
+    "account": {
+      "store_front": {
+        "order_history": "Ordrehistorik"
+      },
+      "screen_reader": {}
+    },
+    "activate_account": {
+      "store_front": {
+        "title": "Aktivér konto",
+        "text": "Opret en adgangskode for at aktivere din konto",
+        "activate_button_label": "Aktivér",
+        "decline_invitation_button_label": "Afvis invitation",
+        "label_for_password_input": "Adgangskode",
+        "placeholder_for_password_input": "Indtast adgangskode",
+        "label_for_password_confirm_input": "Bekræft adgangskode",
+        "placeholder_for_password_confirm_input": "Gentag adgangskode"
+      },
+      "screen_reader": {
+        "activate_button_label": "Aktivér",
+        "decline_invitation_button_label": "Afvis invitation"
+      }
+    },
+    "addresses": {
+      "store_front": {
+        "title": "Adresser",
+        "default": "Standard",
+        "add_new": "Tilføj ny adresse",
+        "edit_address": "Redigér adresse",
+        "first_name": "Fornavn",
+        "last_name": "Efternavn",
+        "company": "Firma",
+        "address1": "Adresse 1",
+        "address2": "Adresse 2",
+        "city": "By",
+        "country": "Land/region",
+        "zip": "Postnummer",
+        "phone": "Telefon",
+        "set_default": "Brug som standardadresse",
+        "add": "Tilføj adresse",
+        "update": "Opdatér adresse",
+        "cancel": "Annuller",
+        "edit": "Redigér",
+        "delete": "Slet",
+        "delete_confirm": "Er du sikker på, at du vil slette denne adresse?"
+      },
+      "screen_reader": {
+        "edit_address": "Redigér adresse",
+        "update": "Opdatér adresse",
+        "cancel": "Annuller",
+        "edit": "Redigér",
+        "delete": "Slet",
+        "add": "Tilføj adresse"
+      }
+    },
+    "login_page": {
+      "store_front": {
+        "cancel": "Annuller",
+        "email_input_placeholder": "Indtast e-mail",
+        "email_input_label": "E-mail",
+        "forgot_password_title": "Glemt adgangskode",
+        "forgot_password_link": "Glemt adgangskode?",
+        "forgot_password_note": "Vi sender dig en e-mail til at nulstille adgangskoden.",
+        "new_customer_at_html": "Ny kunde? <a href=\"{{ url }}\">Opret konto</a>",
+        "guest_continue": "Fortsæt",
+        "password_input_placeholder": "Indtast adgangskode",
+        "password_input_label": "Adgangskode",
+        "title": "Log ind",
+        "sign_in": "Log ind",
+        "submit": "Send",
+        "alternate_provider_separator": "eller"
+      },
+      "screen_reader": {
+        "cancel": "Annuller",
+        "guest_continue": "Fortsæt",
+        "sign_in": "Log ind",
+        "submit": "Send"
+      }
+    },
+    "order": {
+      "store_front": {
+        "header": "Ordrehistorik",
+        "order_info_name": "Ordre {{ order_name }}",
+        "order_info_placed_date_html": "Bestilt {{ date_at }}",
+        "order_info_cancelled_date_html": "Annulleret: {{ cancelled_at }}",
+        "order_info_cancelled_reason": "Årsag til annullering: {{ reason }}",
+        "product": "Vare",
+        "sku": "Varenr.",
+        "price": "Pris",
+        "quantity": "Antal",
+        "total": "I alt",
+        "shipping_address": "Leveringsadresse",
+        "discount": "Rabat",
+        "shipping": "Fragt",
+        "tax": "Moms",
+        "fulfilled_at_html": "Afsendt {{ date }}",
+        "track_shipment": "Spor forsendelse",
+        "billing_address": "Faktureringsadresse",
+        "subtotal_label": "Subtotal",
+        "financial_status_label": "Betalingsstatus: {{ financial_status_label }}",
+        "shipping_method_title": "Fragt ({{ shipping_method_title }})",
+        "fulfillment_status_label": "Leveringsstatus: {{ fulfillment_status_label }}"
+      },
+      "screen_reader": {
+        "track_shipment": "Spor forsendelse"
+      }
+    },
+    "orders": {
+      "store_front": {
+        "order_number": "Ordre",
+        "date": "Dato",
+        "payment_status": "Betalingsstatus",
+        "fulfillment_status": "Leveringsstatus",
+        "total": "I alt"
+      },
+      "screen_reader": {}
+    },
+    "recover_password": {
+      "store_front": {
+        "success": "Vi har sendt dig en e-mail med et link til at opdatere adgangskoden."
+      },
+      "screen_reader": {
+        "success": "Vi har sendt dig en e-mail med et link til at opdatere adgangskoden."
+      }
+    },
+    "register": {
+      "store_front": {
+        "title": "Opret konto",
+        "first_name": "Fornavn",
+        "last_name": "Efternavn",
+        "email": "E-mail",
+        "password": "Adgangskode",
+        "create_account_button_label": "Opret konto",
+        "sign_in_link_html": "Allerede kunde? <a href=\"{{ account_login_url }}\" aria-label=\"Link til login\">Log ind</a>",
+        "success_message": "Konto oprettet. Bekræftelsesmail sendt. Klik på linket i mailen for at aktivere kontoen."
+      },
+      "screen_reader": {
+        "create_account_button_label": "Opret konto"
+      }
+    },
+    "reset_password": {
+      "store_front": {
+        "title": "Nulstil adgangskode",
+        "subtext": "Indtast ny adgangskode",
+        "password": "Adgangskode",
+        "password_confirm": "Bekræft adgangskode",
+        "password_placeholder": "Ny adgangskode",
+        "password_confirm_placeholder": "Gentag ny adgangskode",
+        "submit": "Nulstil adgangskode"
+      },
+      "screen_reader": {
+        "submit": "Nulstil adgangskode"
+      }
+    }
+  },
+  "forms": {
+    "newsletter": {
+      "store_front": {
+        "success": "Tak – du er tilmeldt nyhedsbrevet.",
+        "subscribe_button_label": "Tilmeld",
+        "email_input_placeholder": "E-mailadresse"
+      },
+      "screen_reader": {
+        "success": "Tak – du er tilmeldt nyhedsbrevet.",
+        "subscribe_button_label": "Tilmeld",
+        "email_input_label": "E-mail"
+      }
+    }
+  },
+  "cards": {
+    "collection_card": {
+      "store_front": {
+        "view_all_collection_link_text": "Se hele kollektionen",
+        "default_title": "Kollektionstitel",
+        "product_count": {
+          "one": "{{ count }} produkt",
+          "other": "{{ count }} produkter"
+        }
+      },
+      "screen_reader": {}
+    },
+    "product_card": {
+      "store_front": {
+        "quick_view_button_label": "Hurtig visning",
+        "add_to_cart_button_label": "Læg i kurv",
+        "default_title": "Produkttitel",
+        "default_vendor": "Leverandør",
+        "from_price_html": "Fra {{ price }}"
+      },
+      "screen_reader": {
+        "add_to_cart_button_label": "Læg i kurv"
+      }
+    },
+    "vertical_product_card": {
+      "store_front": {
+        "from_price_html": "Fra {{ price }}"
+      },
+      "screen_reader": {
+        "quick_view_button_label": "Hurtig visning",
+        "add_to_cart_button_label": "Læg i kurv"
+      }
+    },
+    "horizontal_product_card": {
+      "store_front": {
+        "from_price_html": "Fra {{ price }}"
+      },
+      "screen_reader": {
+        "quick_view_button_label": "Vis",
+        "add_to_cart_button_label": "Tilføj"
+      }
+    },
+    "article_card": {
+      "store_front": {
+        "read_more_link": "Læs mere",
+        "default_title": "Overskrift til indlæg",
+        "default_content": "Brug blogindlæg til nyheder og tips om din butik.",
+        "default_author": "Forfatternavn",
+        "comments_count": {
+          "one": "{{ count }} kommentar",
+          "other": "{{ count }} kommentarer"
+        }
+      },
+      "screen_reader": {}
+    }
+  },
+  "dialog_elements": {
+    "search_drawer": {
+      "store_front": {
+        "header_title": "Søg",
+        "placeholder_for_search_input": "Hvad leder du efter?"
+      },
+      "screen_reader": {
+        "screen_reader_label_for_search_button": "Søg",
+        "label_for_search_input": "Søg"
+      }
+    },
+    "quick_view": {
+      "store_front": {
+        "header_title": "Hurtig visning"
+      },
+      "screen_reader": {}
+    },
+    "choose_options": {
+      "store_front": {
+        "header_title": "Vælg muligheder"
+      },
+      "screen_reader": {}
+    }
+  },
+  "before_after_images": {
+    "store_front": {},
+    "screen_reader": {
+      "separator": {
+        "button": "træk i skillelinjen mellem billederne"
+      }
+    }
+  },
+  "countdown_timer": {
+    "store_front": {
+      "day": "Dag",
+      "days": "Dage",
+      "hour": "Time",
+      "hours": "Timer",
+      "minute": "Min",
+      "minutes": "Min",
+      "second": "Sek",
+      "seconds": "Sek"
+    },
+    "screen_reader": {}
+  },
+  "hotspots": {
+    "store_front": {
+      "pin": "Punkt. Ekstra information vises, når det er aktivt"
+    },
+    "screen_reader": {
+      "pin": "Punkt. Ekstra information vises, når det er aktivt",
+      "close": "Luk vindue med punktinformation"
+    }
+  },
+  "lookbook": {
+    "store_front": {
+      "modal-header-title": "Produkter"
+    },
+    "screen_reader": {
+      "pin": "Punkt. Det tilknyttede produkt vises, når det er aktivt",
+      "close": "Luk vindue med produkt"
+    }
+  },
+  "store_locator": {
+    "store_front": { "show_directions_btn": "Rute" },
+    "screen_reader": {
+      "show_directions_btn": "Rute"
+    }
+  },
+  "popups": {
+    "screen_reader": {
+      "close": "Luk"
+    }
+  },
+  "icons": {
+    "screen_reader": {
+      "notification-close": "Luk notifikation",
+      "size-chart": "Størrelsesguide",
+      "alert_cancel": "Annuller advarsel",
+      "youtube": "Youtube",
+      "vimeo": "Vimeo",
+      "discord": "Discord",
+      "behance": "Behance",
+      "viber": "Viber",
+      "dribbble": "Dribbble",
+      "twitch": "Twitch",
+      "whatsapp": "Whatsapp",
+      "spinner": "Indlæser",
+      "twitter": "Twitter",
+      "tumblr": "Tumblr",
+      "tiktok": "Tiktok",
+      "tick": "Flueben",
+      "success": "Succes",
+      "telegram": "Telegram",
+      "stock": "Lager",
+      "sort": "Sortér",
+      "snapchat": "Snapchat",
+      "share": "Del",
+      "search": "Søg",
+      "main-search": "Hovedsøgning",
+      "plus": "Plus",
+      "play": "Afspil",
+      "play-without-round": "Afspil",
+      "pause": "Pause",
+      "pinterest": "Pinterest",
+      "people": "Personer",
+      "padlock": "Hængelås",
+      "minus": "Minus",
+      "long-minus": "Lang minus",
+      "instagram": "Instagram",
+      "trash": "Papirkurv",
+      "filter-toggle": "Filter",
+      "facebook": "Facebook",
+      "password-input-opened-eye": "Synlig adgangskode",
+      "password-input-closed-eye": "Skjult adgangskode",
+      "error": "Fejl",
+      "discount": "Rabat",
+      "close": "Luk",
+      "close-large": "Luk",
+      "copy": "Kopiér",
+      "clipboard": "Udklipsholder",
+      "circle": "Cirkel",
+      "back-to-top-icon": "Tilbage til toppen",
+      "chevron": "Vinkel",
+      "link-chevron": "Link med vinkel",
+      "check": "Markér",
+      "cart": "Kurv",
+      "arrow": "Pil",
+      "arrow-slider": "Pil på slider",
+      "account": "Konto",
+      "3d": "3D",
+      "print": "Udskriv",
+      "rss": "RSS",
+      "shopify-logo": "Shopify-logo",
+      "search-sidebar-section-arrow": "Pil i søgesektion",
+      "quote": "Citat",
+      "quote-bold": "Citat",
+      "home": "Hjem",
+      "medium": "Medium",
+      "order": "Ordre",
+      "enter": "Enter",
+      "linkedin": "LinkedIn",
+      "flickr": "Flickr",
+      "reddit": "Reddit",
+      "email": "E-mail",
+      "before-after-separator": "Før/efter-skillelinje",
+      "coffee": "Kaffe",
+      "address-pin": "Adressepunkt",
+      "arrow-carousel": "Karruselpil",
+      "arrow-left": "Pil venstre",
+      "arrow-right": "Pil højre",
+      "bag": "Taske",
+      "barcode": "Stregkode",
+      "x": "X",
+      "briefcase": "Mappe",
+      "cake": "Kage",
+      "calendar": "Kalender",
+      "car": "Bil",
+      "cash": "Kontanter",
+      "chat": "Chat",
+      "checkmark": "Flueben",
+      "clock": "Ur",
+      "color-swatch": "Farveprøve",
+      "coupon": "Kupon",
+      "credit-card": "Betalingskort",
+      "cup": "Kop",
+      "customer-support": "Kundeservice",
+      "delivery-truck": "Leveringsbil",
+      "devices": "Enheder",
+      "discount-outline": "Rabat",
+      "discount-solid": "Rabat",
+      "dislike": "Synes ikke om",
+      "document": "Dokument",
+      "dress": "Kjole",
+      "easy-returns": "Nem retur",
+      "eco": "Miljø",
+      "email-solid": "E-mail",
+      "email-outline": "E-mail",
+      "eye-slash": "Skjul",
+      "eye": "Øje",
+      "fast-delivery": "Hurtig levering",
+      "furniture": "Møbler",
+      "gift": "Gave",
+      "hanger": "Bøjle",
+      "information": "Information",
+      "jewelry": "Smykker",
+      "lamp": "Lampe",
+      "like": "Synes godt om",
+      "list": "Liste",
+      "lock": "Lås",
+      "love-outline": "Hjerte",
+      "love-solid": "Hjerte",
+      "mask": "Maske",
+      "medal": "Medalje",
+      "message": "Besked",
+      "mobile": "Mobil",
+      "notification": "Notifikation",
+      "pen-and-ruler": "Pen og lineal",
+      "phone": "Telefon",
+      "plane": "Fly",
+      "printer-and-fax": "Printer og fax",
+      "rabbit": "Kanin",
+      "receipt": "Kvittering",
+      "redo": "Gentag",
+      "refresh": "Opdatér",
+      "routing": "Rute",
+      "scanner": "Scanner",
+      "search-order": "Søg ordre",
+      "secure-payment": "Sikker betaling",
+      "settings": "Indstillinger",
+      "share-button": "Del-knap",
+      "shield": "Skjold",
+      "shipping-box": "Forsendelseskasse",
+      "star-outline": "Stjerne",
+      "star-solid": "Stjerne",
+      "store": "Butik",
+      "t-shirt": "T-shirt",
+      "tag": "Tag",
+      "toy": "Legetøj",
+      "undo": "Fortryd",
+      "user": "Bruger",
+      "virus": "Virus",
+      "wallet": "Pung",
+      "world": "Verden",
+      "header-search-icon": "Søg",
+      "header-account-icon": "Konto",
+      "header-bag-icon": "Taske",
+      "header-cart-icon": "Kurv",
+      "header-basket-icon": "Kurv",
+      "page": "Side"
+    }
+  }
+}

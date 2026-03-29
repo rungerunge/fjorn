@@ -1,0 +1,188 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer Group",
+  "sections": {
+    "3080ec1d-e8ee-494d-ac78-4da55ee27783": {
+      "type": "newsletter",
+      "blocks": {
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-0": {
+          "type": "caption",
+          "settings": {
+            "caption": ""
+          }
+        },
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-1": {
+          "type": "title",
+          "settings": {
+            "title": "Sign up and get 10% off",
+            "heading_size": "h2"
+          }
+        },
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-2": {
+          "type": "text",
+          "settings": {
+            "text": "Sign up for early sale access, new in, promotions and more",
+            "body_size": "body4"
+          }
+        },
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-3": {
+          "type": "subscribe",
+          "settings": {
+            "input_style": "solid",
+            "button_style": "primary",
+            "show_signup_checkbox": true,
+            "signup_checkbox_text": "I agree to the consent rules"
+          }
+        }
+      },
+      "block_order": [
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-0",
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-1",
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-2",
+        "sections--16679800766705__3080ec1d-e8ee-494d-ac78-4da55ee27783-1680084579fe14ed6b-3"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_ratio": 0.2,
+        "mobile_ratio": 0.6,
+        "desktop_media_type": "image",
+        "desktop_enable_overlay": true,
+        "desktop_overlay_opacity": 25,
+        "mobile_media_type": "image",
+        "mobile_enable_overlay": true,
+        "mobile_overlay_opacity": 25,
+        "desktop_content_position": "align-items: center;justify-content:center;",
+        "desktop_content_align": "left",
+        "content_max_width": 814,
+        "mobile_content_position": "align-items:flex-end;justify-content:center;",
+        "mobile_content_align": "center",
+        "content_paddings_size": "m",
+        "desktop_content_background": "none",
+        "desktop_outline_border_thickness": 1,
+        "desktop_background_opacity": 20,
+        "desktop_background_blur": 12,
+        "desktop_shadow_background_color": "#767676",
+        "mobile_content_background": "none",
+        "mobile_outline_border_thickness": 1,
+        "mobile_background_opacity": 20,
+        "mobile_background_blur": 12,
+        "mobile_shadow_background_color": "#767676",
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "own",
+        "color_scheme": "10",
+        "custom_text_color": "#ffffff",
+        "custom_background_color": "#000000",
+        "custom_foreground_color": "#323232",
+        "custom_first_button_text_color": "#ffffff",
+        "custom_first_button_bg_color": "#000000",
+        "custom_first_button_border_color": "#000000",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxxs",
+        "section_spacing_bottom": "xxxs",
+        "disable_lazy_loading": false
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "footer-1": {
+          "type": "logo_with_text",
+          "settings": {
+            "logo_img": "shopify://shop_images/fjornlogotestsort_2.svg",
+            "logo_width": 200,
+            "title": "",
+            "heading_size": "caption2",
+            "text": "<p>Hos Fjorn finder du kufferter, hvor æstetik og funktion går hånd i hånd. Designet til moderne rejser med fokus på kvalitet, komfort og holdbarhed.</p><p>CVR: 43937790</p>",
+            "body_size": "body4",
+            "mobile_block_style": "static",
+            "mobile_title": "",
+            "mobile_heading_size": "caption2"
+          }
+        },
+        "footer-2": {
+          "type": "menu",
+          "settings": {
+            "menu": "main-menu",
+            "body_size": "body4",
+            "title": "Menu",
+            "heading_size": "caption2",
+            "mobile_block_style": "false",
+            "mobile_title": "Menu",
+            "mobile_heading_size": "caption2"
+          }
+        },
+        "menu_MXm3xt": {
+          "type": "menu",
+          "settings": {
+            "menu": "footer",
+            "body_size": "body4",
+            "title": "Info",
+            "heading_size": "caption2",
+            "mobile_block_style": "false",
+            "mobile_title": "Menu",
+            "mobile_heading_size": "caption2"
+          }
+        },
+        "footer-4": {
+          "type": "subscribe",
+          "settings": {
+            "input_style": "solid",
+            "button_style": "primary",
+            "show_signup_checkbox": false,
+            "signup_checkbox_text": "I agree to the consent rules",
+            "title": "NYHEDSBREV",
+            "heading_size": "caption2",
+            "text": "<p>Hold dig opdateret med de nyeste udgivelser og tilbud.</p>",
+            "body_size": "body4",
+            "mobile_block_style": "false",
+            "mobile_title": "Subscribe",
+            "mobile_heading_size": "caption2"
+          }
+        }
+      },
+      "block_order": [
+        "footer-1",
+        "footer-2",
+        "menu_MXm3xt",
+        "footer-4"
+      ],
+      "settings": {
+        "desktop_column_count": "4",
+        "enable_border": false,
+        "bottom_bar": "",
+        "show_payment_icons": true,
+        "copyright_text": "Copyright © 2026, fjorn.",
+        "enable_follow_on_shop": true,
+        "show_language_selector": true,
+        "show_currency_selector": true,
+        "show_currency_flags": true,
+        "show_policy_links": false,
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "default",
+        "show_background": true,
+        "add_desktop_side_paddings": false,
+        "add_mobile_side_paddings": false,
+        "section_spacing_top": "none",
+        "section_spacing_bottom": "none"
+      }
+    }
+  },
+  "order": [
+    "3080ec1d-e8ee-494d-ac78-4da55ee27783",
+    "footer"
+  ]
+}

@@ -1,0 +1,895 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "badges_6BtwA7": {
+          "type": "badges",
+          "disabled": true,
+          "settings": {
+            "show_sold_out_badge": true,
+            "show_sale_badge": true,
+            "show_custom_1_badge": true,
+            "show_custom_2_badge": true,
+            "show_custom_3_badge": true
+          }
+        },
+        "vendor": {
+          "type": "vendor",
+          "disabled": true,
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_nDH4TE": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h3",
+            "append_primary_option_to_title": true
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_size": "sm",
+            "show_currency_code": false,
+            "show_compared_at_price": true,
+            "show_tax_status": false,
+            "show_sale_amount_badge": true,
+            "highlight_sale_price": true
+          }
+        },
+        "product_usps_main": {
+          "type": "product_usps",
+          "settings": {
+            "heading": "",
+            "heading_size": "caption2",
+            "text_size": "body3",
+            "icon_size": 24,
+            "usp_1_icon": "shopify://shop_images/shield-lock.svg",
+            "usp_1_text": "Tyverisikker med TSA-låse",
+            "usp_2_icon": "shopify://shop_images/checkmark-circle-outline.svg",
+            "usp_2_text": "Livstidsgaranti inkluderet",
+            "usp_3_icon": "shopify://shop_images/stars.svg",
+            "usp_3_text": "Premium aluminium design",
+            "usp_4_icon": "shopify://shop_images/rotate-360.svg",
+            "usp_4_text": "360° hjul & letvægt",
+            "usp_5_text": "",
+            "usp_6_text": ""
+          }
+        },
+        "collapsible_row": {
+          "type": "collapsible_row",
+          "settings": {
+            "style": "static",
+            "title": "",
+            "heading_size": "caption3",
+            "icon_type": "none",
+            "icon": "none",
+            "icon_size": 24,
+            "text": "<p>Pair image with text to tell more about your product: care instructions, country of origin, manufacturer information, matching colors and accessories.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "option_type": "button-solid",
+            "show_swatches": true,
+            "primary_swatch_option_type": "swatches",
+            "secondary_swatch_option_type": "swatches",
+            "hide_single_value_options": true,
+            "enable_option_svg_row": true,
+            "option_svg_target_name": "Størrelse",
+            "option_svg_match_1": "Small",
+            "option_svg_image_1": "shopify://shop_images/Frame_2147226298_1.svg",
+            "option_svg_match_2": "Medium",
+            "option_svg_image_2": "shopify://shop_images/Frame_2147226299_1.svg",
+            "option_svg_match_3": "Large",
+            "option_svg_image_3": "shopify://shop_images/Frame_2147226300_1.svg",
+            "option_svg_match_4": "Sæt af 3",
+            "option_svg_image_4": "shopify://shop_images/svg-image-15.svg",
+            "option_svg_match_5": "",
+            "option_svg_match_6": "",
+            "option_name": "Size",
+            "information_drawer_button_label": "SIZE GUIDE",
+            "information_drawer_button_position": "left",
+            "information_drawer_icon_type": "none",
+            "information_drawer_button_icon": "settings",
+            "text": "",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 60
+          }
+        },
+        "inventory_status": {
+          "type": "inventory_status",
+          "disabled": true,
+          "settings": {
+            "show_inventory_status": "always",
+            "inventory_threshhold": 5,
+            "inventory_notice_type": "label",
+            "high_inventory_text": "Many in stock",
+            "low_inventory_text": "Act now, few in stock!",
+            "show_progress_bar": true,
+            "progress_bar_type": "solid",
+            "progress_bar_size": "6",
+            "progress_bar_max_value": "2500",
+            "high_inventory_label_color": "#000000",
+            "high_inventory_color": "#97e823",
+            "high_inventory_gradient": "",
+            "high_inventory_progress_bar_bg": "#f3f1e7",
+            "low_inventory_label_color": "#000000",
+            "low_inventory_color": "#ff3d3d",
+            "low_inventory_gradient": "",
+            "low_inventory_progress_bar_bg": "#f5f5f5"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "enable_pickup_availability": true,
+            "enable_gift_card": false,
+            "show_payment_icons": false,
+            "show_sticky_buy_button": "mobile-only",
+            "buttons_size": "md",
+            "add_to_cart_btn_style": "primary",
+            "checkout_btn_style": "secondary"
+          }
+        },
+        "8f7af4e6-5f36-4f3d-9d6a-936950e206f5": {
+          "type": "information_tag",
+          "settings": {
+            "heading": "Livstidsgaranti",
+            "heading_size": "h6",
+            "body": "<p>Bygget til mange års brug – med Fjorns livstidsgaranti inkluderet.</p>",
+            "body_size": "body3",
+            "content_alignment": "left",
+            "tag_background_color": "#e9e9e9",
+            "tag_background_gradient": "",
+            "button_border_color": "rgba(0,0,0,0)",
+            "button_border_gradient": "",
+            "tag_text_color": "#3b3933",
+            "icon_type": "preset",
+            "icon": "shield",
+            "icon_size": 24,
+            "icon_position": "inline",
+            "enable_drawer": true,
+            "drawer_text": "",
+            "drawer_page": "",
+            "drawer_body_size": "body3",
+            "drawer_media_type": "image",
+            "drawer_media_size": 60
+          }
+        },
+        "collapsible_row_7hFJ4m": {
+          "type": "collapsible_row",
+          "settings": {
+            "style": "collapsible_row_closed",
+            "title": "Beskrivelse",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p><strong>Fjorn Premium – Sølv</strong> er skabt til dig, der ønsker en kuffert med et eksklusivt udtryk og en stærk konstruktion. Det elegante aluminiumdesign kombinerer et stilrent look med høj holdbarhed, så du får en kuffert, der både føles premium og er bygget til at blive brugt.</p><p>Den robuste aluminiumsramme og zipperless lukning giver et solidt og gennemført design, mens TSA-låsen sørger for ekstra tryghed på rejsen. Med letkørende 360° spinnerhjul er kufferten nem at manøvrere gennem lufthavne, hoteller og gader, og det hårde håndtag fuldender den eksklusive oplevelse.</p><p><strong>Fjorn Premium – Sølv</strong> er det oplagte valg til dig, der vil rejse med stil, orden og kvalitet i fokus.</p><p><strong>Fordele:</strong></p><ul><li>Eksklusivt design i aluminium</li><li>Stærk og slidstærk aluminiumsramme</li><li>Zipperless lukning for et rent og moderne look</li><li>TSA-lås for ekstra sikkerhed</li><li>360° spinnerhjul for let og smidig transport</li><li>Robust konstruktion skabt til rejser</li><li>Vandtæt</li></ul>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 60
+          }
+        },
+        "collapsible_row_QG7HBt": {
+          "type": "collapsible_row",
+          "settings": {
+            "style": "collapsible_row_closed",
+            "title": "Mål & størrelser",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p><strong>Vælg den størrelse der passer til din rejse</strong></p><p><strong>Lille: 20” Carry-on</strong><br/><br/>Perfekt som håndbagage til korte ture og weekendrejser.</p><ul><li>355 × 195 × 490 mm<br/></li><li>Ca. 33L<br/></li><li>4,1 kg</li></ul><p></p><p><strong>Mellem: 24” Checked-in</strong><br/><br/>Ideel til længere rejser, hvor du har brug for ekstra plads.</p><ul><li>445 × 260 × 680 mm<br/></li><li>Ca. 63L<br/></li><li>6,4 kg</li></ul><p>Små afvigelser kan forekomme*</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 60
+          }
+        },
+        "collapsible_row_E6QiLt": {
+          "type": "collapsible_row",
+          "settings": {
+            "style": "collapsible_row_closed",
+            "title": "Levering",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Din kuffert bliver sendt inden for 1-2 hverdage - du modtager alt information på mail inkl. tracking.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 60
+          }
+        },
+        "9b5dffd0-7e18-4103-9862-407ea4cb64d6": {
+          "type": "related_products",
+          "disabled": true,
+          "settings": {
+            "product_recommendations_type": "auto",
+            "featured_collection": "",
+            "featured_products": [],
+            "block_layout": "carousel-with-vertical-cards",
+            "products_to_show": 4,
+            "desktop_space_between_cards": 11,
+            "mobile_space_between_cards": 32,
+            "show_in_quick_view": false,
+            "title": "Måske en anden favorit?",
+            "heading_size": "h6",
+            "alignment": "left",
+            "img_ratio": "inherited",
+            "img_ratio_resize": "fill",
+            "content_alignment": "left",
+            "hide_product_prices": false,
+            "autoplay_mode": "disabled",
+            "autoplay_interval": 3,
+            "show_navigation_on_hover": true,
+            "color_scheme_variant": "default",
+            "color_scheme": "secondary",
+            "enable_color_background": true,
+            "cards_color_background": false
+          }
+        }
+      },
+      "block_order": [
+        "badges_6BtwA7",
+        "vendor",
+        "judge_me_reviews_preview_badge_nDH4TE",
+        "title",
+        "price",
+        "product_usps_main",
+        "collapsible_row",
+        "variant_picker",
+        "inventory_status",
+        "quantity_selector",
+        "buy_buttons",
+        "8f7af4e6-5f36-4f3d-9d6a-936950e206f5",
+        "collapsible_row_7hFJ4m",
+        "collapsible_row_QG7HBt",
+        "collapsible_row_E6QiLt",
+        "9b5dffd0-7e18-4103-9862-407ea4cb64d6"
+      ],
+      "settings": {
+        "media_to_content_ratio": "50-50",
+        "fixed_content_width": "40",
+        "img_ratio": "square",
+        "img_ratio_resize": "fill",
+        "layout": "thumbnails-left",
+        "space_between_cards": "s",
+        "thumbnails_size": 96,
+        "mobile_layout": "slideshow-linear",
+        "space_between_cards_mobile": "xs",
+        "navigation_dots_style": "white_with_bg",
+        "show_variant_media_by_featured_order": true,
+        "show_only_selected_variants": false,
+        "enable_image_zoom": true,
+        "enable_video_autoplay": false,
+        "enable_video_controls": false,
+        "enable_video_looping": false,
+        "scale_video": true,
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "default",
+        "show_background": true,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxs",
+        "section_spacing_bottom": "l",
+        "section_spacing_top_mobile": "xxs",
+        "section_spacing_bottom_mobile": "xxs"
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "blocks": {
+        "f482ccb7-cfe0-4aa6-84e7-a04b1596a7ed": {
+          "type": "column_with_icon",
+          "settings": {
+            "icon_type": "preset",
+            "icon": "fast-delivery",
+            "icon_size": 52,
+            "title": "GRATIS FRAGT OVER 599,-",
+            "text": "",
+            "link_text": "",
+            "link_url": "",
+            "btn_style": "link"
+          }
+        },
+        "3d89f66b-4141-401f-91d2-de01817a8d3f": {
+          "type": "column_with_icon",
+          "settings": {
+            "icon_type": "preset",
+            "icon": "secure-payment",
+            "icon_size": 52,
+            "title": "SIKKER BETALING",
+            "text": "",
+            "link_text": "",
+            "link_url": "",
+            "btn_style": "link"
+          }
+        },
+        "ab88d7a4-d89e-4607-b1eb-07770d91c3f0": {
+          "type": "column_with_icon",
+          "settings": {
+            "icon_type": "preset",
+            "icon": "star-outline",
+            "icon_size": 52,
+            "title": "DANSK BRAND",
+            "text": "",
+            "link_text": "",
+            "link_url": "",
+            "btn_style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "f482ccb7-cfe0-4aa6-84e7-a04b1596a7ed",
+        "3d89f66b-4141-401f-91d2-de01817a8d3f",
+        "ab88d7a4-d89e-4607-b1eb-07770d91c3f0"
+      ],
+      "settings": {
+        "desktop_layout": "grid",
+        "mobile_layout": "slideshow",
+        "desktop_columns": 3,
+        "space_between_cards": "m",
+        "space_between_cards_mobile": "m",
+        "title": "",
+        "heading_size": "h7",
+        "text": "",
+        "body_size": "body4",
+        "content_alignment": "center",
+        "column_heading_size": "h7",
+        "column_body_size": "body4",
+        "column_alignment": "center",
+        "content_spacing": "m",
+        "show_column_background": false,
+        "btn_text": "",
+        "btn_url": "",
+        "btn_style": "outline",
+        "autoplay_mode": "disabled",
+        "autoplay_interval": 3,
+        "show_navigation_on_hover": true,
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "default",
+        "show_background": true,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "m",
+        "section_spacing_bottom": "xxxxl"
+      }
+    },
+    "image_scroller_y9VjtR": {
+      "type": "image-scroller",
+      "blocks": {
+        "slide_6QEM6D": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Slidstaerk_skal_i_aluminium-magnesium_2.jpg",
+            "subheading": "PRIMA KOLLEKTIONEN",
+            "heading": "Styrke i hver detalje",
+            "heading_size": "h2",
+            "body": "<p>Når du rejser, skal din kuffert kunne holde til mere end bare at se godt ud. Derfor er vores model udviklet med slidstærke materialer, en stabil rammekonstruktion og detaljer, der beskytter dine ejendele undervejs.</p>",
+            "body_size": "body3",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "primary"
+          }
+        },
+        "slide_pCzhYV": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Slidstaerk_skal_i_aluminium-magnesium_3.jpg",
+            "subheading": "PRIMA KOLLEKTIONEN",
+            "heading": "Justeret til din rejse",
+            "heading_size": "h2",
+            "body": "<p>Prima er udviklet med fokus på komfort i brug. Det trinløse teleskophåndtag giver en glidende justering og sikker lås, så kufferten føles naturlig at trække, uanset hvem der bruger den.</p>",
+            "body_size": "body3",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "primary"
+          }
+        },
+        "slide_3aMA3j": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Slidstaerk_skal_i_aluminium-magnesium_4.jpg",
+            "subheading": "PRIMA KOLLEKTIONEN",
+            "heading": "Mere flow på farten",
+            "heading_size": "h2",
+            "body": "<p>De 360° spinnerhjul gør det nemt at manøvrere kufferten gennem lufthavne, gader og terminaler. Resultatet er en mere glidende, stabil og ubesværet rejseoplevelse.</p>",
+            "body_size": "body3",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "slide_6QEM6D",
+        "slide_pCzhYV",
+        "slide_3aMA3j"
+      ],
+      "name": "t:sections.image_scroller.name",
+      "settings": {
+        "scroller_type": "scroll_text",
+        "image_position": "left",
+        "desktop_img_ratio": 1,
+        "mobile_img_ratio": 1,
+        "content_alignment": "left",
+        "content_paddings_size": "xl",
+        "rotate_images": false,
+        "container_size": "large",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "m",
+        "section_spacing_bottom": "xxxl"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "disabled": true,
+      "settings": {
+        "collection_list": [],
+        "desktop_layout": "carousel",
+        "mobile_layout": "carousel",
+        "desktop_columns": 3,
+        "mobile_columns": "2",
+        "space_between_cards": "s",
+        "space_between_cards_mobile": "l",
+        "title": "Always in focus",
+        "heading_size": "h5",
+        "alignment": "center",
+        "img_ratio": "square",
+        "text_style": "over-image",
+        "collection_card_heading_size": "h6",
+        "show_product_count": "caption",
+        "collection_card_content_align": "center",
+        "cards_color_scheme_variant": "default",
+        "cards_color_scheme": "",
+        "cards_title_color": "#ffffff",
+        "cards_overlay_color": "#000000",
+        "cards_overlay_opacity": 25,
+        "autoplay_mode": "disabled",
+        "autoplay_interval": 3,
+        "show_navigation_on_hover": true,
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "default",
+        "show_background": true,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "m",
+        "section_spacing_bottom": "m"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "product_recommendations_type": "auto",
+        "featured_collection": "",
+        "featured_products": [],
+        "desktop_layout": "carousel",
+        "mobile_layout": "carousel",
+        "cards_to_show": 18,
+        "desktop_columns": 4,
+        "mobile_columns": "2",
+        "space_between_cards": "s",
+        "space_between_cards_mobile": "l",
+        "title": "Du kan måske også lide",
+        "heading_size": "h3",
+        "alignment": "center",
+        "img_ratio": "portrait",
+        "img_ratio_resize": "fill",
+        "product_card_align": "left",
+        "autoplay_mode": "disabled",
+        "autoplay_interval": 3,
+        "show_navigation_on_hover": true,
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "default",
+        "show_background": true,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "m",
+        "section_spacing_bottom": "m"
+      }
+    },
+    "1774620534a459c597": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_P9wVkR": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_P9wVkR"
+      ],
+      "settings": {
+        "custom_liquid": "",
+        "container_size": "full-screen",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "l",
+        "section_spacing_bottom": "l"
+      }
+    },
+    "faq_qwt4tA": {
+      "type": "faq",
+      "blocks": {
+        "category_AVYgCj": {
+          "type": "category",
+          "settings": {
+            "title": "Produkt & kvalitet",
+            "category_heading_size": "h6",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24
+          }
+        },
+        "question_xD6QjJ": {
+          "type": "question",
+          "settings": {
+            "title": "Hvilket materiale er jeres kufferter lavet af?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Vores kufferter er fremstillet i aluminium eller ABS/PC med fokus på holdbarhed, stabilitet og et tidløst udtryk. Du kan se materialet på hver enkelt produktside.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_hLUdff": {
+          "type": "question",
+          "settings": {
+            "title": "Har I kufferter der er godkendt som håndbagage?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Vores cabin-modeller, også kaldet carry on, er designet med håndbagage i tankerne. Vi anbefaler dog altid, at du tjekker målene op mod det flyselskab, du rejser med, da reglerne kan variere.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_iCCEAU": {
+          "type": "question",
+          "settings": {
+            "title": "Har I kufferter med TSA lås?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vi har kufferter som er udstyret med en integreret TSA-lås, som gør den mere praktisk og sikker til rejser. Blandt andet vores Luma og Prima kollektioner har det - det vil også fremstå på produktsiderne</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_wRChJV": {
+          "type": "question",
+          "settings": {
+            "title": "Kan hjulene dreje 360 grader?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vores kufferter har primært 4 spinnerhjul, der kan dreje 360°, så de er let at manøvrere i alle retninger.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_YLnVBR": {
+          "type": "question",
+          "settings": {
+            "title": "Kan håndtaget justeres?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vores kufferter har justerbare håndtag, så de passer bedre til dig.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "category_NEEt94": {
+          "type": "category",
+          "settings": {
+            "title": "Levering, retur & garanti",
+            "category_heading_size": "h6",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24
+          }
+        },
+        "question_CiCCfx": {
+          "type": "question",
+          "settings": {
+            "title": "Hvor lang tid tager levering?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Den typisk estimerede leveringstid er 1-5 dage.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_xQBg74": {
+          "type": "question",
+          "settings": {
+            "title": "Hvad koster fragt?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Der er gratis fragt på ordre over 599kr. Fragtprisen afhænger af leveringsmetode og destination. Du kan altid se den endelige fragtpris, inden du gennemfører din ordre.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_LH8mJw": {
+          "type": "question",
+          "settings": {
+            "title": "Hvor lang returret har jeg?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Du har 30 dages returret på ubrugte varer i original emballage - kontakt os for at starte din returnering.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_KpPLaY": {
+          "type": "question",
+          "settings": {
+            "title": "Hvordan returnerer jeg min kuffert?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Hvis du ønsker at returnere din ordre, kan du kontakte os, så guider vi dig gennem returprocessen.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_BCYA8d": {
+          "type": "question",
+          "settings": {
+            "title": "Tilbyder I garanti?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vi står inde for kvaliteten af vores produkter. Eventuelle garantivilkår fremgår på produktsiden.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_7zMgMy": {
+          "type": "question",
+          "settings": {
+            "title": "Hvad gør jeg, hvis min kuffert ankommer med en fejl eller skade?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Kontakt os hurtigst muligt efter modtagelse med billeder og en kort beskrivelse, så hjælper vi dig videre.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "category_NXy4fR": {
+          "type": "category",
+          "settings": {
+            "title": "Bestilling & betaling",
+            "category_heading_size": "h6",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24
+          }
+        },
+        "question_wrCCPn": {
+          "type": "question",
+          "settings": {
+            "title": "Hvilke betalingsmetoder accepterer I?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Vi accepterer de mest almindelige betalingsmetoder inkl. MobilePay. De aktuelle muligheder vises ved checkout.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_DbQnfL": {
+          "type": "question",
+          "settings": {
+            "title": "Kan jeg ændre eller annullere min ordre?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Hvis din ordre endnu ikke er sendt, gør vi vores bedste for at hjælpe. Kontakt os hurtigst muligt efter bestilling.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_7fwrpC": {
+          "type": "question",
+          "settings": {
+            "title": "Sender I til udlandet?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Det afhænger af destinationen. Du kan se de tilgængelige leveringsmuligheder ved checkout eller kontakte os for at høre mere.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_EqhejR": {
+          "type": "question",
+          "settings": {
+            "title": "Får jeg tracking på min ordre?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, så snart din ordre er sendt, modtager du en tracking-mail, så du kan følge pakken.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_WinDXG": {
+          "type": "question",
+          "settings": {
+            "title": "Kan jeg kontakte jer, hvis jeg er i tvivl om, hvilken model jeg skal vælge?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, du er altid velkommen til at kontakte os, hvis du ønsker hjælp til at vælge den rette kuffert.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        }
+      },
+      "block_order": [
+        "category_AVYgCj",
+        "question_xD6QjJ",
+        "question_hLUdff",
+        "question_iCCEAU",
+        "question_wRChJV",
+        "question_YLnVBR",
+        "category_NEEt94",
+        "question_CiCCfx",
+        "question_xQBg74",
+        "question_LH8mJw",
+        "question_KpPLaY",
+        "question_BCYA8d",
+        "question_7zMgMy",
+        "category_NXy4fR",
+        "question_wrCCPn",
+        "question_DbQnfL",
+        "question_7fwrpC",
+        "question_EqhejR",
+        "question_WinDXG"
+      ],
+      "name": "t:sections.faq.name",
+      "settings": {
+        "section_layout": "bottom-tabs",
+        "color_tabs": "content_tabs_separately",
+        "expand_first_tab": false,
+        "title": "Ofte stillede spørgsmål",
+        "heading_size": "h5",
+        "text": "Få svar på de mest gængse spørgsmål",
+        "body_size": "body3",
+        "content_alignment": "center",
+        "btn_text": "",
+        "btn_url": "",
+        "btn_style": "primary",
+        "container_size": "xsmall",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxl",
+        "section_spacing_bottom": "xxl"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "multicolumn",
+    "image_scroller_y9VjtR",
+    "collection_list",
+    "product-recommendations",
+    "1774620534a459c597",
+    "faq_qwt4tA"
+  ]
+}

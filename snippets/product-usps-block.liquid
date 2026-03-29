@@ -1,0 +1,105 @@
+{%- liquid
+  assign s = block.settings
+  assign icon_px = s.icon_size | default: 24
+  assign text_class = s.text_size | default: 'body3'
+  assign heading = s.heading | strip
+  assign has_row = false
+  if s.usp_1_text != blank or s.usp_1_icon != blank or s.usp_2_text != blank or s.usp_2_icon != blank or s.usp_3_text != blank or s.usp_3_icon != blank or s.usp_4_text != blank or s.usp_4_icon != blank or s.usp_5_text != blank or s.usp_5_icon != blank or s.usp_6_text != blank or s.usp_6_icon != blank
+    assign has_row = true
+  endif
+-%}
+
+{% if has_row %}
+  <div
+    data-product-block='{{ block.id }}'
+    class='product-usps-block product-general-info-block block-{{ block.id }}'
+    style='--product-usp-icon-size: {{ icon_px }}px;'
+    {{ block.shopify_attributes }}
+  >
+    {% if heading != blank %}
+      <p class='product-usps__heading {{ s.heading_size | default: "caption2" }}'>{{ heading | escape }}</p>
+    {% endif %}
+    <ul class='product-usps__list' role='list'>
+      {% for i in (1..6) %}
+        {% liquid
+          case i
+            when 1
+              assign row_t = s.usp_1_text | strip
+              assign row_img = s.usp_1_icon
+            when 2
+              assign row_t = s.usp_2_text | strip
+              assign row_img = s.usp_2_icon
+            when 3
+              assign row_t = s.usp_3_text | strip
+              assign row_img = s.usp_3_icon
+            when 4
+              assign row_t = s.usp_4_text | strip
+              assign row_img = s.usp_4_icon
+            when 5
+              assign row_t = s.usp_5_text | strip
+              assign row_img = s.usp_5_icon
+            when 6
+              assign row_t = s.usp_6_text | strip
+              assign row_img = s.usp_6_icon
+          endcase
+        %}
+        {% if row_t != blank or row_img != blank %}
+          <li class='product-usps__item'>
+            {% if row_img != blank %}
+              <span
+                class='product-usps__icon-wrap'
+                aria-hidden='true'
+              >
+                {{ row_img | image_url: width: 96 | image_tag: loading: 'lazy', class: 'product-usps__icon-img', alt: '' }}
+              </span>
+            {% endif %}
+            {% if row_t != blank %}
+              <span class='product-usps__text body-color {{ text_class }}'>{{ row_t | escape }}</span>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .product-usps-block {
+    width: 100%;
+  }
+  .product-usps__heading {
+    margin: 0 0 0.75rem;
+    opacity: 0.85;
+  }
+  .product-usps__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .product-usps__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+  .product-usps__icon-wrap {
+    flex-shrink: 0;
+    width: var(--product-usp-icon-size, 24px);
+    height: var(--product-usp-icon-size, 24px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-usps__icon-img {
+    width: var(--product-usp-icon-size, 24px);
+    height: var(--product-usp-icon-size, 24px);
+    object-fit: contain;
+    display: block;
+  }
+  .product-usps__text {
+    flex: 1;
+    min-width: 0;
+  }
+{% endstylesheet %}

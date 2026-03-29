@@ -1,0 +1,140 @@
+{%- liquid
+  assign display_title = ''
+  assign title_option_pos = 0
+  if product != blank
+    assign display_title = product.title
+    if block.settings.append_primary_option_to_title != false and product.has_only_default_variant == false
+      assign names_src = settings.primary_option_name | strip
+      if names_src == blank
+        assign names_src = 'Farve,Color,Colour'
+      endif
+      assign primary_option_names = names_src | split: ','
+
+      for name in primary_option_names
+        assign name_striped = name | strip | downcase
+        if name_striped == blank
+          continue
+        endif
+        for option in product.options
+          assign opt_name_down = option.name | downcase | strip
+          if opt_name_down == name_striped
+            assign title_option_pos = option.position
+            break
+          endif
+        endfor
+        if title_option_pos != 0
+          break
+        endif
+      endfor
+
+      if title_option_pos == 0
+        for option in product.options
+          assign opt_name_down = option.name | downcase | strip
+          if opt_name_down == 'farve' or opt_name_down == 'color' or opt_name_down == 'colour'
+            assign title_option_pos = option.position
+            break
+          endif
+        endfor
+      endif
+
+      if title_option_pos == 0
+        assign first_opt = product.options | first
+        if first_opt != blank
+          assign fn = first_opt.name | downcase | strip
+          if fn contains 'farve' or fn contains 'color' or fn contains 'colour'
+            assign title_option_pos = first_opt.position
+          endif
+        endif
+      endif
+
+      assign sv = product.selected_variant
+      if sv == blank
+        assign sv = product.selected_or_first_available_variant
+      endif
+
+      if title_option_pos == 1 and sv.option1 != blank
+        assign display_title = product.title | append: ' - ' | append: sv.option1
+      elsif title_option_pos == 2 and sv.option2 != blank
+        assign display_title = product.title | append: ' - ' | append: sv.option2
+      elsif title_option_pos == 3 and sv.option3 != blank
+        assign display_title = product.title | append: ' - ' | append: sv.option3
+      endif
+    endif
+  endif
+-%}
+
+<div data-product-block='{{ block.id }}' class='product-general-info-block' {{ block.shopify_attributes }}>
+  {%- if sectionId contains 'MainSection' -%}
+    <h1
+      id='ProductTitleHeading-{{ block.id }}'
+      class='{{ block.settings.heading_size }}'
+      data-product-title-heading
+      data-title-option-pos='{{ title_option_pos }}'
+      data-title-base='{{ product.title | escape }}'
+    >
+      {%- if product != blank -%}
+        {{- display_title -}}
+      {%- else -%}
+        {{ 'product.store_front.default_title' | t }}
+      {%- endif -%}
+    </h1>
+    {%- if title_option_pos != 0 and product != blank -%}
+      <script>
+        (function () {
+          var pos = {{ title_option_pos }};
+          var base = {{ product.title | json }};
+          var heading = document.getElementById('ProductTitleHeading-{{ block.id }}');
+          if (!heading || !pos) return;
+          function readVariantFromPicker(root) {
+            var vp = root ? root.querySelector('variant-picker') : document.querySelector('variant-picker');
+            if (!vp) return null;
+            var el = vp.querySelector('[data-selected-variant-json]');
+            if (!el || !el.textContent) return null;
+            try {
+              return JSON.parse(el.textContent);
+            } catch (e) {
+              return null;
+            }
+          }
+          function sync() {
+            var v = readVariantFromPicker(heading.closest('product-info'));
+            if (!v) v = readVariantFromPicker(null);
+            if (!v) return;
+            var suffix = pos === 1 ? v.option1 : pos === 2 ? v.option2 : v.option3;
+            if (suffix) heading.textContent = base + ' - ' + suffix;
+          }
+          document.addEventListener('change', function () {
+            setTimeout(sync, 0);
+          }, true);
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', sync);
+          } else {
+            sync();
+          }
+          var root = heading.closest('product-info');
+          if (root) {
+            var obs = new MutationObserver(function () {
+              sync();
+            });
+            obs.observe(root, { childList: true, subtree: true });
+          }
+        })();
+      </script>
+    {%- endif -%}
+  {%- else -%}
+    <a
+      class='unstyled-link'
+      {% if product.url != blank %}
+        href='{{ product.url }}'
+      {% endif %}
+    >
+      <h3 class='{{ block.settings.heading_size }}'>
+        {%- if product != blank -%}
+          {{ display_title }}
+        {%- else -%}
+          {{ 'product.store_front.default_title' | t }}
+        {%- endif -%}
+      </h3>
+    </a>
+  {%- endif -%}
+</div>

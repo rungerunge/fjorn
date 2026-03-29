@@ -1,0 +1,16 @@
+<script>
+  try {
+    if (!window.auroraTheme) {
+      window.auroraTheme = {}
+    }
+
+    window.auroraTheme.themeSettings = {{ settings | json }}
+    window.auroraTheme.themeSettings.color_schemes = {}
+
+    {% for color_scheme in settings.color_schemes %}
+       window.auroraTheme.themeSettings.color_schemes[{{ color_scheme.id }}] = {{ color_scheme.settings | json  }}
+    {% endfor %}
+  } catch {
+
+  }
+</script>
