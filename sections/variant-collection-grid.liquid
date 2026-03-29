@@ -1,0 +1,983 @@
+{%- liquid
+  assign options = section.settings
+  assign color_scheme = settings.default_color_scheme
+  if options.color_scheme_variant == 'own'
+    assign color_scheme = options.color_scheme
+  endif
+
+  assign heading = options.heading
+  assign heading_size = options.heading_size
+  assign alignment = options.alignment
+  assign desktop_columns = options.desktop_columns
+  assign mobile_columns = options.mobile_columns
+  assign container_size = options.container_size
+  assign section_spacing_top = options.section_spacing_top
+  assign section_spacing_bottom = options.section_spacing_bottom
+  assign product_card_align = options.product_card_align
+
+  assign img_ratio = options.img_ratio
+  assign img_ratio_resize = options.img_ratio_resize
+  if img_ratio != 'default' and img_ratio_resize == 'fit'
+    assign img_ratio = img_ratio_resize | append: '-' | append: options.img_ratio
+  endif
+
+  assign show_background = options.show_background
+  assign color_container_background = false
+  if show_background == false and settings.default_color_scheme.settings.background != color_scheme.settings.background
+    assign color_container_background = true
+  endif
+
+  assign card_style = blank
+  if settings.show_background
+    assign card_style = 'solid'
+  endif
+
+  assign with_media_mix_mode = false
+  if settings.enable_product_darken_background and settings.darken_background_mix_mode != 'none'
+    assign with_media_mix_mode = true
+  endif
+
+  assign product_card_with_bottom_spacing = false
+  if settings.round_level != '0' or settings.primary_size_for_product_cards > 3
+    assign product_card_with_bottom_spacing = true
+  endif
+
+  assign enable_content_slide_in = settings.enable_content_slide_in
+
+  assign bundle_mode = options.enable_bundle
+  assign bundle_button_label = options.bundle_button_label | default: 'Læg i kurv'
+  assign bundle_button_style = options.bundle_button_style | default: 'primary'
+
+  assign has_steps = false
+  assign first_step_count = 1
+  if bundle_mode
+    for block in section.blocks
+      if block.type == 'step'
+        assign has_steps = true
+        if forloop.first
+          assign first_step_count = block.settings.count
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+{% capture css %}
+  {% style %}
+    .section-{{ section.id }} {
+      --gsc-space-between-cards: var(--gsc-gap-{{ options.space_between_cards_mobile }});
+      --gsc-columns: {{ mobile_columns }};
+      --gsc-section-spacing-top: var(--gsc-padding-block-{{ section_spacing_top }});
+      --gsc-section-spacing-bottom: var(--gsc-padding-block-{{ section_spacing_bottom }});
+    }
+    @media {% render 'media-queries', screen: 'md' %} {
+      .section-{{ section.id }} {
+        --gsc-space-between-cards: var(--gsc-gap-{{ options.space_between_cards }});
+        --gsc-columns: {{ desktop_columns }};
+      }
+    }
+
+    {% if bundle_mode %}
+      .bundle-{{ section.id }} .bundle-builder__steps {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+      .bundle-{{ section.id }} .bundle-builder__step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 12px 24px;
+        border: 1px solid var(--gsc-border-color-100);
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        font-family: var(--gsc-button-font-family);
+        font-style: var(--gsc-button-font-style);
+        font-weight: var(--gsc-button-font-weight);
+        letter-spacing: var(--gsc-button-letter-spacing);
+        text-transform: var(--gsc-button-text-transform);
+        font-size: var(--gsc-button-font-size);
+        line-height: var(--gsc-button-line-height);
+        color: var(--gsc-text-color-100);
+        border-radius: inherit;
+        min-width: 120px;
+      }
+      .bundle-{{ section.id }} .bundle-builder__step:hover {
+        background: var(--gsc-foreground-color-5);
+      }
+      .bundle-{{ section.id }} .bundle-builder__step--active {
+        background: var(--gsc-primary-button-bg-color);
+        color: var(--gsc-primary-button-text-color);
+        border-color: var(--gsc-primary-button-bg-color);
+      }
+      .bundle-{{ section.id }} .bundle-builder__step--active:hover {
+        background: var(--gsc-primary-button-bg-hover);
+      }
+      .bundle-{{ section.id }} .bundle-builder__step-label {
+        font-size: 0.85em;
+        opacity: 0.8;
+      }
+      .bundle-{{ section.id }} .bundle-builder__step-price {
+        font-size: 0.8em;
+        opacity: 0.7;
+      }
+      .bundle-{{ section.id }} .bundle-builder__status {
+        text-align: center;
+        margin-bottom: 24px;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.4rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-70);
+      }
+      .bundle-{{ section.id }} .bundle-builder__status-count {
+        font-weight: var(--gsc-headings-font-weight, 600);
+        color: var(--gsc-text-color-100);
+      }
+      .bundle-{{ section.id }} .bundle-builder__product-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .bundle-{{ section.id }} .bundle-builder__qty-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--gsc-border-color-100);
+        background: transparent;
+        color: var(--gsc-text-color-100);
+        font-size: 18px;
+        line-height: 1;
+        cursor: pointer;
+        transition: background 0.15s ease, opacity 0.15s ease;
+        border-radius: inherit;
+        padding: 0;
+        font-family: var(--gsc-body-font-family);
+      }
+      .bundle-{{ section.id }} .bundle-builder__qty-btn:hover:not(:disabled) {
+        background: var(--gsc-foreground-color-10);
+      }
+      .bundle-{{ section.id }} .bundle-builder__qty-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      .bundle-{{ section.id }} .bundle-builder__qty-count {
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.4rem * var(--gsc-body-font-scale));
+        font-weight: var(--gsc-headings-font-weight, 600);
+        color: var(--gsc-text-color-100);
+        min-width: 20px;
+        text-align: center;
+      }
+      .bundle-{{ section.id }} .bundle-builder__badge {
+        display: inline-block;
+        padding: 2px 8px;
+        font-family: var(--gsc-body-font-family);
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--gsc-primary-button-text-color);
+        background: var(--gsc-primary-button-bg-color);
+        border-radius: inherit;
+        margin-top: 4px;
+      }
+      .bundle-{{ section.id }} .bundle-builder__product-card--selected .product-card__inner {
+        box-shadow: 0 0 0 2px var(--gsc-primary-button-bg-color);
+        border-radius: inherit;
+      }
+      .bundle-{{ section.id }} .bundle-builder__cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 32px;
+        padding-top: 24px;
+      }
+      .bundle-{{ section.id }} .bundle-builder__add-to-cart {
+        min-width: 280px;
+      }
+      .bundle-{{ section.id }} .bundle-builder__add-to-cart.loading .bundle-builder__btn-text {
+        visibility: hidden;
+      }
+      .bundle-{{ section.id }} .bundle-builder__add-to-cart .loading-spinner {
+        display: none;
+      }
+      .bundle-{{ section.id }} .bundle-builder__add-to-cart.loading .loading-spinner {
+        display: block;
+      }
+      @media {% render 'media-queries', screen: 'md' %} {
+        .bundle-{{ section.id }} .bundle-builder__steps {
+          gap: 12px;
+          margin-bottom: 40px;
+        }
+        .bundle-{{ section.id }} .bundle-builder__step {
+          padding: 16px 32px;
+          min-width: 140px;
+        }
+        .bundle-{{ section.id }} .bundle-builder__cta {
+          margin-top: 48px;
+        }
+      }
+    {% endif %}
+  {% endstyle %}
+{% endcapture %}
+
+{% render 'inline-css-minifier', css: css %}
+
+<div class='collection {% if options.round_level != 'default' %}round-level-{{ options.round_level }}{% endif %} section section-{{ section.id }} color-{{ color_scheme }} spacing-block {% if options.add_mobile_side_paddings %}spacing-inline-mobile{% endif %} {% if options.add_desktop_side_paddings %}spacing-inline-desktop{% endif %} {% if color_container_background == false %}section-background{% endif %}'>
+  <div class='collection__container container container--{{ container_size }} {% if color_container_background %}container-background{% endif %}'>
+
+    {%- if heading != blank -%}
+      <div class='collection__header {% if color_container_background == false and options.add_desktop_side_paddings == false or options.add_mobile_side_paddings == false %}spacing-inline-header{% endif %} {% if alignment == 'center' %}collection__header--center{% elsif alignment == 'right' %}collection__header--right{% endif %} {% if enable_content_slide_in %}scroll-trigger animate--slide-in{% endif %}'
+        {% if enable_content_slide_in %}style='--gsc-animation-order: 1;'{% endif %}
+      >
+        <h2 class='collection__title {{ heading_size }}'>{{ heading }}</h2>
+      </div>
+    {%- endif -%}
+
+    {% if bundle_mode %}
+      <bundle-builder class='bundle-{{ section.id }}' data-section-id='{{ section.id }}'>
+    {% endif %}
+
+      {%- if bundle_mode and has_steps -%}
+        <div class='bundle-builder__steps'>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'step' -%}
+              <button
+                type='button'
+                class='bundle-builder__step {% if forloop.index == 1 %}bundle-builder__step--active{% endif %}'
+                data-bundle-step
+                data-bundle-step-count='{{ block.settings.count }}'
+                {{ block.shopify_attributes }}
+              >
+                <span class='bundle-builder__step-label'>{{ block.settings.label }}</span>
+                <span class='bundle-builder__step-price'>{{ block.settings.price_text }}</span>
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class='bundle-builder__status'>
+          Valgt: <span class='bundle-builder__status-count' data-bundle-counter>0 / {{ first_step_count }}</span>
+        </div>
+      {%- endif -%}
+
+      <div class='slider-grid'>
+        <div slider-grid-track class='slider-grid-track slider-grid__d-grid slider-grid__m-grid'>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'variant_card' -%}
+              {%- liquid
+                assign block_product = block.settings.product
+                assign block_variant_id = block.settings.variant_id | plus: 0
+                assign card_image = block.settings.custom_image
+                assign card_title = block.settings.custom_title
+                assign card_price_text = block.settings.custom_price
+                assign card_link = block.settings.custom_link
+                assign card_compare_price = blank
+                assign badge_text = block.settings.badge_text
+                assign found_variant = nil
+                assign variant_id_for_cart = blank
+
+                if block_product != blank and block_variant_id > 0
+                  for v in block_product.variants
+                    if v.id == block_variant_id
+                      assign found_variant = v
+                      break
+                    endif
+                  endfor
+                endif
+
+                if found_variant != blank
+                  assign variant_id_for_cart = found_variant.id
+
+                  if card_image == blank
+                    if found_variant.featured_image != blank
+                      assign card_image = found_variant.featured_image
+                    elsif block_product.featured_image != blank
+                      assign card_image = block_product.featured_image
+                    endif
+                  endif
+
+                  if card_title == blank
+                    if found_variant.title != 'Default Title'
+                      assign card_title = block_product.title | append: ' — ' | append: found_variant.title
+                    else
+                      assign card_title = block_product.title
+                    endif
+                  endif
+
+                  if card_price_text == blank
+                    if settings.show_currency_code
+                      assign card_price_text = found_variant.price | money_with_currency
+                    else
+                      assign card_price_text = found_variant.price | money
+                    endif
+                  endif
+
+                  if settings.show_compared_at_price and found_variant.compare_at_price > found_variant.price
+                    if settings.show_currency_code
+                      assign card_compare_price = found_variant.compare_at_price | money_with_currency
+                    else
+                      assign card_compare_price = found_variant.compare_at_price | money
+                    endif
+                  endif
+
+                  if card_link == blank
+                    assign card_link = block_product.url | append: '?variant=' | append: found_variant.id
+                  endif
+
+                elsif block_product != blank
+                  assign fallback_variant = block_product.selected_or_first_available_variant
+                  assign variant_id_for_cart = fallback_variant.id
+
+                  if card_image == blank and block_product.featured_image != blank
+                    assign card_image = block_product.featured_image
+                  endif
+
+                  if card_title == blank
+                    assign card_title = block_product.title
+                  endif
+
+                  if card_price_text == blank
+                    if settings.show_currency_code
+                      assign card_price_text = block_product.price | money_with_currency
+                    else
+                      assign card_price_text = block_product.price | money
+                    endif
+                    if block_product.price_varies
+                      assign card_price_text = 'cards.product_card.store_front.from_price_html' | t: price: card_price_text
+                    endif
+                  endif
+
+                  if settings.show_compared_at_price and block_product.compare_at_price > block_product.price
+                    assign card_compare_price = block_product.compare_at_price | money
+                  endif
+
+                  if card_link == blank
+                    assign card_link = block_product.url
+                  endif
+                endif
+              -%}
+
+              <div
+                class='slider-grid__slide {% if enable_content_slide_in %}scroll-trigger animate--slide-in{% endif %}'
+                {% if enable_content_slide_in %}style='--gsc-animation-order: {{ forloop.index }};'{% endif %}
+                slider-grid-slide
+                {{ block.shopify_attributes }}
+              >
+                <div class='
+                  product-card
+                  {% if bundle_mode %}bundle-builder__product-card{% endif %}
+                  {% if card_style %}product-card--{{ card_style }}{% endif %}
+                  {% if bundle_mode %}product-card--center-alignment{% else %}product-card--{{ product_card_align }}-alignment{% endif %}
+                  product-card--button-position-desktop-{{ settings.desktop_button_position }}
+                  product-card--button-position-mobile-{{ settings.mobile_button_position }}
+                  product-card--button-type-desktop-{{ settings.desktop_button_type }}
+                  product-card--button-type-mobile-{{ settings.mobile_button_type }}
+                '
+                  {% if bundle_mode and variant_id_for_cart != blank %}
+                    data-bundle-product
+                    data-variant-id='{{ variant_id_for_cart }}'
+                  {% endif %}
+                >
+                  <div
+                    class='product-card__inner shape shape--{{ img_ratio }} {% if img_ratio contains 'fit' %}shape--fit{% endif %}'
+                    data-product-card-inner
+                  >
+                    <div class='product-card__images-wrapper {% if with_media_mix_mode %}multiply-mode{% endif %}'>
+                      {%- unless bundle_mode -%}
+                        {%- if card_link != blank -%}
+                          <a class='product-card__link' href='{{ card_link }}' aria-label='{{ card_title | strip_html | escape }}'></a>
+                        {%- endif -%}
+                      {%- endunless -%}
+                      <div class='product-card__images'>
+                        {%- if card_image != blank -%}
+                          <img
+                            {% render 'image-attributes',
+                              image: card_image,
+                              size: 'product-card-image',
+                              is_multiply_target: with_media_mix_mode,
+                              class: 'product-card__img product-card__img--visible shape__target-image'
+                            %}
+                          >
+                        {%- else -%}
+                          {%- assign placeholder_class = 'placeholder-image product-card__img product-card__img--visible shape__target-image' -%}
+                          {{- 'product-4' | placeholder_svg_tag: placeholder_class -}}
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class='product-card__details {% if product_card_with_bottom_spacing %}product-card__details--bottom-spacing{% endif %}'>
+                    <div class='product-card__details-inner'>
+                      <div class='product-card__info'>
+                        {%- if card_title != blank -%}
+                          {%- if bundle_mode -%}
+                            <span class='product-card__title'>{{- card_title -}}</span>
+                          {%- else -%}
+                            <a
+                              class='product-card__title unstyled-link'
+                              {% if card_link != blank %}href='{{ card_link }}'{% endif %}
+                              aria-label='{{ card_title | strip_html | escape }}'
+                            >
+                              {{- card_title -}}
+                            </a>
+                          {%- endif -%}
+                        {%- endif -%}
+
+                        {%- if badge_text != blank -%}
+                          <span class='bundle-builder__badge'>{{ badge_text }}</span>
+                        {%- endif -%}
+
+                        {%- if card_price_text != blank and bundle_mode == false -%}
+                          <div class='product-card__price'>
+                            <div class='product-card__price-cost'>
+                              <div class='product-card__price-item {% if card_compare_price != blank and settings.product_card_highlight_sale_price %}product-card__price-item--highlight-sale{% endif %}'>
+                                {{- card_price_text -}}
+                              </div>
+                              {%- if card_compare_price != blank -%}
+                                <div class='product-card__price-item-old {% if settings.product_card_highlight_sale_price %}product-card__price-item-old--highlight-sale{% endif %}'>
+                                  {{- card_compare_price -}}
+                                </div>
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        {%- endif -%}
+
+                        {%- if bundle_mode -%}
+                          <div class='bundle-builder__product-controls'>
+                            <button type='button' class='bundle-builder__qty-btn' data-bundle-remove disabled aria-label='Fjern'>−</button>
+                            <span class='bundle-builder__qty-count' data-bundle-item-count>0</span>
+                            <button type='button' class='bundle-builder__qty-btn' data-bundle-add aria-label='Tilføj'>+</button>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- if bundle_mode -%}
+        <div class='bundle-builder__cta'>
+          <button
+            type='button'
+            class='btn btn--lg btn--{{ bundle_button_style }} bundle-builder__add-to-cart'
+            data-bundle-add-to-cart
+            disabled
+          >
+            <span class='bundle-builder__btn-text'>{{ bundle_button_label }}</span>
+            <div class='loading-spinner btn__loading-spinner'></div>
+          </button>
+        </div>
+      {%- endif -%}
+
+    {% if bundle_mode %}
+      </bundle-builder>
+    {% endif %}
+
+  </div>
+</div>
+
+{% render 'save-section-data-in-global-scope', section: section %}
+
+{% if bundle_mode %}
+<script>
+  if (!customElements.get('bundle-builder')) {
+    class BundleBuilder extends HTMLElement {
+      connectedCallback() {
+        this.selectedItems = {};
+        this.maxItems = parseInt(this.querySelector('[data-bundle-step]')?.dataset.bundleStepCount || '1');
+
+        this.stepButtons = this.querySelectorAll('[data-bundle-step]');
+        this.productCards = this.querySelectorAll('[data-bundle-product]');
+        this.addToCartBtn = this.querySelector('[data-bundle-add-to-cart]');
+        this.counterDisplay = this.querySelector('[data-bundle-counter]');
+
+        this.stepButtons.forEach((btn) => {
+          btn.addEventListener('click', () => this.selectStep(btn));
+        });
+
+        this.productCards.forEach((card) => {
+          card.querySelector('[data-bundle-add]')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.addItem(card);
+          });
+          card.querySelector('[data-bundle-remove]')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.removeItem(card);
+          });
+        });
+
+        this.addToCartBtn?.addEventListener('click', () => this.addToCart());
+        this.updateUI();
+      }
+
+      selectStep(btn) {
+        const newMax = parseInt(btn.dataset.bundleStepCount);
+        this.stepButtons.forEach((b) => b.classList.remove('bundle-builder__step--active'));
+        btn.classList.add('bundle-builder__step--active');
+        this.maxItems = newMax;
+
+        if (this.getTotalItems() > newMax) {
+          this.selectedItems = {};
+        }
+        this.updateUI();
+      }
+
+      addItem(card) {
+        if (this.getTotalItems() >= this.maxItems) return;
+        const vid = card.dataset.variantId;
+        this.selectedItems[vid] = (this.selectedItems[vid] || 0) + 1;
+        this.updateUI();
+      }
+
+      removeItem(card) {
+        const vid = card.dataset.variantId;
+        if (!this.selectedItems[vid] || this.selectedItems[vid] <= 0) return;
+        this.selectedItems[vid]--;
+        if (this.selectedItems[vid] === 0) delete this.selectedItems[vid];
+        this.updateUI();
+      }
+
+      getTotalItems() {
+        return Object.values(this.selectedItems).reduce((s, q) => s + q, 0);
+      }
+
+      updateUI() {
+        const total = this.getTotalItems();
+        const atMax = total >= this.maxItems;
+
+        if (this.counterDisplay) {
+          this.counterDisplay.textContent = total + ' / ' + this.maxItems;
+        }
+
+        this.productCards.forEach((card) => {
+          const vid = card.dataset.variantId;
+          const qty = this.selectedItems[vid] || 0;
+          const addBtn = card.querySelector('[data-bundle-add]');
+          const removeBtn = card.querySelector('[data-bundle-remove]');
+          const countEl = card.querySelector('[data-bundle-item-count]');
+
+          if (countEl) countEl.textContent = qty;
+          if (addBtn) addBtn.disabled = atMax;
+          if (removeBtn) removeBtn.disabled = qty <= 0;
+          card.classList.toggle('bundle-builder__product-card--selected', qty > 0);
+        });
+
+        if (this.addToCartBtn) {
+          this.addToCartBtn.disabled = total === 0;
+        }
+      }
+
+      async addToCart() {
+        const items = Object.entries(this.selectedItems)
+          .filter(([, qty]) => qty > 0)
+          .map(([id, quantity]) => ({ id: parseInt(id), quantity }));
+
+        if (items.length === 0) return;
+
+        this.addToCartBtn.disabled = true;
+        this.addToCartBtn.classList.add('loading');
+
+        try {
+          const res = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items }),
+          });
+
+          if (!res.ok) throw new Error('Cart error');
+
+          const cartRes = await fetch('/cart.js');
+          const cart = await cartRes.json();
+
+          document.querySelectorAll('[data-cart-count]').forEach((el) => {
+            el.textContent = cart.item_count;
+          });
+          document.dispatchEvent(new CustomEvent('cart:change', { detail: { cart } }));
+          document.dispatchEvent(new CustomEvent('cart:items-changed', { detail: { cart } }));
+
+          this.selectedItems = {};
+          this.updateUI();
+
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer && typeof cartDrawer.open === 'function') {
+            cartDrawer.open();
+          } else {
+            window.location.href = '/cart';
+          }
+        } catch (err) {
+          console.error('Bundle add-to-cart failed:', err);
+        } finally {
+          this.addToCartBtn.disabled = false;
+          this.addToCartBtn.classList.remove('loading');
+        }
+      }
+    }
+    customElements.define('bundle-builder', BundleBuilder);
+  }
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Variant Collection Grid",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Vores varianter",
+      "label": "Overskrift"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Overskrift størrelse",
+      "options": [
+        { "value": "display1", "label": "Display 1" },
+        { "value": "display2", "label": "Display 2" },
+        { "value": "display3", "label": "Display 3" },
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h5"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Overskrift justering",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Kolonner (desktop)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2",
+      "label": "Kolonner (mobil)"
+    },
+    {
+      "type": "select",
+      "id": "space_between_cards",
+      "options": [
+        { "value": "none", "label": "Ingen" },
+        { "value": "xxxs", "label": "XXX-Small" },
+        { "value": "xxs", "label": "XX-Small" },
+        { "value": "xs", "label": "X-Small" },
+        { "value": "s", "label": "Small" },
+        { "value": "m", "label": "Medium" },
+        { "value": "l", "label": "Large" }
+      ],
+      "default": "xs",
+      "label": "Afstand mellem kort (desktop)"
+    },
+    {
+      "type": "select",
+      "id": "space_between_cards_mobile",
+      "options": [
+        { "value": "none", "label": "Ingen" },
+        { "value": "xxs", "label": "XX-Small" },
+        { "value": "xs", "label": "X-Small" },
+        { "value": "m", "label": "Medium" },
+        { "value": "l", "label": "Large" }
+      ],
+      "default": "m",
+      "label": "Afstand mellem kort (mobil)"
+    },
+    {
+      "type": "header",
+      "content": "Kortindstillinger"
+    },
+    {
+      "type": "select",
+      "id": "img_ratio",
+      "options": [
+        { "value": "default", "label": "Standard" },
+        { "value": "square", "label": "Kvadratisk" },
+        { "value": "portrait", "label": "Portræt" },
+        { "value": "portrait-xl", "label": "Portræt XL" },
+        { "value": "landscape", "label": "Landskab" }
+      ],
+      "default": "default",
+      "label": "Billedformat"
+    },
+    {
+      "type": "select",
+      "id": "img_ratio_resize",
+      "options": [
+        { "value": "fill", "label": "Fyld" },
+        { "value": "fit", "label": "Tilpas" }
+      ],
+      "default": "fill",
+      "label": "Billedskalering",
+      "visible_if": "{{ section.settings.img_ratio != 'default' }}"
+    },
+    {
+      "type": "text_alignment",
+      "id": "product_card_align",
+      "label": "Tekstjustering i kort",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Bundle-tilstand"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bundle",
+      "default": false,
+      "label": "Aktiver bundle",
+      "info": "Aktiverer trinvælger, +/− knapper og \"Læg i kurv\". Tilføj Trin-blokke for at konfigurere trin og priser."
+    },
+    {
+      "type": "text",
+      "id": "bundle_button_label",
+      "default": "Læg i kurv",
+      "label": "Kurv-knaptekst",
+      "visible_if": "{{ section.settings.enable_bundle }}"
+    },
+    {
+      "type": "select",
+      "id": "bundle_button_style",
+      "options": [
+        { "value": "primary", "label": "Primær" },
+        { "value": "secondary", "label": "Sekundær" },
+        { "value": "tertiary", "label": "Tertiær" }
+      ],
+      "default": "primary",
+      "label": "Knapstil",
+      "visible_if": "{{ section.settings.enable_bundle }}"
+    },
+    {
+      "type": "header",
+      "content": "Udseende"
+    },
+    {
+      "type": "select",
+      "id": "container_size",
+      "options": [
+        { "value": "full-screen", "label": "Fuld bredde" },
+        { "value": "page-width", "label": "Sidebredde" },
+        { "value": "large", "label": "Stor" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "small", "label": "Lille" }
+      ],
+      "default": "page-width",
+      "label": "Containerbredde"
+    },
+    {
+      "type": "select",
+      "id": "round_level",
+      "options": [
+        { "value": "default", "label": "Standard" },
+        { "value": "0", "label": "0" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" }
+      ],
+      "default": "default",
+      "label": "Afrundingsniveau"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme_variant",
+      "options": [
+        { "value": "default", "label": "Standard" },
+        { "value": "own", "label": "Eget farveskema" }
+      ],
+      "default": "default",
+      "label": "Farveskema"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "2",
+      "label": "Farveskema",
+      "visible_if": "{{ section.settings.color_scheme_variant == 'own' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "default": false,
+      "label": "Vis baggrund omkring container",
+      "visible_if": "{{ section.settings.color_scheme_variant == 'own' and settings.default_color_scheme != section.settings.color_scheme }}"
+    },
+    {
+      "type": "header",
+      "content": "Afstande"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_desktop_side_paddings",
+      "default": true,
+      "label": "Sideafstand (desktop)"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_mobile_side_paddings",
+      "default": true,
+      "label": "Sideafstand (mobil)"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing_top",
+      "options": [
+        { "value": "none", "label": "Ingen" },
+        { "value": "xxxs", "label": "XXX-Small" },
+        { "value": "xxs", "label": "XX-Small" },
+        { "value": "xs", "label": "X-Small" },
+        { "value": "s", "label": "Small" },
+        { "value": "m", "label": "Medium" },
+        { "value": "l", "label": "Large" },
+        { "value": "xl", "label": "X-Large" },
+        { "value": "xxl", "label": "XX-Large" }
+      ],
+      "default": "l",
+      "label": "Topafstand"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing_bottom",
+      "options": [
+        { "value": "none", "label": "Ingen" },
+        { "value": "xxxs", "label": "XXX-Small" },
+        { "value": "xxs", "label": "XX-Small" },
+        { "value": "xs", "label": "X-Small" },
+        { "value": "s", "label": "Small" },
+        { "value": "m", "label": "Medium" },
+        { "value": "l", "label": "Large" },
+        { "value": "xl", "label": "X-Large" },
+        { "value": "xxl", "label": "XX-Large" }
+      ],
+      "default": "l",
+      "label": "Bundafstand"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "variant_card",
+      "name": "Variantkort",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Produkt & variant"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant-ID",
+          "info": "Find variant-ID'et i Shopify Admin under produktets varianter. Lad feltet stå tomt for at bruge standardvarianten."
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge-tekst",
+          "info": "Valgfri etiket, fx \"Til hende\" eller \"Bestseller\"."
+        },
+        {
+          "type": "header",
+          "content": "Manuel overstyring"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Brugerdefineret billede"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Brugerdefineret titel"
+        },
+        {
+          "type": "text",
+          "id": "custom_price",
+          "label": "Brugerdefineret pris",
+          "info": "Fx \"299 kr\". Vises kun uden bundle-tilstand."
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Brugerdefineret link",
+          "info": "Vises kun uden bundle-tilstand."
+        }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Trin (bundle)",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "range",
+          "id": "count",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 1,
+          "label": "Antal produkter"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "default": "1 parfume",
+          "label": "Trinlabel"
+        },
+        {
+          "type": "text",
+          "id": "price_text",
+          "default": "199 kr",
+          "label": "Prisvisning"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Variant Collection Grid",
+      "blocks": [
+        { "type": "variant_card" },
+        { "type": "variant_card" },
+        { "type": "variant_card" },
+        { "type": "variant_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
