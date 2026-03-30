@@ -326,20 +326,157 @@
     endif
   -%}
 
+  {%- liquid
+    assign sel_v = product.selected_or_first_available_variant
+    assign single_price_display = sel_v.price | money
+    assign single_compare_display = nil
+    if sel_v.compare_at_price > sel_v.price
+      assign single_compare_display = sel_v.compare_at_price | money
+    endif
+
+    assign lowest_tier_unit = block.settings.bundle_step_1_unit_price | default: 0
+    if block.settings.bundle_step_2_unit_price > 0
+      if block.settings.bundle_step_2_unit_price < lowest_tier_unit or lowest_tier_unit == 0
+        assign lowest_tier_unit = block.settings.bundle_step_2_unit_price
+      endif
+    endif
+    if block.settings.bundle_step_3_unit_price > 0
+      if block.settings.bundle_step_3_unit_price < lowest_tier_unit or lowest_tier_unit == 0
+        assign lowest_tier_unit = block.settings.bundle_step_3_unit_price
+      endif
+    endif
+    if block.settings.bundle_step_4_unit_price > 0
+      if block.settings.bundle_step_4_unit_price < lowest_tier_unit or lowest_tier_unit == 0
+        assign lowest_tier_unit = block.settings.bundle_step_4_unit_price
+      endif
+    endif
+
+    assign pack_sublabel = block.settings.bundle_pack_sublabel
+    if pack_sublabel == blank and lowest_tier_unit > 0
+      assign pack_sublabel = 'Helt ned til ' | append: lowest_tier_unit | append: ' kr per stk'
+    endif
+
+    assign selector_heading = block.settings.bundle_selector_heading | default: 'Køb mere, spar mere'
+    assign single_label = block.settings.bundle_single_label | default: '1 stk'
+    assign single_sublabel = block.settings.bundle_single_sublabel | default: 'Standard pris'
+    assign pack_label = block.settings.bundle_pack_label | default: 'Pakkepris'
+    assign pack_badge = block.settings.bundle_pack_badge
+  -%}
+
   {% capture bundle_css %}
     {% style %}
-      .block-{{ block.id }} [option-picker-name="{{ bundle_primary_name }}"] { display: none !important; }
+      /* Color option picker hidden via JS in bundle mode */
 
-      .bpk-{{ block.id }} { margin-top: 8px; }
-      .bpk-{{ block.id }} .bpk__heading {
+      .bpk-{{ block.id }} { margin-top: 12px; }
+
+      /* ── Mode selector ── */
+      .bpk-{{ block.id }} .bpk__ms-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+        font-family: var(--gsc-headings-font-family);
+        font-weight: var(--gsc-headings-font-weight, 600);
+        font-size: calc(1.35rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-100);
+        text-align: center;
+      }
+      .bpk-{{ block.id }} .bpk__ms-heading::before,
+      .bpk-{{ block.id }} .bpk__ms-heading::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--gsc-text-color-100);
+      }
+      .bpk-{{ block.id }} .bpk__ms-cards { display: flex; flex-direction: column; gap: 8px; }
+      .bpk-{{ block.id }} .bpk__ms-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        background: var(--gsc-foreground-color-5);
+        border: 2px solid transparent;
+        border-radius: var(--gsc-card-border-radius, 8px);
+        cursor: pointer;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .bpk-{{ block.id }} .bpk__ms-card:hover { border-color: var(--gsc-border-color-100); }
+      .bpk-{{ block.id }} .bpk__ms-card--active {
+        border-color: var(--gsc-primary-button-bg-color);
+        box-shadow: 0 0 0 1px var(--gsc-primary-button-bg-color);
+      }
+      .bpk-{{ block.id }} .bpk__ms-card input[type="radio"] { display: none; }
+      .bpk-{{ block.id }} .bpk__ms-radio {
+        width: 20px; height: 20px; flex-shrink: 0;
+        border-radius: 50%;
+        border: 2px solid var(--gsc-border-color-100);
+        background: var(--gsc-background-color, #fff);
+        position: relative;
+        transition: border-color 0.2s;
+      }
+      .bpk-{{ block.id }} .bpk__ms-card--active .bpk__ms-radio {
+        border-color: var(--gsc-primary-button-bg-color);
+      }
+      .bpk-{{ block.id }} .bpk__ms-card--active .bpk__ms-radio::after {
+        content: '';
+        position: absolute;
+        top: 3px; left: 3px; right: 3px; bottom: 3px;
+        border-radius: 50%;
+        background: var(--gsc-primary-button-bg-color);
+      }
+      .bpk-{{ block.id }} .bpk__ms-info { flex: 1; min-width: 0; }
+      .bpk-{{ block.id }} .bpk__ms-label {
+        display: block;
+        font-family: var(--gsc-headings-font-family);
+        font-weight: var(--gsc-headings-font-weight, 600);
+        font-size: calc(1.4rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-100);
+        line-height: 1.3;
+      }
+      .bpk-{{ block.id }} .bpk__ms-sub {
+        display: block;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.1rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-70);
+        margin-top: 1px;
+      }
+      .bpk-{{ block.id }} .bpk__ms-prices { text-align: right; flex-shrink: 0; }
+      .bpk-{{ block.id }} .bpk__ms-price {
+        display: block;
         font-family: var(--gsc-headings-font-family);
         font-weight: var(--gsc-headings-font-weight, 600);
         font-size: calc(1.5rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-100);
-        margin-bottom: 12px;
+        line-height: 1.2;
+      }
+      .bpk-{{ block.id }} .bpk__ms-compare {
+        display: block;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.1rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-70);
+        text-decoration: line-through;
+        margin-top: 1px;
+      }
+      .bpk-{{ block.id }} .bpk__ms-badge {
+        position: absolute;
+        top: -8px; right: 12px;
+        padding: 3px 10px;
+        font-family: var(--gsc-body-font-family);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gsc-primary-button-text-color);
+        background: var(--gsc-primary-button-bg-color);
+        border-radius: 4px;
+        line-height: 1.5;
+        white-space: nowrap;
       }
 
-      /* ── Step slider (read-only, auto-progresses) ── */
+      /* ── Bundle content (hidden in single mode) ── */
+      .bpk-{{ block.id }} .bpk__bundle-content { display: none; margin-top: 16px; }
+      .bpk-{{ block.id }}[data-mode="bundle"] .bpk__bundle-content { display: block; }
+
+      /* ── Step slider ── */
       .bpk-{{ block.id }} .bpk__slider {
         background: var(--gsc-foreground-color-5);
         border-radius: var(--gsc-card-border-radius, 8px);
@@ -347,43 +484,27 @@
         margin-bottom: 16px;
       }
       .bpk-{{ block.id }} .bpk__slider-track {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 6px;
+        position: relative; display: flex; align-items: center;
+        justify-content: space-between; margin-bottom: 6px;
       }
       .bpk-{{ block.id }} .bpk__slider-track::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0; right: 0;
-        height: 2px;
-        background: var(--gsc-border-color-100);
-        transform: translateY(-50%);
-        z-index: 0;
+        content: ''; position: absolute; top: 50%; left: 0; right: 0;
+        height: 2px; background: var(--gsc-border-color-100);
+        transform: translateY(-50%); z-index: 0;
       }
       .bpk-{{ block.id }} .bpk__slider-fill {
-        position: absolute;
-        top: 50%; left: 0;
-        height: 2px;
+        position: absolute; top: 50%; left: 0; height: 2px;
         background: var(--gsc-primary-button-bg-color);
-        transform: translateY(-50%);
-        z-index: 1;
-        transition: width 0.35s ease;
+        transform: translateY(-50%); z-index: 1; transition: width 0.35s ease;
       }
       .bpk-{{ block.id }} .bpk__slider-dot-wrap {
-        position: relative;
-        z-index: 2;
-        flex: 1;
-        display: flex;
-        justify-content: center;
+        position: relative; z-index: 2; flex: 1;
+        display: flex; justify-content: center;
       }
       .bpk-{{ block.id }} .bpk__slider-dot-wrap:first-child { justify-content: flex-start; }
       .bpk-{{ block.id }} .bpk__slider-dot-wrap:last-child { justify-content: flex-end; }
       .bpk-{{ block.id }} .bpk__slider-dot {
-        width: 18px; height: 18px;
-        border-radius: 50%;
+        width: 18px; height: 18px; border-radius: 50%;
         border: 2px solid var(--gsc-border-color-100);
         background: var(--gsc-background-color, #fff);
         transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
@@ -397,27 +518,19 @@
         background: var(--gsc-primary-button-bg-color);
         box-shadow: 0 0 0 3px var(--gsc-background-color, #fff), 0 0 0 5px var(--gsc-primary-button-bg-color);
       }
-      .bpk-{{ block.id }} .bpk__slider-labels {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 4px;
-      }
+      .bpk-{{ block.id }} .bpk__slider-labels { display: flex; justify-content: space-between; margin-top: 4px; }
       .bpk-{{ block.id }} .bpk__slider-label-group { flex: 1; text-align: center; }
       .bpk-{{ block.id }} .bpk__slider-label-group:first-child { text-align: left; }
       .bpk-{{ block.id }} .bpk__slider-label-group:last-child { text-align: right; }
       .bpk-{{ block.id }} .bpk__slider-label {
-        display: block;
-        font-family: var(--gsc-body-font-family);
+        display: block; font-family: var(--gsc-body-font-family);
         font-size: calc(1.2rem * var(--gsc-body-font-scale));
-        font-weight: var(--gsc-headings-font-weight, 600);
-        color: var(--gsc-text-color-100);
+        font-weight: var(--gsc-headings-font-weight, 600); color: var(--gsc-text-color-100);
       }
       .bpk-{{ block.id }} .bpk__slider-price {
-        display: block;
-        font-family: var(--gsc-body-font-family);
+        display: block; font-family: var(--gsc-body-font-family);
         font-size: calc(1.1rem * var(--gsc-body-font-scale));
-        color: var(--gsc-text-color-70);
-        margin-top: 1px;
+        color: var(--gsc-text-color-70); margin-top: 1px;
       }
 
       /* ── Product list ── */
@@ -425,8 +538,7 @@
       .bpk-{{ block.id }} .bpk__item {
         display: flex; align-items: center; gap: 12px; padding: 10px;
         background: var(--gsc-foreground-color-5);
-        border-radius: var(--gsc-card-border-radius, 8px);
-        transition: box-shadow 0.2s;
+        border-radius: var(--gsc-card-border-radius, 8px); transition: box-shadow 0.2s;
       }
       .bpk-{{ block.id }} .bpk__item[hidden] { display: none; }
       .bpk-{{ block.id }} .bpk__item--selected { box-shadow: inset 0 0 0 2px var(--gsc-primary-button-bg-color); }
@@ -442,8 +554,7 @@
         font-family: var(--gsc-headings-font-family);
         font-weight: var(--gsc-headings-font-weight, 600);
         font-size: calc(1.35rem * var(--gsc-body-font-scale));
-        color: var(--gsc-text-color-100);
-        display: block; line-height: 1.3;
+        color: var(--gsc-text-color-100); display: block; line-height: 1.3;
       }
       .bpk-{{ block.id }} .bpk__item-tag {
         display: inline-block; padding: 1px 6px;
@@ -458,8 +569,7 @@
       }
       .bpk-{{ block.id }} .bpk__item-action { flex-shrink: 0; }
       .bpk-{{ block.id }} .bpk__item-add {
-        display: inline-flex; align-items: center; gap: 4px;
-        padding: 8px 14px;
+        display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px;
         font-family: var(--gsc-button-font-family); font-weight: var(--gsc-button-font-weight);
         font-size: calc(var(--gsc-button-font-size) * 0.85);
         letter-spacing: var(--gsc-button-letter-spacing);
@@ -504,127 +614,162 @@
   {% endcapture %}
   {% render 'inline-css-minifier', css: bundle_css %}
 
-  <bundle-variant-picker class='bpk-{{ block.id }}' data-block-id='{{ block.id }}' data-primary-option-position='{{ bundle_primary_pos }}' data-section-id='{{ sectionId }}'>
+  <bundle-variant-picker class='bpk-{{ block.id }}' data-block-id='{{ block.id }}' data-primary-option-position='{{ bundle_primary_pos }}' data-primary-option-name='{{ bundle_primary_name | escape }}' data-section-id='{{ sectionId }}' data-mode='single'>
 
-    <p class='bpk__heading'>Byg din egen pakke:</p>
-
-    {%- if step_count > 0 -%}
-      <div class='bpk__slider'>
-        <div class='bpk__slider-track'>
-          <div class='bpk__slider-fill' data-slider-fill style='width: 0%;'></div>
-          {%- if block.settings.bundle_step_1_label != blank -%}
-            <div class='bpk__slider-dot-wrap'>
-              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_1_count }}' data-tier-index='0'></span>
-            </div>
-          {%- endif -%}
-          {%- if block.settings.bundle_step_2_label != blank -%}
-            <div class='bpk__slider-dot-wrap'>
-              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_2_count }}' data-tier-index='1'></span>
-            </div>
-          {%- endif -%}
-          {%- if block.settings.bundle_step_3_label != blank -%}
-            <div class='bpk__slider-dot-wrap'>
-              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_3_count }}' data-tier-index='2'></span>
-            </div>
-          {%- endif -%}
-          {%- if block.settings.bundle_step_4_label != blank -%}
-            <div class='bpk__slider-dot-wrap'>
-              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_4_count }}' data-tier-index='3'></span>
-            </div>
-          {%- endif -%}
+    <!-- ── Mode selector ── -->
+    <div class='bpk__ms-heading'>{{ selector_heading }}</div>
+    <div class='bpk__ms-cards'>
+      <label class='bpk__ms-card bpk__ms-card--active' data-mode-card='single'>
+        <input type='radio' name='bundle-mode-{{ block.id }}' value='single' checked data-bundle-mode-input>
+        <span class='bpk__ms-radio'></span>
+        <div class='bpk__ms-info'>
+          <span class='bpk__ms-label'>{{ single_label }}</span>
+          <span class='bpk__ms-sub'>{{ single_sublabel }}</span>
         </div>
-        <div class='bpk__slider-labels'>
-          {%- if block.settings.bundle_step_1_label != blank -%}
-            <div class='bpk__slider-label-group'>
-              <span class='bpk__slider-label'>{{ block.settings.bundle_step_1_label }}</span>
-              {%- if block.settings.bundle_step_1_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_1_price }}</span>{%- endif -%}
-            </div>
-          {%- endif -%}
-          {%- if block.settings.bundle_step_2_label != blank -%}
-            <div class='bpk__slider-label-group'>
-              <span class='bpk__slider-label'>{{ block.settings.bundle_step_2_label }}</span>
-              {%- if block.settings.bundle_step_2_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_2_price }}</span>{%- endif -%}
-            </div>
-          {%- endif -%}
-          {%- if block.settings.bundle_step_3_label != blank -%}
-            <div class='bpk__slider-label-group'>
-              <span class='bpk__slider-label'>{{ block.settings.bundle_step_3_label }}</span>
-              {%- if block.settings.bundle_step_3_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_3_price }}</span>{%- endif -%}
-            </div>
-          {%- endif -%}
-          {%- if block.settings.bundle_step_4_label != blank -%}
-            <div class='bpk__slider-label-group'>
-              <span class='bpk__slider-label'>{{ block.settings.bundle_step_4_label }}</span>
-              {%- if block.settings.bundle_step_4_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_4_price }}</span>{%- endif -%}
-            </div>
-          {%- endif -%}
+        <div class='bpk__ms-prices'>
+          <span class='bpk__ms-price' data-ms-single-price>{{ single_price_display }}</span>
+          {%- if single_compare_display -%}<span class='bpk__ms-compare'>{{ single_compare_display }}</span>{%- endif -%}
         </div>
-      </div>
-    {%- endif -%}
+      </label>
 
-    <div class='bpk__list' data-bundle-list>
-      {%- for v in product.variants -%}
-        {%- liquid
-          assign v_image = v.featured_image | default: product.featured_image
-          assign v_primary_label = v.option1
-          case bundle_primary_pos
-            when 2
-              assign v_primary_label = v.option2
-            when 3
-              assign v_primary_label = v.option3
-          endcase
-        -%}
-        <div
-          class='bpk__item {% unless v.available %}bpk__item--unavailable{% endunless %}'
-          data-bundle-product
-          data-variant-id='{{ v.id }}'
-          data-option1='{{ v.option1 | escape }}'
-          {% if v.option2 %}data-option2='{{ v.option2 | escape }}'{% endif %}
-          {% if v.option3 %}data-option3='{{ v.option3 | escape }}'{% endif %}
-        >
-          <div class='bpk__item-img'>
-            {%- if v_image != blank -%}
-              <img src='{{ v_image | image_url: width: 200 }}' alt='{{ v_primary_label | escape }}' width='72' height='72' loading='lazy'>
-            {%- else -%}
-              {{ 'product-4' | placeholder_svg_tag: 'placeholder-image' }}
+      <label class='bpk__ms-card' data-mode-card='bundle'>
+        {%- if pack_badge != blank -%}<span class='bpk__ms-badge'>{{ pack_badge }}</span>{%- endif -%}
+        <input type='radio' name='bundle-mode-{{ block.id }}' value='bundle' data-bundle-mode-input>
+        <span class='bpk__ms-radio'></span>
+        <div class='bpk__ms-info'>
+          <span class='bpk__ms-label'>{{ pack_label }}</span>
+          {%- if pack_sublabel != blank -%}<span class='bpk__ms-sub'>{{ pack_sublabel }}</span>{%- endif -%}
+        </div>
+        <div class='bpk__ms-prices'>
+          {%- if lowest_tier_unit > 0 -%}
+            <span class='bpk__ms-price'>{{ lowest_tier_unit | times: 100 | money }}</span>
+          {%- endif -%}
+          {%- if single_compare_display -%}<span class='bpk__ms-compare'>{{ single_compare_display }}</span>{%- endif -%}
+        </div>
+      </label>
+    </div>
+
+    <!-- ── Bundle content (shown when "bundle" is selected) ── -->
+    <div class='bpk__bundle-content' data-bundle-content>
+
+      {%- if step_count > 0 -%}
+        <div class='bpk__slider'>
+          <div class='bpk__slider-track'>
+            <div class='bpk__slider-fill' data-slider-fill style='width: 0%;'></div>
+            {%- if block.settings.bundle_step_1_label != blank -%}
+              <div class='bpk__slider-dot-wrap'>
+                <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_1_count }}' data-tier-index='0'></span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.bundle_step_2_label != blank -%}
+              <div class='bpk__slider-dot-wrap'>
+                <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_2_count }}' data-tier-index='1'></span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.bundle_step_3_label != blank -%}
+              <div class='bpk__slider-dot-wrap'>
+                <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_3_count }}' data-tier-index='2'></span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.bundle_step_4_label != blank -%}
+              <div class='bpk__slider-dot-wrap'>
+                <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_4_count }}' data-tier-index='3'></span>
+              </div>
             {%- endif -%}
           </div>
-          <div class='bpk__item-info'>
-            <span class='bpk__item-name'>{{ v_primary_label }}</span>
-            {%- for opt in product.options -%}
-              {%- assign opt_pos = forloop.index -%}
-              {%- if opt_pos != bundle_primary_pos -%}
-                {%- case opt_pos -%}
-                  {%- when 1 -%}<span class='bpk__item-tag'>{{ v.option1 }}</span>
-                  {%- when 2 -%}<span class='bpk__item-tag'>{{ v.option2 }}</span>
-                  {%- when 3 -%}<span class='bpk__item-tag'>{{ v.option3 }}</span>
-                {%- endcase -%}
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-          <div class='bpk__item-action'>
-            <button type='button' class='bpk__item-add' data-bundle-add-one aria-label='Tilføj'>Tilføj +</button>
-            <div class='bpk__item-qty' style='display:none;' data-bundle-qty-wrap>
-              <button type='button' class='bpk__qty-btn' data-bundle-remove aria-label='Fjern'>−</button>
-              <span class='bpk__qty-count' data-bundle-item-count>0</span>
-              <button type='button' class='bpk__qty-btn' data-bundle-add aria-label='Tilføj'>+</button>
-            </div>
+          <div class='bpk__slider-labels'>
+            {%- if block.settings.bundle_step_1_label != blank -%}
+              <div class='bpk__slider-label-group'>
+                <span class='bpk__slider-label'>{{ block.settings.bundle_step_1_label }}</span>
+                {%- if block.settings.bundle_step_1_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_1_price }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.bundle_step_2_label != blank -%}
+              <div class='bpk__slider-label-group'>
+                <span class='bpk__slider-label'>{{ block.settings.bundle_step_2_label }}</span>
+                {%- if block.settings.bundle_step_2_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_2_price }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.bundle_step_3_label != blank -%}
+              <div class='bpk__slider-label-group'>
+                <span class='bpk__slider-label'>{{ block.settings.bundle_step_3_label }}</span>
+                {%- if block.settings.bundle_step_3_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_3_price }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.bundle_step_4_label != blank -%}
+              <div class='bpk__slider-label-group'>
+                <span class='bpk__slider-label'>{{ block.settings.bundle_step_4_label }}</span>
+                {%- if block.settings.bundle_step_4_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_4_price }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
           </div>
         </div>
-      {%- endfor -%}
-    </div>
+      {%- endif -%}
 
-    <div class='bpk__pricing' data-bundle-pricing style='display:none;'>
-      <div class='bpk__price-detail' data-bundle-price-detail></div>
-      <div class='bpk__price-total' data-bundle-price-total></div>
-      <div class='bpk__price-save' data-bundle-price-save></div>
-    </div>
+      <div class='bpk__list' data-bundle-list>
+        {%- for v in product.variants -%}
+          {%- liquid
+            assign v_image = v.featured_image | default: product.featured_image
+            assign v_primary_label = v.option1
+            case bundle_primary_pos
+              when 2
+                assign v_primary_label = v.option2
+              when 3
+                assign v_primary_label = v.option3
+            endcase
+          -%}
+          <div
+            class='bpk__item {% unless v.available %}bpk__item--unavailable{% endunless %}'
+            data-bundle-product
+            data-variant-id='{{ v.id }}'
+            data-option1='{{ v.option1 | escape }}'
+            {% if v.option2 %}data-option2='{{ v.option2 | escape }}'{% endif %}
+            {% if v.option3 %}data-option3='{{ v.option3 | escape }}'{% endif %}
+          >
+            <div class='bpk__item-img'>
+              {%- if v_image != blank -%}
+                <img src='{{ v_image | image_url: width: 200 }}' alt='{{ v_primary_label | escape }}' width='72' height='72' loading='lazy'>
+              {%- else -%}
+                {{ 'product-4' | placeholder_svg_tag: 'placeholder-image' }}
+              {%- endif -%}
+            </div>
+            <div class='bpk__item-info'>
+              <span class='bpk__item-name'>{{ v_primary_label }}</span>
+              {%- for opt in product.options -%}
+                {%- assign opt_pos = forloop.index -%}
+                {%- if opt_pos != bundle_primary_pos -%}
+                  {%- case opt_pos -%}
+                    {%- when 1 -%}<span class='bpk__item-tag'>{{ v.option1 }}</span>
+                    {%- when 2 -%}<span class='bpk__item-tag'>{{ v.option2 }}</span>
+                    {%- when 3 -%}<span class='bpk__item-tag'>{{ v.option3 }}</span>
+                  {%- endcase -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <div class='bpk__item-action'>
+              <button type='button' class='bpk__item-add' data-bundle-add-one aria-label='Tilføj'>Tilføj +</button>
+              <div class='bpk__item-qty' style='display:none;' data-bundle-qty-wrap>
+                <button type='button' class='bpk__qty-btn' data-bundle-remove aria-label='Fjern'>−</button>
+                <span class='bpk__qty-count' data-bundle-item-count>0</span>
+                <button type='button' class='bpk__qty-btn' data-bundle-add aria-label='Tilføj'>+</button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
 
-    <div class='bpk__cta'>
-      <button type='button' class='btn btn--md btn--{{ bundle_btn_style }} bpk__add-to-cart' data-bundle-add-to-cart disabled>
-        <span class='bpk__btn-text'>{{ bundle_btn_label }}</span>
-        <div class='loading-spinner btn__loading-spinner'></div>
-      </button>
+      <div class='bpk__pricing' data-bundle-pricing style='display:none;'>
+        <div class='bpk__price-detail' data-bundle-price-detail></div>
+        <div class='bpk__price-total' data-bundle-price-total></div>
+        <div class='bpk__price-save' data-bundle-price-save></div>
+      </div>
+
+      <div class='bpk__cta'>
+        <button type='button' class='btn btn--md btn--{{ bundle_btn_style }} bpk__add-to-cart' data-bundle-add-to-cart disabled>
+          <span class='bpk__btn-text'>{{ bundle_btn_label }}</span>
+          <div class='loading-spinner btn__loading-spinner'></div>
+        </button>
+      </div>
     </div>
 
     <script type='application/json' data-bundle-tiers>
@@ -662,8 +807,16 @@
 
           this.tiers = JSON.parse(this.querySelector('[data-bundle-tiers]')?.textContent || '[]');
           this.tiers.sort((a, b) => a.count - b.count);
-
           this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
+
+          this.modeCards = this.querySelectorAll('[data-mode-card]');
+          this.modeInputs = this.querySelectorAll('[data-bundle-mode-input]');
+          this.productForm = this.closest('.product__info')?.querySelector('product-form')
+            || document.querySelector('product-form');
+
+          this.modeInputs.forEach(input => {
+            input.addEventListener('change', () => this.setMode(input.value));
+          });
 
           this.items.forEach(item => {
             item.querySelector('[data-bundle-add-one]')?.addEventListener('click', e => { e.stopPropagation(); this.addItem(item); });
@@ -681,7 +834,28 @@
             });
           }
 
+          this.setMode('single');
           this.onOptionChange();
+        }
+
+        setMode(mode) {
+          this.dataset.mode = mode;
+          this.modeCards.forEach(card => {
+            card.classList.toggle('bpk__ms-card--active', card.dataset.modeCard === mode);
+          });
+          if (this.productForm) {
+            this.productForm.style.display = mode === 'bundle' ? 'none' : '';
+          }
+          const optName = this.dataset.primaryOptionName;
+          if (optName) {
+            const block = this.closest('[data-product-block]') || this.parentElement;
+            const picker = block?.querySelector(`[option-picker-name="${optName}"]`);
+            if (picker) picker.style.display = mode === 'bundle' ? 'none' : '';
+          }
+          if (mode === 'single') {
+            this.selectedItems = {};
+            this.updateUI();
+          }
         }
 
         fmt(kr) { return kr.toLocaleString('da-DK') + ' kr'; }
@@ -721,9 +895,7 @@
 
         getCurrentTier(total) {
           let tier = this.tiers[0] || null;
-          for (const t of this.tiers) {
-            if (total >= t.count) tier = t;
-          }
+          for (const t of this.tiers) { if (total >= t.count) tier = t; }
           return tier;
         }
 
@@ -747,14 +919,12 @@
           if (!this.sliderFill || !this.tiers.length) return;
           const totalDots = this.tierDots.length;
           const activeIdx = tier ? tier.index : -1;
-
           this.tierDots.forEach(dot => {
             const idx = parseInt(dot.dataset.tierIndex);
             dot.classList.remove('bpk__slider-dot--reached', 'bpk__slider-dot--current');
             if (idx < activeIdx) dot.classList.add('bpk__slider-dot--reached');
             else if (idx === activeIdx) dot.classList.add('bpk__slider-dot--current');
           });
-
           if (totalDots < 2) { this.sliderFill.style.width = activeIdx >= 0 ? '100%' : '0%'; return; }
           const pct = activeIdx >= 0 ? (activeIdx / (totalDots - 1)) * 100 : 0;
           this.sliderFill.style.width = pct + '%';
@@ -764,7 +934,6 @@
           const total = this.getTotalItems();
           const tier = this.getCurrentTier(total);
           const unitPrice = tier ? tier.unitPrice : 0;
-
           this.updateSlider(total > 0 ? tier : null);
 
           this.items.forEach(item => {
@@ -773,7 +942,6 @@
             const qty = this.selectedItems[vid] || 0;
             const addOneBtn = item.querySelector('[data-bundle-add-one]');
             const qtyWrap = item.querySelector('[data-bundle-qty-wrap]');
-            const addBtn = item.querySelector('[data-bundle-add]');
             const removeBtn = item.querySelector('[data-bundle-remove]');
             const countEl = item.querySelector('[data-bundle-item-count]');
 
@@ -784,7 +952,6 @@
               if (addOneBtn) addOneBtn.style.display = '';
               if (qtyWrap) qtyWrap.style.display = 'none';
             }
-
             if (countEl) countEl.textContent = qty;
             if (removeBtn) removeBtn.disabled = qty <= 0;
             item.classList.toggle('bpk__item--selected', qty > 0);
@@ -796,7 +963,7 @@
             if (total > 0) {
               this.pricingEl.style.display = '';
               const tp = total * unitPrice;
-              this.priceDetailEl.textContent = total + ' × ' + this.fmt(unitPrice);
+              this.priceDetailEl.textContent = total + ' \u00d7 ' + this.fmt(unitPrice);
               this.priceTotalEl.textContent = 'Total: ' + this.fmt(tp);
               const fp = total * this.baseUnitPrice;
               if (unitPrice < this.baseUnitPrice) {
