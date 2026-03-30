@@ -984,12 +984,33 @@
           try {
             const r = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) });
             if (!r.ok) { const err = await r.text(); throw new Error(err); }
+
+            const cartDrawer = document.getElementById('CartDrawer');
+            const sectionId = cartDrawer?.dataset?.sectionId;
+            if (sectionId) {
+              const secResp = await fetch(`/?sections=${sectionId}`);
+              const sections = await secResp.json();
+              if (sections[sectionId]) {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = sections[sectionId];
+                const fresh = tmp.querySelector('cart-drawer');
+                if (fresh && cartDrawer) cartDrawer.innerHTML = fresh.innerHTML;
+              }
+            }
+
             const cart = await (await fetch('/cart.js')).json();
             document.querySelectorAll('[data-cart-count]').forEach(el => { el.textContent = cart.item_count; });
+            const countEl = document.getElementById('NewCartCount');
+            if (countEl) {
+              const badge = countEl.querySelector('.cart-count span');
+              if (badge) badge.textContent = cart.item_count;
+            }
             document.dispatchEvent(new CustomEvent('cart:change', { detail: { cart } }));
             document.dispatchEvent(new CustomEvent('cart:items-changed', { detail: { cart } }));
+
             this.selectedItems = {};
             this.updateUI();
+
             const cartBtn = document.querySelector('[data-sidebar-button][data-sidebar-id="CartDrawer"]');
             if (cartBtn) { cartBtn.click(); }
             else { window.location.href = '/cart'; }
