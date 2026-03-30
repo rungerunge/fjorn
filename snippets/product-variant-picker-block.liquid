@@ -303,290 +303,405 @@
       endif
     endfor
 
-    assign bundle_columns = block.settings.bundle_columns | default: 3
     assign bundle_btn_label = block.settings.bundle_button_label | default: 'Læg i kurv'
     assign bundle_btn_style = block.settings.bundle_button_style | default: 'primary'
     assign first_step_count = block.settings.bundle_step_1_count | default: 1
+
+    assign step_count = 0
+    if block.settings.bundle_step_1_label != blank
+      assign step_count = 1
+    endif
+    if block.settings.bundle_step_2_label != blank
+      assign step_count = 2
+    endif
+    if block.settings.bundle_step_3_label != blank
+      assign step_count = 3
+    endif
+    if block.settings.bundle_step_4_label != blank
+      assign step_count = 4
+    endif
   -%}
 
   {% capture bundle_css %}
     {% style %}
-      .block-{{ block.id }} [option-picker-name="{{ bundle_primary_name }}"] {
-        display: none !important;
-      }
-      .bundle-picker-{{ block.id }} {
-        --bundle-cols: {{ bundle_columns }};
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__steps {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
+      .block-{{ block.id }} [option-picker-name="{{ bundle_primary_name }}"] { display: none !important; }
+
+      .bpk-{{ block.id }} { margin-top: 8px; }
+      .bpk-{{ block.id }} .bpk__heading {
+        font-family: var(--gsc-headings-font-family);
+        font-weight: var(--gsc-headings-font-weight, 600);
+        font-size: calc(1.5rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-100);
         margin-bottom: 12px;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__step {
+
+      /* ── Step slider ── */
+      .bpk-{{ block.id }} .bpk__slider {
+        background: var(--gsc-foreground-color-5);
+        border-radius: var(--gsc-card-border-radius, 8px);
+        padding: 20px 24px 16px;
+        margin-bottom: 16px;
+        position: relative;
+      }
+      .bpk-{{ block.id }} .bpk__slider-track {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+      }
+      .bpk-{{ block.id }} .bpk__slider-track::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gsc-border-color-100);
+        transform: translateY(-50%);
+        z-index: 0;
+      }
+      .bpk-{{ block.id }} .bpk__slider-fill {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 2px;
+        background: var(--gsc-primary-button-bg-color);
+        transform: translateY(-50%);
+        z-index: 1;
+        transition: width 0.3s ease;
+      }
+      .bpk-{{ block.id }} .bpk__slider-opt {
+        position: relative;
+        z-index: 2;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2px;
-        padding: 8px 12px;
-        border: 1px solid var(--gsc-border-color-100);
-        background: transparent;
+        background: none;
+        border: none;
+        padding: 0;
         cursor: pointer;
-        transition: background 0.2s, color 0.2s, border-color 0.2s;
-        font-family: var(--gsc-button-font-family);
-        font-weight: var(--gsc-button-font-weight);
-        letter-spacing: var(--gsc-button-letter-spacing);
-        text-transform: var(--gsc-button-text-transform);
-        font-size: calc(var(--gsc-button-font-size) * 0.85);
-        line-height: var(--gsc-button-line-height);
-        color: var(--gsc-text-color-100);
-        border-radius: inherit;
         flex: 1;
-        min-width: 0;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__step:hover {
-        background: var(--gsc-foreground-color-5);
+      .bpk-{{ block.id }} .bpk__slider-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid var(--gsc-border-color-100);
+        background: var(--gsc-background-color, #fff);
+        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        flex-shrink: 0;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__step--active {
-        background: var(--gsc-primary-button-bg-color);
-        color: var(--gsc-primary-button-text-color);
+      .bpk-{{ block.id }} .bpk__slider-opt--active .bpk__slider-dot {
         border-color: var(--gsc-primary-button-bg-color);
+        background: var(--gsc-primary-button-bg-color);
+        box-shadow: 0 0 0 3px var(--gsc-background-color, #fff), 0 0 0 5px var(--gsc-primary-button-bg-color);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__step--active:hover {
-        background: var(--gsc-primary-button-bg-hover);
+      .bpk-{{ block.id }} .bpk__slider-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__step-price {
-        font-size: 0.78em;
-        opacity: 0.7;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__status {
+      .bpk-{{ block.id }} .bpk__slider-label-group {
+        flex: 1;
         text-align: center;
-        margin-bottom: 12px;
-        font-family: var(--gsc-body-font-family);
-        font-size: calc(1.3rem * var(--gsc-body-font-scale));
-        color: var(--gsc-text-color-70);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__status-count {
+      .bpk-{{ block.id }} .bpk__slider-label {
+        display: block;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.2rem * var(--gsc-body-font-scale));
         font-weight: var(--gsc-headings-font-weight, 600);
         color: var(--gsc-text-color-100);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__grid {
-        display: grid;
-        grid-template-columns: repeat(var(--bundle-cols), 1fr);
+      .bpk-{{ block.id }} .bpk__slider-price {
+        display: block;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.1rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-70);
+        margin-top: 1px;
+      }
+
+      /* ── Product list ── */
+      .bpk-{{ block.id }} .bpk__list {
+        display: flex;
+        flex-direction: column;
         gap: 8px;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card {
-        text-align: center;
-        border-radius: inherit;
+      .bpk-{{ block.id }} .bpk__item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        background: var(--gsc-foreground-color-5);
+        border-radius: var(--gsc-card-border-radius, 8px);
         transition: box-shadow 0.2s;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card[hidden] {
-        display: none;
+      .bpk-{{ block.id }} .bpk__item[hidden] { display: none; }
+      .bpk-{{ block.id }} .bpk__item--selected {
+        box-shadow: inset 0 0 0 2px var(--gsc-primary-button-bg-color);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card--selected {
-        box-shadow: 0 0 0 2px var(--gsc-primary-button-bg-color);
-        border-radius: inherit;
+      .bpk-{{ block.id }} .bpk__item--unavailable {
+        opacity: 0.35;
+        pointer-events: none;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card-img {
+      .bpk-{{ block.id }} .bpk__item-img {
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
+        border-radius: calc(var(--gsc-card-border-radius, 8px) * 0.6);
         overflow: hidden;
-        border-radius: inherit;
+        position: relative;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card-img img {
+      .bpk-{{ block.id }} .bpk__item-img img {
         width: 100%;
-        display: block;
+        height: 100%;
         object-fit: cover;
-        aspect-ratio: 1;
-        border-radius: inherit;
+        display: block;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card-info {
-        padding: 5px 2px;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__card-title {
+      .bpk-{{ block.id }} .bpk__item-badge {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        padding: 1px 5px;
         font-family: var(--gsc-body-font-family);
-        font-size: calc(1.15rem * var(--gsc-body-font-scale));
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        color: var(--gsc-primary-button-text-color);
+        background: var(--gsc-primary-button-bg-color);
+        border-radius: 3px;
+        line-height: 1.5;
+      }
+      .bpk-{{ block.id }} .bpk__item-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .bpk-{{ block.id }} .bpk__item-name {
+        font-family: var(--gsc-headings-font-family);
+        font-weight: var(--gsc-headings-font-weight, 600);
+        font-size: calc(1.35rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-100);
         display: block;
         line-height: 1.3;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__controls {
+      .bpk-{{ block.id }} .bpk__item-tag {
+        display: inline-block;
+        padding: 1px 6px;
+        font-family: var(--gsc-body-font-family);
+        font-size: 10px;
+        color: var(--gsc-text-color-70);
+        border: 1px solid var(--gsc-border-color-100);
+        border-radius: 3px;
+        margin-top: 3px;
+        vertical-align: middle;
+      }
+      .bpk-{{ block.id }} .bpk__item-desc {
+        display: block;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.1rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-70);
+        margin-top: 2px;
+        line-height: 1.3;
+      }
+      .bpk-{{ block.id }} .bpk__item-action {
+        flex-shrink: 0;
+      }
+      .bpk-{{ block.id }} .bpk__item-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 14px;
+        font-family: var(--gsc-button-font-family);
+        font-weight: var(--gsc-button-font-weight);
+        font-size: calc(var(--gsc-button-font-size) * 0.85);
+        letter-spacing: var(--gsc-button-letter-spacing);
+        color: var(--gsc-primary-button-text-color);
+        background: var(--gsc-primary-button-bg-color);
+        border: none;
+        border-radius: var(--gsc-card-border-radius, 8px);
+        cursor: pointer;
+        transition: background 0.2s, opacity 0.2s;
+        white-space: nowrap;
+      }
+      .bpk-{{ block.id }} .bpk__item-add:hover { background: var(--gsc-primary-button-bg-hover); }
+      .bpk-{{ block.id }} .bpk__item-add:disabled { opacity: 0.35; cursor: not-allowed; }
+      .bpk-{{ block.id }} .bpk__item-qty {
         display: flex;
         align-items: center;
-        justify-content: center;
         gap: 8px;
-        margin-top: 4px;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__qty-btn {
+      .bpk-{{ block.id }} .bpk__qty-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 26px;
-        height: 26px;
-        border: 1px solid var(--gsc-border-color-100);
-        background: transparent;
-        color: var(--gsc-text-color-100);
-        font-size: 15px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        font-size: 16px;
         line-height: 1;
         cursor: pointer;
-        transition: background 0.15s, opacity 0.15s;
-        border-radius: inherit;
         padding: 0;
         font-family: var(--gsc-body-font-family);
+        transition: background 0.15s, opacity 0.15s;
+        color: var(--gsc-primary-button-text-color);
+        background: var(--gsc-primary-button-bg-color);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__qty-btn:hover:not(:disabled) {
-        background: var(--gsc-foreground-color-10);
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__qty-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__qty-count {
+      .bpk-{{ block.id }} .bpk__qty-btn:hover { background: var(--gsc-primary-button-bg-hover); }
+      .bpk-{{ block.id }} .bpk__qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+      .bpk-{{ block.id }} .bpk__qty-count {
         font-family: var(--gsc-body-font-family);
-        font-size: calc(1.2rem * var(--gsc-body-font-scale));
+        font-size: calc(1.4rem * var(--gsc-body-font-scale));
         font-weight: var(--gsc-headings-font-weight, 600);
-        min-width: 14px;
+        min-width: 16px;
         text-align: center;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__card--unavailable {
-        opacity: 0.4;
-        pointer-events: none;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__cta {
+
+      /* ── Pricing ── */
+      .bpk-{{ block.id }} .bpk__pricing {
+        text-align: center;
         margin-top: 14px;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__add-to-cart {
-        width: 100%;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__add-to-cart.loading .bundle-picker__btn-text {
-        visibility: hidden;
-      }
-      .bundle-picker-{{ block.id }} .bundle-picker__add-to-cart .loading-spinner { display: none; }
-      .bundle-picker-{{ block.id }} .bundle-picker__add-to-cart.loading .loading-spinner { display: block; }
-      .bundle-picker-{{ block.id }} .bundle-picker__pricing {
-        text-align: center;
-        margin-top: 12px;
-        margin-bottom: 4px;
         font-family: var(--gsc-body-font-family);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__price-per-item {
-        font-size: calc(1.3rem * var(--gsc-body-font-scale));
+      .bpk-{{ block.id }} .bpk__price-detail {
+        font-size: calc(1.25rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-70);
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__price-total {
+      .bpk-{{ block.id }} .bpk__price-total {
         font-size: calc(1.6rem * var(--gsc-body-font-scale));
         font-weight: var(--gsc-headings-font-weight, 600);
         color: var(--gsc-text-color-100);
         margin-top: 2px;
       }
-      .bundle-picker-{{ block.id }} .bundle-picker__price-savings {
-        font-size: calc(1.2rem * var(--gsc-body-font-scale));
+      .bpk-{{ block.id }} .bpk__price-save {
+        font-size: calc(1.15rem * var(--gsc-body-font-scale));
         color: var(--gsc-sale-text-color, #e53935);
         margin-top: 2px;
       }
+
+      /* ── CTA ── */
+      .bpk-{{ block.id }} .bpk__cta { margin-top: 14px; }
+      .bpk-{{ block.id }} .bpk__add-to-cart { width: 100%; }
+      .bpk-{{ block.id }} .bpk__add-to-cart.loading .bpk__btn-text { visibility: hidden; }
+      .bpk-{{ block.id }} .bpk__add-to-cart .loading-spinner { display: none; }
+      .bpk-{{ block.id }} .bpk__add-to-cart.loading .loading-spinner { display: block; }
     {% endstyle %}
   {% endcapture %}
   {% render 'inline-css-minifier', css: bundle_css %}
 
-  <bundle-variant-picker
-    class='bundle-picker-{{ block.id }}'
-    data-block-id='{{ block.id }}'
-    data-primary-option-position='{{ bundle_primary_pos }}'
-    data-section-id='{{ sectionId }}'
-  >
-    {%- liquid
-      assign first_unit_price = block.settings.bundle_step_1_unit_price | default: 0
-    -%}
-    {%- if block.settings.bundle_step_1_label != blank -%}
-      <div class='bundle-picker__steps'>
-        <button type='button' class='bundle-picker__step bundle-picker__step--active' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_1_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_1_unit_price | default: 0 }}'>
-          <span>{{ block.settings.bundle_step_1_label }}</span>
-          {%- if block.settings.bundle_step_1_price != blank -%}<span class='bundle-picker__step-price'>{{ block.settings.bundle_step_1_price }}</span>{%- endif -%}
-        </button>
-        {%- if block.settings.bundle_step_2_label != blank -%}
-          <button type='button' class='bundle-picker__step' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_2_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_2_unit_price | default: 0 }}'>
-            <span>{{ block.settings.bundle_step_2_label }}</span>
-            {%- if block.settings.bundle_step_2_price != blank -%}<span class='bundle-picker__step-price'>{{ block.settings.bundle_step_2_price }}</span>{%- endif -%}
-          </button>
-        {%- endif -%}
-        {%- if block.settings.bundle_step_3_label != blank -%}
-          <button type='button' class='bundle-picker__step' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_3_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_3_unit_price | default: 0 }}'>
-            <span>{{ block.settings.bundle_step_3_label }}</span>
-            {%- if block.settings.bundle_step_3_price != blank -%}<span class='bundle-picker__step-price'>{{ block.settings.bundle_step_3_price }}</span>{%- endif -%}
-          </button>
-        {%- endif -%}
-        {%- if block.settings.bundle_step_4_label != blank -%}
-          <button type='button' class='bundle-picker__step' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_4_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_4_unit_price | default: 0 }}'>
-            <span>{{ block.settings.bundle_step_4_label }}</span>
-            {%- if block.settings.bundle_step_4_price != blank -%}<span class='bundle-picker__step-price'>{{ block.settings.bundle_step_4_price }}</span>{%- endif -%}
-          </button>
-        {%- endif -%}
-      </div>
-      <div class='bundle-picker__status'>
-        Valgt: <span class='bundle-picker__status-count' data-bundle-counter>0 / {{ first_step_count }}</span>
+  <bundle-variant-picker class='bpk-{{ block.id }}' data-block-id='{{ block.id }}' data-primary-option-position='{{ bundle_primary_pos }}' data-section-id='{{ sectionId }}'>
+
+    <p class='bpk__heading'>Byg din egen pakke:</p>
+
+    {%- if step_count > 0 -%}
+      <div class='bpk__slider'>
+        <div class='bpk__slider-track'>
+          <div class='bpk__slider-fill' data-slider-fill style='width: 0%;'></div>
+          {%- if block.settings.bundle_step_1_label != blank -%}
+            <button type='button' class='bpk__slider-opt bpk__slider-opt--active' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_1_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_1_unit_price | default: 0 }}' data-step-index='0'>
+              <span class='bpk__slider-dot'></span>
+            </button>
+          {%- endif -%}
+          {%- if block.settings.bundle_step_2_label != blank -%}
+            <button type='button' class='bpk__slider-opt' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_2_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_2_unit_price | default: 0 }}' data-step-index='1'>
+              <span class='bpk__slider-dot'></span>
+            </button>
+          {%- endif -%}
+          {%- if block.settings.bundle_step_3_label != blank -%}
+            <button type='button' class='bpk__slider-opt' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_3_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_3_unit_price | default: 0 }}' data-step-index='2'>
+              <span class='bpk__slider-dot'></span>
+            </button>
+          {%- endif -%}
+          {%- if block.settings.bundle_step_4_label != blank -%}
+            <button type='button' class='bpk__slider-opt' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_4_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_4_unit_price | default: 0 }}' data-step-index='3'>
+              <span class='bpk__slider-dot'></span>
+            </button>
+          {%- endif -%}
+        </div>
+        <div class='bpk__slider-labels'>
+          {%- if block.settings.bundle_step_1_label != blank -%}
+            <div class='bpk__slider-label-group'>
+              <span class='bpk__slider-label'>{{ block.settings.bundle_step_1_label }}</span>
+              {%- if block.settings.bundle_step_1_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_1_price }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if block.settings.bundle_step_2_label != blank -%}
+            <div class='bpk__slider-label-group'>
+              <span class='bpk__slider-label'>{{ block.settings.bundle_step_2_label }}</span>
+              {%- if block.settings.bundle_step_2_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_2_price }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if block.settings.bundle_step_3_label != blank -%}
+            <div class='bpk__slider-label-group'>
+              <span class='bpk__slider-label'>{{ block.settings.bundle_step_3_label }}</span>
+              {%- if block.settings.bundle_step_3_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_3_price }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if block.settings.bundle_step_4_label != blank -%}
+            <div class='bpk__slider-label-group'>
+              <span class='bpk__slider-label'>{{ block.settings.bundle_step_4_label }}</span>
+              {%- if block.settings.bundle_step_4_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_4_price }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
       </div>
     {%- endif -%}
 
-    <div class='bundle-picker__grid' data-bundle-grid>
+    <div class='bpk__list' data-bundle-list>
       {%- for v in product.variants -%}
         {%- liquid
           assign v_image = v.featured_image | default: product.featured_image
-          assign v_color = ''
-          case bundle_primary_pos
-            when 1
-              assign v_color = v.option1
-            when 2
-              assign v_color = v.option2
-            when 3
-              assign v_color = v.option3
-          endcase
+          assign v_label = v.title
+          if v_label == 'Default Title'
+            assign v_label = product.title
+          endif
         -%}
         <div
-          class='bundle-picker__card {% unless v.available %}bundle-picker__card--unavailable{% endunless %}'
+          class='bpk__item {% unless v.available %}bpk__item--unavailable{% endunless %}'
           data-bundle-product
           data-variant-id='{{ v.id }}'
           data-option1='{{ v.option1 | escape }}'
           {% if v.option2 %}data-option2='{{ v.option2 | escape }}'{% endif %}
           {% if v.option3 %}data-option3='{{ v.option3 | escape }}'{% endif %}
-          hidden
         >
-          <div class='bundle-picker__card-img'>
+          <div class='bpk__item-img'>
             {%- if v_image != blank -%}
-              <img
-                src='{{ v_image | image_url: width: 400 }}'
-                alt='{{ v_color | escape }}'
-                width='200'
-                height='200'
-                loading='lazy'
-              >
+              <img src='{{ v_image | image_url: width: 200 }}' alt='{{ v_label | escape }}' width='72' height='72' loading='lazy'>
             {%- else -%}
               {{ 'product-4' | placeholder_svg_tag: 'placeholder-image' }}
             {%- endif -%}
           </div>
-          <div class='bundle-picker__card-info'>
-            <span class='bundle-picker__card-title'>{{ v_color }}</span>
-            <div class='bundle-picker__controls'>
-              <button type='button' class='bundle-picker__qty-btn' data-bundle-remove disabled aria-label='Fjern'>−</button>
-              <span class='bundle-picker__qty-count' data-bundle-item-count>0</span>
-              <button type='button' class='bundle-picker__qty-btn' data-bundle-add aria-label='Tilføj'>+</button>
+          <div class='bpk__item-info'>
+            <span class='bpk__item-name'>{{ v.option1 }}</span>
+            {%- if v.option2 -%}
+              <span class='bpk__item-tag'>{{ v.option2 }}</span>
+            {%- endif -%}
+            {%- if v.option3 -%}
+              <span class='bpk__item-desc'>{{ v.option3 }}</span>
+            {%- endif -%}
+          </div>
+          <div class='bpk__item-action'>
+            <button type='button' class='bpk__item-add' data-bundle-add-one aria-label='Tilføj'>Tilføj +</button>
+            <div class='bpk__item-qty' style='display:none;' data-bundle-qty-wrap>
+              <button type='button' class='bpk__qty-btn' data-bundle-remove aria-label='Fjern'>−</button>
+              <span class='bpk__qty-count' data-bundle-item-count>0</span>
+              <button type='button' class='bpk__qty-btn' data-bundle-add aria-label='Tilføj'>+</button>
             </div>
           </div>
         </div>
       {%- endfor -%}
     </div>
 
-    <div class='bundle-picker__pricing' data-bundle-pricing style='display:none;'>
-      <div class='bundle-picker__price-per-item' data-bundle-price-per-item></div>
-      <div class='bundle-picker__price-total' data-bundle-price-total></div>
-      <div class='bundle-picker__price-savings' data-bundle-price-savings></div>
+    <div class='bpk__pricing' data-bundle-pricing style='display:none;'>
+      <div class='bpk__price-detail' data-bundle-price-detail></div>
+      <div class='bpk__price-total' data-bundle-price-total></div>
+      <div class='bpk__price-save' data-bundle-price-save></div>
     </div>
 
-    <div class='bundle-picker__cta'>
-      <button
-        type='button'
-        class='btn btn--md btn--{{ bundle_btn_style }} bundle-picker__add-to-cart'
-        data-bundle-add-to-cart
-        disabled
-      >
-        <span class='bundle-picker__btn-text'>{{ bundle_btn_label }}</span>
+    <div class='bpk__cta'>
+      <button type='button' class='btn btn--md btn--{{ bundle_btn_style }} bpk__add-to-cart' data-bundle-add-to-cart disabled>
+        <span class='bpk__btn-text'>{{ bundle_btn_label }}</span>
         <div class='loading-spinner btn__loading-spinner'></div>
       </button>
     </div>
@@ -598,125 +713,124 @@
         connectedCallback() {
           this.selectedItems = {};
           this.primaryPos = this.dataset.primaryOptionPosition;
-          this.cards = this.querySelectorAll('[data-bundle-product]');
+          this.items = this.querySelectorAll('[data-bundle-product]');
           this.addToCartBtn = this.querySelector('[data-bundle-add-to-cart]');
-          this.counterDisplay = this.querySelector('[data-bundle-counter]');
           this.pricingEl = this.querySelector('[data-bundle-pricing]');
-          this.pricePerItemEl = this.querySelector('[data-bundle-price-per-item]');
+          this.priceDetailEl = this.querySelector('[data-bundle-price-detail]');
           this.priceTotalEl = this.querySelector('[data-bundle-price-total]');
-          this.priceSavingsEl = this.querySelector('[data-bundle-price-savings]');
+          this.priceSaveEl = this.querySelector('[data-bundle-price-save]');
+          this.sliderFill = this.querySelector('[data-slider-fill]');
 
           this.stepButtons = this.querySelectorAll('[data-bundle-step]');
-          const firstStep = this.stepButtons[0];
-          this.maxItems = parseInt(firstStep?.dataset.bundleStepCount || '1');
-          this.unitPrice = parseInt(firstStep?.dataset.bundleUnitPrice || '0');
-          this.baseUnitPrice = this.unitPrice;
+          this.totalSteps = this.stepButtons.length;
+          const first = this.stepButtons[0];
+          this.maxItems = parseInt(first?.dataset.bundleStepCount || '1');
+          this.unitPrice = parseInt(first?.dataset.bundleUnitPrice || '0');
 
-          if (this.stepButtons.length > 0) {
-            let highest = 0;
-            this.stepButtons.forEach(btn => {
-              const p = parseInt(btn.dataset.bundleUnitPrice || '0');
-              if (p > highest) highest = p;
-            });
-            this.baseUnitPrice = highest;
-          }
+          this.baseUnitPrice = 0;
+          this.stepButtons.forEach(b => {
+            const p = parseInt(b.dataset.bundleUnitPrice || '0');
+            if (p > this.baseUnitPrice) this.baseUnitPrice = p;
+          });
 
-          this.stepButtons.forEach(btn => btn.addEventListener('click', () => this.selectStep(btn)));
+          this.stepButtons.forEach(b => b.addEventListener('click', () => this.selectStep(b)));
 
-          this.cards.forEach(card => {
-            card.querySelector('[data-bundle-add]')?.addEventListener('click', e => {
+          this.items.forEach(item => {
+            item.querySelector('[data-bundle-add-one]')?.addEventListener('click', e => {
               e.stopPropagation();
-              this.addItem(card);
+              this.addItem(item);
             });
-            card.querySelector('[data-bundle-remove]')?.addEventListener('click', e => {
+            item.querySelector('[data-bundle-add]')?.addEventListener('click', e => {
               e.stopPropagation();
-              this.removeItem(card);
+              this.addItem(item);
+            });
+            item.querySelector('[data-bundle-remove]')?.addEventListener('click', e => {
+              e.stopPropagation();
+              this.removeItem(item);
             });
           });
 
           this.addToCartBtn?.addEventListener('click', () => this.addToCart());
 
-          const variantPicker = this.closest('[data-product-block]')?.closest('.product__info')
-            ?.querySelector('variant-picker') || document.querySelector('variant-picker');
-          if (variantPicker) {
-            variantPicker.querySelectorAll('[data-variant-picker-option-inputs] input[type="radio"]').forEach(input => {
-              input.addEventListener('change', () => this.onOptionChange());
+          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
+            || document.querySelector('variant-picker');
+          if (vp) {
+            vp.querySelectorAll('[data-variant-picker-option-inputs] input[type="radio"]').forEach(r => {
+              r.addEventListener('change', () => this.onOptionChange());
             });
           }
 
           this.onOptionChange();
+          this.updateSliderFill();
         }
 
-        formatPrice(kr) {
-          return kr.toLocaleString('da-DK') + ' kr';
-        }
+        fmt(kr) { return kr.toLocaleString('da-DK') + ' kr'; }
 
         getSelectedOptions() {
-          const selected = {};
-          const variantPicker = this.closest('[data-product-block]')?.closest('.product__info')
-            ?.querySelector('variant-picker') || document.querySelector('variant-picker');
-          if (!variantPicker) return selected;
-
-          variantPicker.querySelectorAll('[data-variant-picker-option-inputs]').forEach(group => {
-            const checked = group.querySelector('input[type="radio"]:checked');
-            if (checked) {
-              const nameAttr = checked.name;
-              const match = nameAttr.match(/-(\d+)$/);
-              if (match) {
-                selected[match[1]] = checked.value;
-              }
-            }
+          const sel = {};
+          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
+            || document.querySelector('variant-picker');
+          if (!vp) return sel;
+          vp.querySelectorAll('[data-variant-picker-option-inputs]').forEach(g => {
+            const c = g.querySelector('input[type="radio"]:checked');
+            if (c) { const m = c.name.match(/-(\d+)$/); if (m) sel[m[1]] = c.value; }
           });
-          return selected;
+          return sel;
         }
 
         onOptionChange() {
           const sel = this.getSelectedOptions();
-          this.cards.forEach(card => {
-            let show = true;
-            for (const [pos, val] of Object.entries(sel)) {
-              if (pos === this.primaryPos) continue;
-              const cardVal = card.dataset['option' + pos];
-              if (cardVal && cardVal !== val) {
-                show = false;
-                break;
-              }
+          const nonPrimaryKeys = Object.keys(sel).filter(k => k !== this.primaryPos);
+
+          this.items.forEach(item => {
+            if (nonPrimaryKeys.length === 0) {
+              item.hidden = false;
+              return;
             }
-            card.hidden = !show;
+            let show = true;
+            for (const pos of nonPrimaryKeys) {
+              const cv = item.dataset['option' + pos];
+              if (cv && cv !== sel[pos]) { show = false; break; }
+            }
+            item.hidden = !show;
           });
 
           Object.keys(this.selectedItems).forEach(vid => {
-            const card = this.querySelector(`[data-variant-id="${vid}"]`);
-            if (card && card.hidden) {
-              delete this.selectedItems[vid];
-            }
+            const el = this.querySelector(`[data-variant-id="${vid}"]`);
+            if (el && el.hidden) delete this.selectedItems[vid];
           });
           this.updateUI();
         }
 
         selectStep(btn) {
-          const newMax = parseInt(btn.dataset.bundleStepCount);
-          const newUnitPrice = parseInt(btn.dataset.bundleUnitPrice || '0');
-          this.stepButtons.forEach(b => b.classList.remove('bundle-picker__step--active'));
-          btn.classList.add('bundle-picker__step--active');
-          this.maxItems = newMax;
-          this.unitPrice = newUnitPrice;
-          if (this.getTotalItems() > newMax) this.selectedItems = {};
+          this.stepButtons.forEach(b => b.classList.remove('bpk__slider-opt--active'));
+          btn.classList.add('bpk__slider-opt--active');
+          this.maxItems = parseInt(btn.dataset.bundleStepCount);
+          this.unitPrice = parseInt(btn.dataset.bundleUnitPrice || '0');
+          if (this.getTotalItems() > this.maxItems) this.selectedItems = {};
+          this.updateSliderFill();
           this.updateUI();
         }
 
-        addItem(card) {
+        updateSliderFill() {
+          if (!this.sliderFill || this.totalSteps < 2) return;
+          const active = this.querySelector('.bpk__slider-opt--active');
+          const idx = parseInt(active?.dataset.stepIndex || '0');
+          this.sliderFill.style.width = (idx / (this.totalSteps - 1) * 100) + '%';
+        }
+
+        addItem(item) {
           if (this.getTotalItems() >= this.maxItems) return;
-          const vid = card.dataset.variantId;
+          const vid = item.dataset.variantId;
           this.selectedItems[vid] = (this.selectedItems[vid] || 0) + 1;
           this.updateUI();
         }
 
-        removeItem(card) {
-          const vid = card.dataset.variantId;
-          if (!this.selectedItems[vid] || this.selectedItems[vid] <= 0) return;
+        removeItem(item) {
+          const vid = item.dataset.variantId;
+          if (!this.selectedItems[vid]) return;
           this.selectedItems[vid]--;
-          if (this.selectedItems[vid] === 0) delete this.selectedItems[vid];
+          if (this.selectedItems[vid] <= 0) delete this.selectedItems[vid];
           this.updateUI();
         }
 
@@ -728,21 +842,29 @@
           const total = this.getTotalItems();
           const atMax = total >= this.maxItems;
 
-          if (this.counterDisplay) {
-            this.counterDisplay.textContent = total + ' / ' + this.maxItems;
-          }
-
-          this.cards.forEach(card => {
-            if (card.hidden) return;
-            const vid = card.dataset.variantId;
+          this.items.forEach(item => {
+            if (item.hidden) return;
+            const vid = item.dataset.variantId;
             const qty = this.selectedItems[vid] || 0;
-            const addBtn = card.querySelector('[data-bundle-add]');
-            const removeBtn = card.querySelector('[data-bundle-remove]');
-            const countEl = card.querySelector('[data-bundle-item-count]');
+            const addOneBtn = item.querySelector('[data-bundle-add-one]');
+            const qtyWrap = item.querySelector('[data-bundle-qty-wrap]');
+            const addBtn = item.querySelector('[data-bundle-add]');
+            const removeBtn = item.querySelector('[data-bundle-remove]');
+            const countEl = item.querySelector('[data-bundle-item-count]');
+
+            if (qty > 0) {
+              if (addOneBtn) addOneBtn.style.display = 'none';
+              if (qtyWrap) qtyWrap.style.display = '';
+            } else {
+              if (addOneBtn) addOneBtn.style.display = '';
+              if (qtyWrap) qtyWrap.style.display = 'none';
+            }
+
             if (countEl) countEl.textContent = qty;
-            if (addBtn) addBtn.disabled = atMax || card.classList.contains('bundle-picker__card--unavailable');
+            if (addOneBtn) addOneBtn.disabled = atMax || item.classList.contains('bpk__item--unavailable');
+            if (addBtn) addBtn.disabled = atMax;
             if (removeBtn) removeBtn.disabled = qty <= 0;
-            card.classList.toggle('bundle-picker__card--selected', qty > 0);
+            item.classList.toggle('bpk__item--selected', qty > 0);
           });
 
           if (this.addToCartBtn) this.addToCartBtn.disabled = total === 0;
@@ -750,58 +872,36 @@
           if (this.pricingEl && this.unitPrice > 0) {
             if (total > 0) {
               this.pricingEl.style.display = '';
-              const totalPrice = total * this.unitPrice;
-              this.pricePerItemEl.textContent = total + ' × ' + this.formatPrice(this.unitPrice);
-              this.priceTotalEl.textContent = 'Total: ' + this.formatPrice(totalPrice);
-
-              const fullPrice = total * this.baseUnitPrice;
-              if (this.unitPrice < this.baseUnitPrice && total > 0) {
-                const saved = fullPrice - totalPrice;
-                this.priceSavingsEl.textContent = 'Du sparer ' + this.formatPrice(saved);
-                this.priceSavingsEl.style.display = '';
-              } else {
-                this.priceSavingsEl.style.display = 'none';
-              }
-            } else {
-              this.pricingEl.style.display = 'none';
-            }
+              const tp = total * this.unitPrice;
+              this.priceDetailEl.textContent = total + ' × ' + this.fmt(this.unitPrice);
+              this.priceTotalEl.textContent = 'Total: ' + this.fmt(tp);
+              const fp = total * this.baseUnitPrice;
+              if (this.unitPrice < this.baseUnitPrice) {
+                this.priceSaveEl.textContent = 'Du sparer ' + this.fmt(fp - tp);
+                this.priceSaveEl.style.display = '';
+              } else { this.priceSaveEl.style.display = 'none'; }
+            } else { this.pricingEl.style.display = 'none'; }
           }
         }
 
         async addToCart() {
-          const items = Object.entries(this.selectedItems)
-            .filter(([, qty]) => qty > 0)
-            .map(([id, quantity]) => ({ id: parseInt(id), quantity }));
+          const items = Object.entries(this.selectedItems).filter(([,q]) => q > 0).map(([id, quantity]) => ({ id: parseInt(id), quantity }));
           if (!items.length) return;
-
           this.addToCartBtn.disabled = true;
           this.addToCartBtn.classList.add('loading');
-
           try {
-            const res = await fetch('/cart/add.js', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items }),
-            });
-            if (!res.ok) throw new Error('Cart error');
-
+            const r = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) });
+            if (!r.ok) throw new Error('Cart error');
             const cart = await (await fetch('/cart.js')).json();
             document.querySelectorAll('[data-cart-count]').forEach(el => { el.textContent = cart.item_count; });
             document.dispatchEvent(new CustomEvent('cart:change', { detail: { cart } }));
             document.dispatchEvent(new CustomEvent('cart:items-changed', { detail: { cart } }));
-
             this.selectedItems = {};
             this.updateUI();
-
-            const cartDrawer = document.querySelector('cart-drawer');
-            if (cartDrawer?.open) cartDrawer.open();
-            else window.location.href = '/cart';
-          } catch (err) {
-            console.error('Bundle add-to-cart failed:', err);
-          } finally {
-            this.addToCartBtn.disabled = false;
-            this.addToCartBtn.classList.remove('loading');
-          }
+            const cd = document.querySelector('cart-drawer');
+            if (cd?.open) cd.open(); else window.location.href = '/cart';
+          } catch (e) { console.error('Bundle add-to-cart failed:', e); }
+          finally { this.addToCartBtn.disabled = false; this.addToCartBtn.classList.remove('loading'); }
         }
       }
       customElements.define('bundle-variant-picker', BundleVariantPicker);
