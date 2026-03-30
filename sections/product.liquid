@@ -1931,6 +1931,53 @@
         },
         {
           "type": "header",
+          "content": "Køb-vælger (enkelt vs. pakke)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_selector_heading",
+          "default": "Køb mere, spar mere",
+          "label": "Overskrift",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_single_label",
+          "default": "1 stk",
+          "label": "Enkelt — label",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_single_sublabel",
+          "default": "Standard pris",
+          "label": "Enkelt — undertekst",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_pack_label",
+          "default": "Pakkepris",
+          "label": "Pakke — label",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_pack_sublabel",
+          "label": "Pakke — undertekst",
+          "info": "Fx 'Helt ned til 549 kr per stk'. Genereres automatisk fra trin-priser hvis tom.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_pack_badge",
+          "default": "Mest populær!",
+          "label": "Pakke — badge",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
           "content": "Bundle-knap",
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
