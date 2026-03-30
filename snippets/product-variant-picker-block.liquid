@@ -608,7 +608,8 @@
       /* ── CTA ── */
       .bpk-{{ block.id }} .bpk__cta { margin-top: 14px; }
       .bpk-{{ block.id }} .bpk__add-to-cart { width: 100%; }
-      .bpk-{{ block.id }} .bpk__add-to-cart.loading .bpk__btn-text { visibility: hidden; }
+      .bpk-{{ block.id }} .bpk__add-to-cart.loading .bpk__btn-text,
+      .bpk-{{ block.id }} .bpk__add-to-cart.loading .bpk__btn-price { visibility: hidden; }
       .bpk-{{ block.id }} .bpk__add-to-cart .loading-spinner { display: none; }
       .bpk-{{ block.id }} .bpk__add-to-cart.loading .loading-spinner { display: block; }
     {% endstyle %}
@@ -768,6 +769,11 @@
       <div class='bpk__cta'>
         <button type='button' class='btn btn--md btn--{{ bundle_btn_style }} bpk__add-to-cart' data-bundle-add-to-cart disabled>
           <span class='bpk__btn-text'>{{ bundle_btn_label }}</span>
+          <span class='bpk__btn-price' data-bundle-btn-price style='display:none;'>
+            <span data-bundle-btn-sep> - </span>
+            <s data-bundle-btn-compare style='opacity:0.7;margin-right:4px;'></s>
+            <span data-bundle-btn-total></span>
+          </span>
           <div class='loading-spinner btn__loading-spinner'></div>
         </button>
       </div>
@@ -803,6 +809,9 @@
           this.priceDetailEl = this.querySelector('[data-bundle-price-detail]');
           this.priceTotalEl = this.querySelector('[data-bundle-price-total]');
           this.priceSaveEl = this.querySelector('[data-bundle-price-save]');
+          this.btnPriceWrap = this.querySelector('[data-bundle-btn-price]');
+          this.btnCompareEl = this.querySelector('[data-bundle-btn-compare]');
+          this.btnTotalEl = this.querySelector('[data-bundle-btn-total]');
           this.sliderFill = this.querySelector('[data-slider-fill]');
           this.tierDots = this.querySelectorAll('[data-tier-dot]');
 
@@ -975,7 +984,18 @@
                 this.priceSaveEl.textContent = 'Du sparer ' + this.fmt(fp - tp);
                 this.priceSaveEl.style.display = '';
               } else { this.priceSaveEl.style.display = 'none'; }
-            } else { this.pricingEl.style.display = 'none'; }
+
+              if (this.btnPriceWrap) {
+                this.btnPriceWrap.style.display = '';
+                this.btnTotalEl.textContent = this.fmt(tp);
+                if (unitPrice < this.baseUnitPrice) {
+                  this.btnCompareEl.textContent = this.fmt(fp);
+                } else { this.btnCompareEl.textContent = ''; }
+              }
+            } else {
+              this.pricingEl.style.display = 'none';
+              if (this.btnPriceWrap) this.btnPriceWrap.style.display = 'none';
+            }
           }
         }
 

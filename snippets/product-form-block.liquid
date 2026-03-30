@@ -96,6 +96,11 @@
                     {%- endif -%}
                   {%- endif -%}
                 </span>
+                <span class='product-form__btn-price' data-btn-price-wrap>
+                  <span data-btn-price-sep> - </span>
+                  <s data-btn-compare-price style='opacity:0.7;margin-right:4px;'>{%- if selected_variant.compare_at_price > selected_variant.price -%}{{ selected_variant.compare_at_price | money }}{%- endif -%}</s>
+                  <span data-btn-current-price>{{ selected_variant.price | money }}</span>
+                </span>
                 <div class='loading-spinner btn__loading-spinner'></div>
               </button>
             </div>
@@ -187,6 +192,44 @@
         </div>
       </div>
     {%- endif -%}
+
+    <script type='application/json' data-variant-prices>
+      {%- for v in product.variants -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        { "id": {{ v.id }}, "price": {{ v.price }}, "compare": {{ v.compare_at_price | default: 0 }} }
+      {%- endfor -%}
+    </script>
+    <script>
+      (function() {
+        const wrap = document.currentScript.closest('[data-product-block]');
+        if (!wrap) return;
+        const pricesJson = wrap.querySelector('[data-variant-prices]');
+        if (!pricesJson) return;
+        const variants = JSON.parse('[' + pricesJson.textContent + ']');
+        const variantMap = {};
+        variants.forEach(v => { variantMap[v.id] = v; });
+        const fmt = cents => (cents / 100).toLocaleString('da-DK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' kr';
+
+        function update(vid) {
+          const v = variantMap[vid];
+          if (!v) return;
+          wrap.querySelectorAll('[data-btn-current-price]').forEach(el => { el.textContent = fmt(v.price); });
+          wrap.querySelectorAll('[data-btn-compare-price]').forEach(el => {
+            el.textContent = v.compare > v.price ? fmt(v.compare) : '';
+          });
+        }
+
+        const hiddenInput = wrap.querySelector('[data-product-form-variant]');
+        if (hiddenInput) {
+          new MutationObserver(() => update(hiddenInput.value)).observe(hiddenInput, { attributes: true, attributeFilter: ['value'] });
+          update(hiddenInput.value);
+        }
+
+        document.addEventListener('variant:change', e => {
+          if (e.detail?.variant?.id) update(e.detail.variant.id);
+        });
+      })();
+    </script>
 
     {%- if show_pickup_availability == true -%}
       <pickup-availability
