@@ -498,11 +498,12 @@
         transform: translateY(-50%); z-index: 1; transition: width 0.35s ease;
       }
       .bpk-{{ block.id }} .bpk__slider-dot-wrap {
-        position: relative; z-index: 2; flex: 1;
+        position: relative; z-index: 2;
         display: flex; justify-content: center;
+        flex: 1 1 0%;
       }
-      .bpk-{{ block.id }} .bpk__slider-dot-wrap:first-child { justify-content: flex-start; }
-      .bpk-{{ block.id }} .bpk__slider-dot-wrap:last-child { justify-content: flex-end; }
+      .bpk-{{ block.id }} .bpk__slider-dot-wrap:first-child { justify-content: flex-start; flex: 0 0 auto; }
+      .bpk-{{ block.id }} .bpk__slider-dot-wrap:last-child { justify-content: flex-end; flex: 0 0 auto; }
       .bpk-{{ block.id }} .bpk__slider-dot {
         width: 18px; height: 18px; border-radius: 50%;
         border: 2px solid var(--gsc-border-color-100);
@@ -519,9 +520,9 @@
         box-shadow: 0 0 0 3px var(--gsc-background-color, #fff), 0 0 0 5px var(--gsc-primary-button-bg-color);
       }
       .bpk-{{ block.id }} .bpk__slider-labels { display: flex; justify-content: space-between; margin-top: 4px; }
-      .bpk-{{ block.id }} .bpk__slider-label-group { flex: 1; text-align: center; }
-      .bpk-{{ block.id }} .bpk__slider-label-group:first-child { text-align: left; }
-      .bpk-{{ block.id }} .bpk__slider-label-group:last-child { text-align: right; }
+      .bpk-{{ block.id }} .bpk__slider-label-group { flex: 1 1 0%; text-align: center; }
+      .bpk-{{ block.id }} .bpk__slider-label-group:first-child { text-align: left; flex: 0 0 auto; min-width: 60px; }
+      .bpk-{{ block.id }} .bpk__slider-label-group:last-child { text-align: right; flex: 0 0 auto; min-width: 60px; }
       .bpk-{{ block.id }} .bpk__slider-label {
         display: block; font-family: var(--gsc-body-font-family);
         font-size: calc(1.2rem * var(--gsc-body-font-scale));
@@ -811,8 +812,14 @@
 
           this.modeCards = this.querySelectorAll('[data-mode-card]');
           this.modeInputs = this.querySelectorAll('[data-bundle-mode-input]');
-          this.productForm = this.closest('.product__info')?.querySelector('product-form')
-            || document.querySelector('product-form');
+          const pi = this.closest('.product__info') || document.querySelector('.product__info');
+          this.blocksToToggle = [];
+          if (pi) {
+            const pf = pi.querySelector('product-form');
+            if (pf) { const b = pf.closest('[data-product-block]'); if (b) this.blocksToToggle.push(b); }
+            const qs = pi.querySelector('.product-quantity__wrap');
+            if (qs) { const b = qs.closest('[data-product-block]') || qs; this.blocksToToggle.push(b); }
+          }
 
           this.modeInputs.forEach(input => {
             input.addEventListener('change', () => this.setMode(input.value));
@@ -843,9 +850,7 @@
           this.modeCards.forEach(card => {
             card.classList.toggle('bpk__ms-card--active', card.dataset.modeCard === mode);
           });
-          if (this.productForm) {
-            this.productForm.style.display = mode === 'bundle' ? 'none' : '';
-          }
+          this.blocksToToggle.forEach(b => { b.style.display = mode === 'bundle' ? 'none' : ''; });
           const optName = this.dataset.primaryOptionName;
           if (optName) {
             const block = this.closest('[data-product-block]') || this.parentElement;
