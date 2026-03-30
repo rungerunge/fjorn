@@ -303,9 +303,13 @@
       endif
     endfor
 
+    if bundle_primary_pos == nil and product.options.size > 0
+      assign bundle_primary_pos = 1
+      assign bundle_primary_name = product.options[0]
+    endif
+
     assign bundle_btn_label = block.settings.bundle_button_label | default: 'Læg i kurv'
     assign bundle_btn_style = block.settings.bundle_button_style | default: 'primary'
-    assign first_step_count = block.settings.bundle_step_1_count | default: 1
 
     assign step_count = 0
     if block.settings.bundle_step_1_label != blank
@@ -335,13 +339,12 @@
         margin-bottom: 12px;
       }
 
-      /* ── Step slider ── */
+      /* ── Step slider (read-only, auto-progresses) ── */
       .bpk-{{ block.id }} .bpk__slider {
         background: var(--gsc-foreground-color-5);
         border-radius: var(--gsc-card-border-radius, 8px);
         padding: 20px 24px 16px;
         margin-bottom: 16px;
-        position: relative;
       }
       .bpk-{{ block.id }} .bpk__slider-track {
         position: relative;
@@ -354,8 +357,7 @@
         content: '';
         position: absolute;
         top: 50%;
-        left: 0;
-        right: 0;
+        left: 0; right: 0;
         height: 2px;
         background: var(--gsc-border-color-100);
         transform: translateY(-50%);
@@ -363,36 +365,34 @@
       }
       .bpk-{{ block.id }} .bpk__slider-fill {
         position: absolute;
-        top: 50%;
-        left: 0;
+        top: 50%; left: 0;
         height: 2px;
         background: var(--gsc-primary-button-bg-color);
         transform: translateY(-50%);
         z-index: 1;
-        transition: width 0.3s ease;
+        transition: width 0.35s ease;
       }
-      .bpk-{{ block.id }} .bpk__slider-opt {
+      .bpk-{{ block.id }} .bpk__slider-dot-wrap {
         position: relative;
         z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
         flex: 1;
+        display: flex;
+        justify-content: center;
       }
+      .bpk-{{ block.id }} .bpk__slider-dot-wrap:first-child { justify-content: flex-start; }
+      .bpk-{{ block.id }} .bpk__slider-dot-wrap:last-child { justify-content: flex-end; }
       .bpk-{{ block.id }} .bpk__slider-dot {
-        width: 20px;
-        height: 20px;
+        width: 18px; height: 18px;
         border-radius: 50%;
         border: 2px solid var(--gsc-border-color-100);
         background: var(--gsc-background-color, #fff);
-        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-        flex-shrink: 0;
+        transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
       }
-      .bpk-{{ block.id }} .bpk__slider-opt--active .bpk__slider-dot {
+      .bpk-{{ block.id }} .bpk__slider-dot--reached {
+        border-color: var(--gsc-primary-button-bg-color);
+        background: var(--gsc-primary-button-bg-color);
+      }
+      .bpk-{{ block.id }} .bpk__slider-dot--current {
         border-color: var(--gsc-primary-button-bg-color);
         background: var(--gsc-primary-button-bg-color);
         box-shadow: 0 0 0 3px var(--gsc-background-color, #fff), 0 0 0 5px var(--gsc-primary-button-bg-color);
@@ -402,10 +402,9 @@
         justify-content: space-between;
         margin-top: 4px;
       }
-      .bpk-{{ block.id }} .bpk__slider-label-group {
-        flex: 1;
-        text-align: center;
-      }
+      .bpk-{{ block.id }} .bpk__slider-label-group { flex: 1; text-align: center; }
+      .bpk-{{ block.id }} .bpk__slider-label-group:first-child { text-align: left; }
+      .bpk-{{ block.id }} .bpk__slider-label-group:last-child { text-align: right; }
       .bpk-{{ block.id }} .bpk__slider-label {
         display: block;
         font-family: var(--gsc-body-font-family);
@@ -422,131 +421,63 @@
       }
 
       /* ── Product list ── */
-      .bpk-{{ block.id }} .bpk__list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
+      .bpk-{{ block.id }} .bpk__list { display: flex; flex-direction: column; gap: 8px; }
       .bpk-{{ block.id }} .bpk__item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px;
+        display: flex; align-items: center; gap: 12px; padding: 10px;
         background: var(--gsc-foreground-color-5);
         border-radius: var(--gsc-card-border-radius, 8px);
         transition: box-shadow 0.2s;
       }
       .bpk-{{ block.id }} .bpk__item[hidden] { display: none; }
-      .bpk-{{ block.id }} .bpk__item--selected {
-        box-shadow: inset 0 0 0 2px var(--gsc-primary-button-bg-color);
-      }
-      .bpk-{{ block.id }} .bpk__item--unavailable {
-        opacity: 0.35;
-        pointer-events: none;
-      }
+      .bpk-{{ block.id }} .bpk__item--selected { box-shadow: inset 0 0 0 2px var(--gsc-primary-button-bg-color); }
+      .bpk-{{ block.id }} .bpk__item--unavailable { opacity: 0.35; pointer-events: none; }
       .bpk-{{ block.id }} .bpk__item-img {
-        width: 72px;
-        height: 72px;
-        flex-shrink: 0;
+        width: 72px; height: 72px; flex-shrink: 0;
         border-radius: calc(var(--gsc-card-border-radius, 8px) * 0.6);
-        overflow: hidden;
-        position: relative;
+        overflow: hidden; position: relative;
       }
-      .bpk-{{ block.id }} .bpk__item-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-      .bpk-{{ block.id }} .bpk__item-badge {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        padding: 1px 5px;
-        font-family: var(--gsc-body-font-family);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.4px;
-        text-transform: uppercase;
-        color: var(--gsc-primary-button-text-color);
-        background: var(--gsc-primary-button-bg-color);
-        border-radius: 3px;
-        line-height: 1.5;
-      }
-      .bpk-{{ block.id }} .bpk__item-info {
-        flex: 1;
-        min-width: 0;
-      }
+      .bpk-{{ block.id }} .bpk__item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .bpk-{{ block.id }} .bpk__item-info { flex: 1; min-width: 0; }
       .bpk-{{ block.id }} .bpk__item-name {
         font-family: var(--gsc-headings-font-family);
         font-weight: var(--gsc-headings-font-weight, 600);
         font-size: calc(1.35rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-100);
-        display: block;
-        line-height: 1.3;
+        display: block; line-height: 1.3;
       }
       .bpk-{{ block.id }} .bpk__item-tag {
-        display: inline-block;
-        padding: 1px 6px;
-        font-family: var(--gsc-body-font-family);
-        font-size: 10px;
-        color: var(--gsc-text-color-70);
-        border: 1px solid var(--gsc-border-color-100);
-        border-radius: 3px;
-        margin-top: 3px;
-        vertical-align: middle;
+        display: inline-block; padding: 1px 6px;
+        font-family: var(--gsc-body-font-family); font-size: 10px;
+        color: var(--gsc-text-color-70); border: 1px solid var(--gsc-border-color-100);
+        border-radius: 3px; margin-top: 3px;
       }
       .bpk-{{ block.id }} .bpk__item-desc {
-        display: block;
-        font-family: var(--gsc-body-font-family);
+        display: block; font-family: var(--gsc-body-font-family);
         font-size: calc(1.1rem * var(--gsc-body-font-scale));
-        color: var(--gsc-text-color-70);
-        margin-top: 2px;
-        line-height: 1.3;
+        color: var(--gsc-text-color-70); margin-top: 2px; line-height: 1.3;
       }
-      .bpk-{{ block.id }} .bpk__item-action {
-        flex-shrink: 0;
-      }
+      .bpk-{{ block.id }} .bpk__item-action { flex-shrink: 0; }
       .bpk-{{ block.id }} .bpk__item-add {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
+        display: inline-flex; align-items: center; gap: 4px;
         padding: 8px 14px;
-        font-family: var(--gsc-button-font-family);
-        font-weight: var(--gsc-button-font-weight);
+        font-family: var(--gsc-button-font-family); font-weight: var(--gsc-button-font-weight);
         font-size: calc(var(--gsc-button-font-size) * 0.85);
         letter-spacing: var(--gsc-button-letter-spacing);
         color: var(--gsc-primary-button-text-color);
         background: var(--gsc-primary-button-bg-color);
-        border: none;
-        border-radius: var(--gsc-card-border-radius, 8px);
-        cursor: pointer;
-        transition: background 0.2s, opacity 0.2s;
-        white-space: nowrap;
+        border: none; border-radius: var(--gsc-card-border-radius, 8px);
+        cursor: pointer; transition: background 0.2s; white-space: nowrap;
       }
       .bpk-{{ block.id }} .bpk__item-add:hover { background: var(--gsc-primary-button-bg-hover); }
-      .bpk-{{ block.id }} .bpk__item-add:disabled { opacity: 0.35; cursor: not-allowed; }
-      .bpk-{{ block.id }} .bpk__item-qty {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
+      .bpk-{{ block.id }} .bpk__item-qty { display: flex; align-items: center; gap: 8px; }
       .bpk-{{ block.id }} .bpk__qty-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: none;
-        font-size: 16px;
-        line-height: 1;
-        cursor: pointer;
-        padding: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 32px; height: 32px; border-radius: 50%; border: none;
+        font-size: 16px; line-height: 1; cursor: pointer; padding: 0;
         font-family: var(--gsc-body-font-family);
-        transition: background 0.15s, opacity 0.15s;
         color: var(--gsc-primary-button-text-color);
         background: var(--gsc-primary-button-bg-color);
+        transition: background 0.15s, opacity 0.15s;
       }
       .bpk-{{ block.id }} .bpk__qty-btn:hover { background: var(--gsc-primary-button-bg-hover); }
       .bpk-{{ block.id }} .bpk__qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -554,31 +485,14 @@
         font-family: var(--gsc-body-font-family);
         font-size: calc(1.4rem * var(--gsc-body-font-scale));
         font-weight: var(--gsc-headings-font-weight, 600);
-        min-width: 16px;
-        text-align: center;
+        min-width: 16px; text-align: center;
       }
 
       /* ── Pricing ── */
-      .bpk-{{ block.id }} .bpk__pricing {
-        text-align: center;
-        margin-top: 14px;
-        font-family: var(--gsc-body-font-family);
-      }
-      .bpk-{{ block.id }} .bpk__price-detail {
-        font-size: calc(1.25rem * var(--gsc-body-font-scale));
-        color: var(--gsc-text-color-70);
-      }
-      .bpk-{{ block.id }} .bpk__price-total {
-        font-size: calc(1.6rem * var(--gsc-body-font-scale));
-        font-weight: var(--gsc-headings-font-weight, 600);
-        color: var(--gsc-text-color-100);
-        margin-top: 2px;
-      }
-      .bpk-{{ block.id }} .bpk__price-save {
-        font-size: calc(1.15rem * var(--gsc-body-font-scale));
-        color: var(--gsc-sale-text-color, #e53935);
-        margin-top: 2px;
-      }
+      .bpk-{{ block.id }} .bpk__pricing { text-align: center; margin-top: 14px; font-family: var(--gsc-body-font-family); }
+      .bpk-{{ block.id }} .bpk__price-detail { font-size: calc(1.25rem * var(--gsc-body-font-scale)); color: var(--gsc-text-color-70); }
+      .bpk-{{ block.id }} .bpk__price-total { font-size: calc(1.6rem * var(--gsc-body-font-scale)); font-weight: var(--gsc-headings-font-weight, 600); color: var(--gsc-text-color-100); margin-top: 2px; }
+      .bpk-{{ block.id }} .bpk__price-save { font-size: calc(1.15rem * var(--gsc-body-font-scale)); color: var(--gsc-sale-text-color, #e53935); margin-top: 2px; }
 
       /* ── CTA ── */
       .bpk-{{ block.id }} .bpk__cta { margin-top: 14px; }
@@ -599,24 +513,24 @@
         <div class='bpk__slider-track'>
           <div class='bpk__slider-fill' data-slider-fill style='width: 0%;'></div>
           {%- if block.settings.bundle_step_1_label != blank -%}
-            <button type='button' class='bpk__slider-opt bpk__slider-opt--active' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_1_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_1_unit_price | default: 0 }}' data-step-index='0'>
-              <span class='bpk__slider-dot'></span>
-            </button>
+            <div class='bpk__slider-dot-wrap'>
+              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_1_count }}' data-tier-index='0'></span>
+            </div>
           {%- endif -%}
           {%- if block.settings.bundle_step_2_label != blank -%}
-            <button type='button' class='bpk__slider-opt' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_2_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_2_unit_price | default: 0 }}' data-step-index='1'>
-              <span class='bpk__slider-dot'></span>
-            </button>
+            <div class='bpk__slider-dot-wrap'>
+              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_2_count }}' data-tier-index='1'></span>
+            </div>
           {%- endif -%}
           {%- if block.settings.bundle_step_3_label != blank -%}
-            <button type='button' class='bpk__slider-opt' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_3_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_3_unit_price | default: 0 }}' data-step-index='2'>
-              <span class='bpk__slider-dot'></span>
-            </button>
+            <div class='bpk__slider-dot-wrap'>
+              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_3_count }}' data-tier-index='2'></span>
+            </div>
           {%- endif -%}
           {%- if block.settings.bundle_step_4_label != blank -%}
-            <button type='button' class='bpk__slider-opt' data-bundle-step data-bundle-step-count='{{ block.settings.bundle_step_4_count }}' data-bundle-unit-price='{{ block.settings.bundle_step_4_unit_price | default: 0 }}' data-step-index='3'>
-              <span class='bpk__slider-dot'></span>
-            </button>
+            <div class='bpk__slider-dot-wrap'>
+              <span class='bpk__slider-dot' data-tier-dot data-tier-count='{{ block.settings.bundle_step_4_count }}' data-tier-index='3'></span>
+            </div>
           {%- endif -%}
         </div>
         <div class='bpk__slider-labels'>
@@ -652,10 +566,13 @@
       {%- for v in product.variants -%}
         {%- liquid
           assign v_image = v.featured_image | default: product.featured_image
-          assign v_label = v.title
-          if v_label == 'Default Title'
-            assign v_label = product.title
-          endif
+          assign v_primary_label = v.option1
+          case bundle_primary_pos
+            when 2
+              assign v_primary_label = v.option2
+            when 3
+              assign v_primary_label = v.option3
+          endcase
         -%}
         <div
           class='bpk__item {% unless v.available %}bpk__item--unavailable{% endunless %}'
@@ -667,19 +584,23 @@
         >
           <div class='bpk__item-img'>
             {%- if v_image != blank -%}
-              <img src='{{ v_image | image_url: width: 200 }}' alt='{{ v_label | escape }}' width='72' height='72' loading='lazy'>
+              <img src='{{ v_image | image_url: width: 200 }}' alt='{{ v_primary_label | escape }}' width='72' height='72' loading='lazy'>
             {%- else -%}
               {{ 'product-4' | placeholder_svg_tag: 'placeholder-image' }}
             {%- endif -%}
           </div>
           <div class='bpk__item-info'>
-            <span class='bpk__item-name'>{{ v.option1 }}</span>
-            {%- if v.option2 -%}
-              <span class='bpk__item-tag'>{{ v.option2 }}</span>
-            {%- endif -%}
-            {%- if v.option3 -%}
-              <span class='bpk__item-desc'>{{ v.option3 }}</span>
-            {%- endif -%}
+            <span class='bpk__item-name'>{{ v_primary_label }}</span>
+            {%- for opt in product.options -%}
+              {%- assign opt_pos = forloop.index -%}
+              {%- if opt_pos != bundle_primary_pos -%}
+                {%- case opt_pos -%}
+                  {%- when 1 -%}<span class='bpk__item-tag'>{{ v.option1 }}</span>
+                  {%- when 2 -%}<span class='bpk__item-tag'>{{ v.option2 }}</span>
+                  {%- when 3 -%}<span class='bpk__item-tag'>{{ v.option3 }}</span>
+                {%- endcase -%}
+              {%- endif -%}
+            {%- endfor -%}
           </div>
           <div class='bpk__item-action'>
             <button type='button' class='bpk__item-add' data-bundle-add-one aria-label='Tilføj'>Tilføj +</button>
@@ -705,6 +626,23 @@
         <div class='loading-spinner btn__loading-spinner'></div>
       </button>
     </div>
+
+    <script type='application/json' data-bundle-tiers>
+      [
+        {%- if block.settings.bundle_step_1_label != blank -%}
+          { "count": {{ block.settings.bundle_step_1_count }}, "unitPrice": {{ block.settings.bundle_step_1_unit_price | default: 0 }}, "index": 0 }
+        {%- endif -%}
+        {%- if block.settings.bundle_step_2_label != blank -%}
+          ,{ "count": {{ block.settings.bundle_step_2_count }}, "unitPrice": {{ block.settings.bundle_step_2_unit_price | default: 0 }}, "index": 1 }
+        {%- endif -%}
+        {%- if block.settings.bundle_step_3_label != blank -%}
+          ,{ "count": {{ block.settings.bundle_step_3_count }}, "unitPrice": {{ block.settings.bundle_step_3_unit_price | default: 0 }}, "index": 2 }
+        {%- endif -%}
+        {%- if block.settings.bundle_step_4_label != blank -%}
+          ,{ "count": {{ block.settings.bundle_step_4_count }}, "unitPrice": {{ block.settings.bundle_step_4_unit_price | default: 0 }}, "index": 3 }
+        {%- endif -%}
+      ]
+    </script>
   </bundle-variant-picker>
 
   <script>
@@ -712,7 +650,7 @@
       class BundleVariantPicker extends HTMLElement {
         connectedCallback() {
           this.selectedItems = {};
-          this.primaryPos = this.dataset.primaryOptionPosition;
+          this.primaryPos = this.dataset.primaryOptionPosition || '1';
           this.items = this.querySelectorAll('[data-bundle-product]');
           this.addToCartBtn = this.querySelector('[data-bundle-add-to-cart]');
           this.pricingEl = this.querySelector('[data-bundle-pricing]');
@@ -720,34 +658,17 @@
           this.priceTotalEl = this.querySelector('[data-bundle-price-total]');
           this.priceSaveEl = this.querySelector('[data-bundle-price-save]');
           this.sliderFill = this.querySelector('[data-slider-fill]');
+          this.tierDots = this.querySelectorAll('[data-tier-dot]');
 
-          this.stepButtons = this.querySelectorAll('[data-bundle-step]');
-          this.totalSteps = this.stepButtons.length;
-          const first = this.stepButtons[0];
-          this.maxItems = parseInt(first?.dataset.bundleStepCount || '1');
-          this.unitPrice = parseInt(first?.dataset.bundleUnitPrice || '0');
+          this.tiers = JSON.parse(this.querySelector('[data-bundle-tiers]')?.textContent || '[]');
+          this.tiers.sort((a, b) => a.count - b.count);
 
-          this.baseUnitPrice = 0;
-          this.stepButtons.forEach(b => {
-            const p = parseInt(b.dataset.bundleUnitPrice || '0');
-            if (p > this.baseUnitPrice) this.baseUnitPrice = p;
-          });
-
-          this.stepButtons.forEach(b => b.addEventListener('click', () => this.selectStep(b)));
+          this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
 
           this.items.forEach(item => {
-            item.querySelector('[data-bundle-add-one]')?.addEventListener('click', e => {
-              e.stopPropagation();
-              this.addItem(item);
-            });
-            item.querySelector('[data-bundle-add]')?.addEventListener('click', e => {
-              e.stopPropagation();
-              this.addItem(item);
-            });
-            item.querySelector('[data-bundle-remove]')?.addEventListener('click', e => {
-              e.stopPropagation();
-              this.removeItem(item);
-            });
+            item.querySelector('[data-bundle-add-one]')?.addEventListener('click', e => { e.stopPropagation(); this.addItem(item); });
+            item.querySelector('[data-bundle-add]')?.addEventListener('click', e => { e.stopPropagation(); this.addItem(item); });
+            item.querySelector('[data-bundle-remove]')?.addEventListener('click', e => { e.stopPropagation(); this.removeItem(item); });
           });
 
           this.addToCartBtn?.addEventListener('click', () => this.addToCart());
@@ -761,7 +682,6 @@
           }
 
           this.onOptionChange();
-          this.updateSliderFill();
         }
 
         fmt(kr) { return kr.toLocaleString('da-DK') + ' kr'; }
@@ -783,10 +703,7 @@
           const nonPrimaryKeys = Object.keys(sel).filter(k => k !== this.primaryPos);
 
           this.items.forEach(item => {
-            if (nonPrimaryKeys.length === 0) {
-              item.hidden = false;
-              return;
-            }
+            if (nonPrimaryKeys.length === 0) { item.hidden = false; return; }
             let show = true;
             for (const pos of nonPrimaryKeys) {
               const cv = item.dataset['option' + pos];
@@ -802,25 +719,15 @@
           this.updateUI();
         }
 
-        selectStep(btn) {
-          this.stepButtons.forEach(b => b.classList.remove('bpk__slider-opt--active'));
-          btn.classList.add('bpk__slider-opt--active');
-          this.maxItems = parseInt(btn.dataset.bundleStepCount);
-          this.unitPrice = parseInt(btn.dataset.bundleUnitPrice || '0');
-          if (this.getTotalItems() > this.maxItems) this.selectedItems = {};
-          this.updateSliderFill();
-          this.updateUI();
-        }
-
-        updateSliderFill() {
-          if (!this.sliderFill || this.totalSteps < 2) return;
-          const active = this.querySelector('.bpk__slider-opt--active');
-          const idx = parseInt(active?.dataset.stepIndex || '0');
-          this.sliderFill.style.width = (idx / (this.totalSteps - 1) * 100) + '%';
+        getCurrentTier(total) {
+          let tier = this.tiers[0] || null;
+          for (const t of this.tiers) {
+            if (total >= t.count) tier = t;
+          }
+          return tier;
         }
 
         addItem(item) {
-          if (this.getTotalItems() >= this.maxItems) return;
           const vid = item.dataset.variantId;
           this.selectedItems[vid] = (this.selectedItems[vid] || 0) + 1;
           this.updateUI();
@@ -834,13 +741,31 @@
           this.updateUI();
         }
 
-        getTotalItems() {
-          return Object.values(this.selectedItems).reduce((s, q) => s + q, 0);
+        getTotalItems() { return Object.values(this.selectedItems).reduce((s, q) => s + q, 0); }
+
+        updateSlider(tier) {
+          if (!this.sliderFill || !this.tiers.length) return;
+          const totalDots = this.tierDots.length;
+          const activeIdx = tier ? tier.index : -1;
+
+          this.tierDots.forEach(dot => {
+            const idx = parseInt(dot.dataset.tierIndex);
+            dot.classList.remove('bpk__slider-dot--reached', 'bpk__slider-dot--current');
+            if (idx < activeIdx) dot.classList.add('bpk__slider-dot--reached');
+            else if (idx === activeIdx) dot.classList.add('bpk__slider-dot--current');
+          });
+
+          if (totalDots < 2) { this.sliderFill.style.width = activeIdx >= 0 ? '100%' : '0%'; return; }
+          const pct = activeIdx >= 0 ? (activeIdx / (totalDots - 1)) * 100 : 0;
+          this.sliderFill.style.width = pct + '%';
         }
 
         updateUI() {
           const total = this.getTotalItems();
-          const atMax = total >= this.maxItems;
+          const tier = this.getCurrentTier(total);
+          const unitPrice = tier ? tier.unitPrice : 0;
+
+          this.updateSlider(total > 0 ? tier : null);
 
           this.items.forEach(item => {
             if (item.hidden) return;
@@ -861,22 +786,20 @@
             }
 
             if (countEl) countEl.textContent = qty;
-            if (addOneBtn) addOneBtn.disabled = atMax || item.classList.contains('bpk__item--unavailable');
-            if (addBtn) addBtn.disabled = atMax;
             if (removeBtn) removeBtn.disabled = qty <= 0;
             item.classList.toggle('bpk__item--selected', qty > 0);
           });
 
           if (this.addToCartBtn) this.addToCartBtn.disabled = total === 0;
 
-          if (this.pricingEl && this.unitPrice > 0) {
+          if (this.pricingEl && unitPrice > 0) {
             if (total > 0) {
               this.pricingEl.style.display = '';
-              const tp = total * this.unitPrice;
-              this.priceDetailEl.textContent = total + ' × ' + this.fmt(this.unitPrice);
+              const tp = total * unitPrice;
+              this.priceDetailEl.textContent = total + ' × ' + this.fmt(unitPrice);
               this.priceTotalEl.textContent = 'Total: ' + this.fmt(tp);
               const fp = total * this.baseUnitPrice;
-              if (this.unitPrice < this.baseUnitPrice) {
+              if (unitPrice < this.baseUnitPrice) {
                 this.priceSaveEl.textContent = 'Du sparer ' + this.fmt(fp - tp);
                 this.priceSaveEl.style.display = '';
               } else { this.priceSaveEl.style.display = 'none'; }
