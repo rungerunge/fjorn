@@ -796,10 +796,6 @@
           this.primaryPos = this.dataset.primaryOptionPosition || '1';
           this.items = this.querySelectorAll('[data-bundle-product]');
           this.addToCartBtn = this.querySelector('[data-bundle-add-to-cart]');
-          this.pricingEl = this.querySelector('[data-bundle-pricing]');
-          this.priceDetailEl = this.querySelector('[data-bundle-price-detail]');
-          this.priceTotalEl = this.querySelector('[data-bundle-price-total]');
-          this.priceSaveEl = this.querySelector('[data-bundle-price-save]');
           this.btnPriceWrap = this.querySelector('[data-bundle-btn-price]');
           this.btnCompareEl = this.querySelector('[data-bundle-btn-compare]');
           this.btnTotalEl = this.querySelector('[data-bundle-btn-total]');
@@ -967,28 +963,15 @@
 
           if (this.addToCartBtn) this.addToCartBtn.disabled = total === 0;
 
-          if (this.pricingEl && unitPrice > 0) {
-            if (total > 0) {
-              this.pricingEl.style.display = '';
+          if (this.btnPriceWrap) {
+            if (total > 0 && unitPrice > 0) {
               const tp = total * unitPrice;
-              this.priceDetailEl.textContent = total + ' \u00d7 ' + this.fmt(unitPrice);
-              this.priceTotalEl.textContent = 'Total: ' + this.fmt(tp);
               const fp = total * this.baseUnitPrice;
-              if (unitPrice < this.baseUnitPrice) {
-                this.priceSaveEl.textContent = 'Du sparer ' + this.fmt(fp - tp);
-                this.priceSaveEl.style.display = '';
-              } else { this.priceSaveEl.style.display = 'none'; }
-
-              if (this.btnPriceWrap) {
-                this.btnPriceWrap.style.display = '';
-                this.btnTotalEl.textContent = this.fmt(tp);
-                if (unitPrice < this.baseUnitPrice) {
-                  this.btnCompareEl.textContent = this.fmt(fp);
-                } else { this.btnCompareEl.textContent = ''; }
-              }
+              this.btnPriceWrap.style.display = '';
+              this.btnTotalEl.textContent = this.fmt(tp);
+              this.btnCompareEl.textContent = (unitPrice < this.baseUnitPrice) ? this.fmt(fp) : '';
             } else {
-              this.pricingEl.style.display = 'none';
-              if (this.btnPriceWrap) this.btnPriceWrap.style.display = 'none';
+              this.btnPriceWrap.style.display = 'none';
             }
           }
         }
@@ -1000,15 +983,16 @@
           this.addToCartBtn.classList.add('loading');
           try {
             const r = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) });
-            if (!r.ok) throw new Error('Cart error');
+            if (!r.ok) { const err = await r.text(); throw new Error(err); }
             const cart = await (await fetch('/cart.js')).json();
             document.querySelectorAll('[data-cart-count]').forEach(el => { el.textContent = cart.item_count; });
             document.dispatchEvent(new CustomEvent('cart:change', { detail: { cart } }));
             document.dispatchEvent(new CustomEvent('cart:items-changed', { detail: { cart } }));
             this.selectedItems = {};
             this.updateUI();
-            const cd = document.querySelector('cart-drawer');
-            if (cd?.open) cd.open(); else window.location.href = '/cart';
+            const cartBtn = document.querySelector('[data-sidebar-button][data-sidebar-id="CartDrawer"]');
+            if (cartBtn) { cartBtn.click(); }
+            else { window.location.href = '/cart'; }
           } catch (e) { console.error('Bundle add-to-cart failed:', e); }
           finally { this.addToCartBtn.disabled = false; this.addToCartBtn.classList.remove('loading'); }
         }
