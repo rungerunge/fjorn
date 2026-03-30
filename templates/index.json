@@ -503,10 +503,10 @@
         "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-countdown-1": {
           "type": "countdown",
           "settings": {
-            "mode": "evergreen",
-            "year": "2024",
-            "month": "january",
-            "day": "1",
+            "mode": "fixed",
+            "year": "2026",
+            "month": "april",
+            "day": "15",
             "hour": "0",
             "minute": "0",
             "hide_on_complete": true,
