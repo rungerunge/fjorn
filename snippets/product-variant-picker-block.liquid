@@ -1047,36 +1047,22 @@
           try {
             const r = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) });
             if (!r.ok) { const err = await r.text(); throw new Error(err); }
+            const addedState = JSON.parse(await r.clone().text().catch(() => '{}'));
 
-            const cartDrawer = document.getElementById('CartDrawer');
-            const sectionId = cartDrawer?.dataset?.sectionId;
-            if (sectionId) {
-              const secResp = await fetch(`/?sections=${sectionId}`);
-              const sections = await secResp.json();
-              if (sections[sectionId]) {
-                const tmp = document.createElement('div');
-                tmp.innerHTML = sections[sectionId];
-                const fresh = tmp.querySelector('cart-drawer');
-                if (fresh && cartDrawer) cartDrawer.innerHTML = fresh.innerHTML;
-              }
+            const cartDrawer = document.querySelector('cart-drawer');
+            if (cartDrawer && typeof cartDrawer.purchaseHandler === 'function') {
+              const rootUrl = window.routes?.root_url || '/';
+              const pageHtml = await fetch(rootUrl).then(res => res.text());
+              const parsed = new DOMParser().parseFromString(pageHtml, 'text/html');
+              const firstItem = addedState.items?.[0] || { id: items[0].id, quantity: items[0].quantity };
+              this.selectedItems = {};
+              this.updateUI();
+              await cartDrawer.purchaseHandler(parsed, firstItem);
+            } else {
+              this.selectedItems = {};
+              this.updateUI();
+              window.location.href = '/cart';
             }
-
-            const cart = await (await fetch('/cart.js')).json();
-            document.querySelectorAll('[data-cart-count]').forEach(el => { el.textContent = cart.item_count; });
-            const countEl = document.getElementById('NewCartCount');
-            if (countEl) {
-              const badge = countEl.querySelector('.cart-count span');
-              if (badge) badge.textContent = cart.item_count;
-            }
-            document.dispatchEvent(new CustomEvent('cart:change', { detail: { cart } }));
-            document.dispatchEvent(new CustomEvent('cart:items-changed', { detail: { cart } }));
-
-            this.selectedItems = {};
-            this.updateUI();
-
-            const cartBtn = document.querySelector('[data-sidebar-button][data-sidebar-id="CartDrawer"]');
-            if (cartBtn) { cartBtn.click(); }
-            else { window.location.href = '/cart'; }
           } catch (e) { console.error('Bundle add-to-cart failed:', e); }
           finally { this.addToCartBtn.disabled = false; this.addToCartBtn.classList.remove('loading'); }
         }
