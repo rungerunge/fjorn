@@ -530,10 +530,10 @@
         "variant_card_f7wf3F": {
           "type": "variant_card",
           "settings": {
-            "product": "",
+            "product": "fjorn-premium-space-grey",
             "variant_id": "57668961075545",
             "badge_text": "",
-            "custom_title": "",
+            "custom_title": "Prima Aluminium - Space Grey",
             "custom_price": "",
             "custom_link": ""
           }
@@ -541,10 +541,10 @@
         "variant_card_c8xGtJ": {
           "type": "variant_card",
           "settings": {
-            "product": "",
-            "variant_id": "",
+            "product": "fjorn-premium-space-grey",
+            "variant_id": "57668961108313",
             "badge_text": "",
-            "custom_title": "",
+            "custom_title": "Prima Aluminium - Sort",
             "custom_price": "",
             "custom_link": ""
           }
