@@ -30,6 +30,7 @@
         },
         "judge_me_reviews_preview_badge_nDH4TE": {
           "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
           "settings": {}
         },
         "title": {
@@ -570,6 +571,7 @@
       "block_order": [
         "judge_me_reviews_review_widget_P9wVkR"
       ],
+      "disabled": true,
       "settings": {
         "custom_liquid": "",
         "container_size": "full-screen",
