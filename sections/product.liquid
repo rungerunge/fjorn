@@ -1769,6 +1769,161 @@
           "default": 60,
           "unit": "t:sections.product.variant_picker.information_drawer_image_width.unit",
           "label": "t:sections.product.variant_picker.information_drawer_image_width.label"
+        },
+        {
+          "type": "header",
+          "content": "Bundle-tilstand"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_bundle",
+          "default": false,
+          "label": "Aktiver bundle",
+          "info": "Erstatter farvevælgeren med et gitter af variantkort med +/− knapper, trin og \"Læg i kurv\"."
+        },
+        {
+          "type": "range",
+          "id": "bundle_columns",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3,
+          "label": "Kolonner i bundle-gitter",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Trin 1",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_1_count",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 1,
+          "label": "Antal",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_1_label",
+          "default": "1 stk",
+          "label": "Label",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_1_price",
+          "default": "199 kr",
+          "label": "Prisvisning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Trin 2",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_2_count",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 2,
+          "label": "Antal",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_2_label",
+          "label": "Label",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_2_price",
+          "label": "Prisvisning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Trin 3",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_3_count",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 3,
+          "label": "Antal",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_3_label",
+          "label": "Label",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_3_price",
+          "label": "Prisvisning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Trin 4 (valgfrit)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "range",
+          "id": "bundle_step_4_count",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 4,
+          "label": "Antal",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_4_label",
+          "label": "Label",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_step_4_price",
+          "label": "Prisvisning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Bundle-knap",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_button_label",
+          "default": "Læg i kurv",
+          "label": "Knaptekst",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "select",
+          "id": "bundle_button_style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "primary",
+          "label": "Knapstil",
+          "visible_if": "{{ block.settings.enable_bundle }}"
         }
       ]
     },
@@ -8248,173 +8403,6 @@
           "label": "t:sections.product.blocks.siblings.swatch_patterns.label",
           "info": "t:sections.product.blocks.siblings.swatch_patterns.info",
           "default": "Ultramarine::#0437F2\nCherry blossom::#FFB7C5\nSunny day::yellow/green/blue/\nSummertime::#F9FAFB/#0F9D58/#4285F4"
-        }
-      ]
-    },
-    {
-      "type": "bundle_builder",
-      "name": "Bundle Builder",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "default": "Byg din bundle",
-          "label": "Overskrift"
-        },
-        {
-          "type": "select",
-          "id": "heading_size",
-          "label": "Overskrift størrelse",
-          "options": [
-            { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6" },
-            { "value": "h7", "label": "H7" },
-            { "value": "caption1", "label": "Caption 1" },
-            { "value": "caption2", "label": "Caption 2" }
-          ],
-          "default": "h6"
-        },
-        {
-          "type": "product_list",
-          "id": "bundle_products",
-          "label": "Produkter i bundle",
-          "limit": 12
-        },
-        {
-          "type": "range",
-          "id": "columns",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Kolonner"
-        },
-        {
-          "type": "select",
-          "id": "img_ratio",
-          "options": [
-            { "value": "default", "label": "Standard" },
-            { "value": "square", "label": "Kvadratisk" },
-            { "value": "portrait", "label": "Portræt" }
-          ],
-          "default": "square",
-          "label": "Billedformat"
-        },
-        {
-          "type": "header",
-          "content": "Trin 1"
-        },
-        {
-          "type": "range",
-          "id": "step_1_count",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 1,
-          "label": "Antal"
-        },
-        {
-          "type": "text",
-          "id": "step_1_label",
-          "default": "1 stk",
-          "label": "Label"
-        },
-        {
-          "type": "text",
-          "id": "step_1_price",
-          "default": "199 kr",
-          "label": "Prisvisning"
-        },
-        {
-          "type": "header",
-          "content": "Trin 2"
-        },
-        {
-          "type": "range",
-          "id": "step_2_count",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 2,
-          "label": "Antal"
-        },
-        {
-          "type": "text",
-          "id": "step_2_label",
-          "label": "Label"
-        },
-        {
-          "type": "text",
-          "id": "step_2_price",
-          "label": "Prisvisning"
-        },
-        {
-          "type": "header",
-          "content": "Trin 3"
-        },
-        {
-          "type": "range",
-          "id": "step_3_count",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 3,
-          "label": "Antal"
-        },
-        {
-          "type": "text",
-          "id": "step_3_label",
-          "label": "Label"
-        },
-        {
-          "type": "text",
-          "id": "step_3_price",
-          "label": "Prisvisning"
-        },
-        {
-          "type": "header",
-          "content": "Trin 4 (valgfrit)"
-        },
-        {
-          "type": "range",
-          "id": "step_4_count",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 4,
-          "label": "Antal"
-        },
-        {
-          "type": "text",
-          "id": "step_4_label",
-          "label": "Label"
-        },
-        {
-          "type": "text",
-          "id": "step_4_price",
-          "label": "Prisvisning"
-        },
-        {
-          "type": "header",
-          "content": "Knap"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "default": "Læg i kurv",
-          "label": "Knaptekst"
-        },
-        {
-          "type": "select",
-          "id": "button_style",
-          "options": [
-            { "value": "primary", "label": "Primær" },
-            { "value": "secondary", "label": "Sekundær" },
-            { "value": "tertiary", "label": "Tertiær" }
-          ],
-          "default": "primary",
-          "label": "Knapstil"
         }
       ]
     }

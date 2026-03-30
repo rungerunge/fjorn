@@ -65,8 +65,6 @@
             render 'in-cart-banner', section: section, block: block, class: 'product-promo-banner'
           when 'product_usps'
             render 'product-usps-block', block: block
-          when 'bundle_builder'
-            render 'product-bundle-block', product: product, section: section, block: block, sectionId: sectionId
         endcase
       endfor
     -%}
