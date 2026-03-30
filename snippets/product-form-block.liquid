@@ -97,7 +97,7 @@
                   {%- endif -%}
                 </span>
                 <span class='product-form__btn-price' data-btn-price-wrap>
-                  <span data-btn-price-sep> - </span>
+                  <span data-btn-price-sep>&nbsp;-&nbsp;</span>
                   <s data-btn-compare-price style='opacity:0.7;margin-right:4px;'>{%- if selected_variant.compare_at_price > selected_variant.price -%}{{ selected_variant.compare_at_price | money }}{%- endif -%}</s>
                   <span data-btn-current-price>{{ selected_variant.price | money }}</span>
                 </span>
