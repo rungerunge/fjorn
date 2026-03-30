@@ -114,7 +114,27 @@
             "page": "",
             "body_size": "body3",
             "media_type": "image",
-            "image_width": 60
+            "image_width": 60,
+            "enable_bundle": true,
+            "bundle_columns": 3,
+            "bundle_step_1_count": 1,
+            "bundle_step_1_label": "1 stk",
+            "bundle_step_1_price": "649 kr/stk",
+            "bundle_step_1_unit_price": 649,
+            "bundle_step_2_count": 2,
+            "bundle_step_2_label": "2 stk",
+            "bundle_step_2_price": "599 kr/stk",
+            "bundle_step_2_unit_price": 599,
+            "bundle_step_3_count": 3,
+            "bundle_step_3_label": "3+",
+            "bundle_step_3_price": "549 kr/stk",
+            "bundle_step_3_unit_price": 549,
+            "bundle_step_4_count": 4,
+            "bundle_step_4_label": "",
+            "bundle_step_4_price": "",
+            "bundle_step_4_unit_price": 499,
+            "bundle_button_label": "Læg i kurv",
+            "bundle_button_style": "primary"
           }
         },
         "inventory_status": {
