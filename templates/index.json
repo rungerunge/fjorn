@@ -343,106 +343,6 @@
         "section_spacing_bottom": "xxl"
       }
     },
-    "d31e75db-2f94-49b3-9015-a319fb18aa66": {
-      "type": "countdown-banner",
-      "blocks": {
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-subheading-1": {
-          "type": "subheading",
-          "settings": {
-            "subheading": "DON'T MISS OUT ON OUR MASSIVE SALE"
-          }
-        },
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-heading-1": {
-          "type": "heading",
-          "settings": {
-            "heading": "Instant season outfits are up to 35% off",
-            "heading_size": "h1"
-          }
-        },
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-countdown-1": {
-          "type": "countdown",
-          "settings": {
-            "mode": "evergreen",
-            "year": "2024",
-            "month": "january",
-            "day": "1",
-            "hour": "0",
-            "minute": "0",
-            "hide_on_complete": true,
-            "evergreen_unit": "day",
-            "evergreen_value": 3,
-            "evergreen_on_complete": "restart",
-            "timer_desktop_width": 64,
-            "background_type": "separate",
-            "background_style": "solid",
-            "outline_background_border_thickness": 1,
-            "background_opacity": 20,
-            "blurred_background_blur": 12,
-            "enable_separators": true,
-            "captitalize_unit_labels": true,
-            "color_scheme_variant": "own",
-            "color_scheme": "8"
-          }
-        },
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-buttons-1": {
-          "type": "buttons",
-          "settings": {
-            "btn_text": "Shop now",
-            "btn_url": "",
-            "btn_style": "tertiary",
-            "extra_btn_text": "",
-            "extra_btn_url": "",
-            "extra_btn_style": "solid"
-          }
-        }
-      },
-      "block_order": [
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-subheading-1",
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-heading-1",
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-countdown-1",
-        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-buttons-1"
-      ],
-      "disabled": true,
-      "settings": {
-        "desktop_ratio": 0.4,
-        "mobile_ratio": 1.7,
-        "desktop_media_type": "image",
-        "desktop_enable_overlay": true,
-        "desktop_overlay_opacity": 15,
-        "mobile_media_type": "image",
-        "mobile_enable_overlay": true,
-        "mobile_overlay_opacity": 15,
-        "desktop_content_position": "align-items:center;justify-content:center;",
-        "desktop_content_align": "center",
-        "content_max_width": 880,
-        "mobile_content_position": "align-items:flex-end;justify-content:center;",
-        "mobile_content_align": "center",
-        "content_paddings_size": "m",
-        "desktop_content_background": "none",
-        "desktop_outline_border_thickness": 1,
-        "desktop_background_opacity": 20,
-        "desktop_background_blur": 12,
-        "desktop_shadow_background_color": "#000000",
-        "mobile_content_background": "none",
-        "mobile_outline_border_thickness": 1,
-        "mobile_background_opacity": 20,
-        "mobile_background_blur": 12,
-        "mobile_shadow_background_color": "#767676",
-        "container_size": "page-width",
-        "round_level": "default",
-        "color_scheme_variant": "own",
-        "color_scheme": "10",
-        "custom_text_color": "#ffffff",
-        "custom_background_color": "#000000",
-        "custom_foreground_color": "#000000",
-        "show_background": false,
-        "add_desktop_side_paddings": true,
-        "add_mobile_side_paddings": true,
-        "section_spacing_top": "xxxl",
-        "section_spacing_bottom": "xxl",
-        "disable_lazy_loading": false
-      }
-    },
     "collection_text": {
       "type": "collection-text",
       "disabled": true,
@@ -582,6 +482,105 @@
         "add_mobile_side_paddings": true,
         "section_spacing_top": "l",
         "section_spacing_bottom": "l"
+      }
+    },
+    "d31e75db-2f94-49b3-9015-a319fb18aa66": {
+      "type": "countdown-banner",
+      "blocks": {
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-subheading-1": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "DET MÅ DU IKKE GÅ GLIP AF"
+          }
+        },
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "ÅBNINGSUDSALG - SPAR OP TIL 15%",
+            "heading_size": "h5"
+          }
+        },
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-countdown-1": {
+          "type": "countdown",
+          "settings": {
+            "mode": "evergreen",
+            "year": "2024",
+            "month": "january",
+            "day": "1",
+            "hour": "0",
+            "minute": "0",
+            "hide_on_complete": true,
+            "evergreen_unit": "day",
+            "evergreen_value": 3,
+            "evergreen_on_complete": "restart",
+            "timer_desktop_width": 64,
+            "background_type": "separate",
+            "background_style": "solid",
+            "outline_background_border_thickness": 1,
+            "background_opacity": 20,
+            "blurred_background_blur": 12,
+            "enable_separators": true,
+            "captitalize_unit_labels": true,
+            "color_scheme_variant": "own",
+            "color_scheme": "9"
+          }
+        },
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-buttons-1": {
+          "type": "buttons",
+          "settings": {
+            "btn_text": "SHOP NU",
+            "btn_url": "shopify://collections/all",
+            "btn_style": "tertiary",
+            "extra_btn_text": "",
+            "extra_btn_url": "",
+            "extra_btn_style": "solid"
+          }
+        }
+      },
+      "block_order": [
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-subheading-1",
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-heading-1",
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-countdown-1",
+        "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-buttons-1"
+      ],
+      "settings": {
+        "desktop_ratio": 0.4,
+        "mobile_ratio": 1.7,
+        "desktop_media_type": "image",
+        "desktop_enable_overlay": true,
+        "desktop_overlay_opacity": 15,
+        "mobile_media_type": "image",
+        "mobile_enable_overlay": true,
+        "mobile_overlay_opacity": 15,
+        "desktop_content_position": "align-items:center;justify-content:center;",
+        "desktop_content_align": "center",
+        "content_max_width": 880,
+        "mobile_content_position": "align-items:center;justify-content:center;",
+        "mobile_content_align": "center",
+        "content_paddings_size": "m",
+        "desktop_content_background": "none",
+        "desktop_outline_border_thickness": 1,
+        "desktop_background_opacity": 20,
+        "desktop_background_blur": 12,
+        "desktop_shadow_background_color": "#000000",
+        "mobile_content_background": "none",
+        "mobile_outline_border_thickness": 1,
+        "mobile_background_opacity": 20,
+        "mobile_background_blur": 12,
+        "mobile_shadow_background_color": "#767676",
+        "container_size": "page-width",
+        "round_level": "default",
+        "color_scheme_variant": "own",
+        "color_scheme": "10",
+        "custom_text_color": "#ffffff",
+        "custom_background_color": "#000000",
+        "custom_foreground_color": "#000000",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xs",
+        "section_spacing_bottom": "xxl",
+        "disable_lazy_loading": false
       }
     },
     "collection_list": {
@@ -1549,7 +1548,7 @@
       ],
       "settings": {
         "desktop_layout": "grid",
-        "mobile_layout": "one-column-grid",
+        "mobile_layout": "slideshow",
         "desktop_columns": 3,
         "space_between_cards": "m",
         "space_between_cards_mobile": "m",
@@ -1586,9 +1585,9 @@
     "a12dd186-36ea-4f50-a508-21fed6170a2b",
     "multiple_collections_1",
     "featured_navigation_hDXUgg",
-    "d31e75db-2f94-49b3-9015-a319fb18aa66",
     "collection_text",
     "variant_collection_grid_HQbELJ",
+    "d31e75db-2f94-49b3-9015-a319fb18aa66",
     "collection_list",
     "image_scroller_eGkKhT",
     "collage_2",
