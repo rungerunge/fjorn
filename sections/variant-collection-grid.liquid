@@ -43,23 +43,6 @@
   endif
 
   assign enable_content_slide_in = settings.enable_content_slide_in
-
-  assign bundle_mode = options.enable_bundle
-  assign bundle_button_label = options.bundle_button_label | default: 'Læg i kurv'
-  assign bundle_button_style = options.bundle_button_style | default: 'primary'
-
-  assign has_steps = false
-  assign first_step_count = 1
-  if bundle_mode
-    for block in section.blocks
-      if block.type == 'step'
-        assign has_steps = true
-        if forloop.first
-          assign first_step_count = block.settings.count
-        endif
-      endif
-    endfor
-  endif
 -%}
 
 {% capture css %}
@@ -76,155 +59,6 @@
         --gsc-columns: {{ desktop_columns }};
       }
     }
-
-    {% if bundle_mode %}
-      .bundle-{{ section.id }} .bundle-builder__steps {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 32px;
-      }
-      .bundle-{{ section.id }} .bundle-builder__step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-        padding: 12px 24px;
-        border: 1px solid var(--gsc-border-color-100);
-        background: transparent;
-        cursor: pointer;
-        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        font-family: var(--gsc-button-font-family);
-        font-style: var(--gsc-button-font-style);
-        font-weight: var(--gsc-button-font-weight);
-        letter-spacing: var(--gsc-button-letter-spacing);
-        text-transform: var(--gsc-button-text-transform);
-        font-size: var(--gsc-button-font-size);
-        line-height: var(--gsc-button-line-height);
-        color: var(--gsc-text-color-100);
-        border-radius: inherit;
-        min-width: 120px;
-      }
-      .bundle-{{ section.id }} .bundle-builder__step:hover {
-        background: var(--gsc-foreground-color-5);
-      }
-      .bundle-{{ section.id }} .bundle-builder__step--active {
-        background: var(--gsc-primary-button-bg-color);
-        color: var(--gsc-primary-button-text-color);
-        border-color: var(--gsc-primary-button-bg-color);
-      }
-      .bundle-{{ section.id }} .bundle-builder__step--active:hover {
-        background: var(--gsc-primary-button-bg-hover);
-      }
-      .bundle-{{ section.id }} .bundle-builder__step-label {
-        font-size: 0.85em;
-        opacity: 0.8;
-      }
-      .bundle-{{ section.id }} .bundle-builder__step-price {
-        font-size: 0.8em;
-        opacity: 0.7;
-      }
-      .bundle-{{ section.id }} .bundle-builder__status {
-        text-align: center;
-        margin-bottom: 24px;
-        font-family: var(--gsc-body-font-family);
-        font-size: calc(1.4rem * var(--gsc-body-font-scale));
-        color: var(--gsc-text-color-70);
-      }
-      .bundle-{{ section.id }} .bundle-builder__status-count {
-        font-weight: var(--gsc-headings-font-weight, 600);
-        color: var(--gsc-text-color-100);
-      }
-      .bundle-{{ section.id }} .bundle-builder__product-controls {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 8px;
-      }
-      .bundle-{{ section.id }} .bundle-builder__qty-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border: 1px solid var(--gsc-border-color-100);
-        background: transparent;
-        color: var(--gsc-text-color-100);
-        font-size: 18px;
-        line-height: 1;
-        cursor: pointer;
-        transition: background 0.15s ease, opacity 0.15s ease;
-        border-radius: inherit;
-        padding: 0;
-        font-family: var(--gsc-body-font-family);
-      }
-      .bundle-{{ section.id }} .bundle-builder__qty-btn:hover:not(:disabled) {
-        background: var(--gsc-foreground-color-10);
-      }
-      .bundle-{{ section.id }} .bundle-builder__qty-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-      }
-      .bundle-{{ section.id }} .bundle-builder__qty-count {
-        font-family: var(--gsc-body-font-family);
-        font-size: calc(1.4rem * var(--gsc-body-font-scale));
-        font-weight: var(--gsc-headings-font-weight, 600);
-        color: var(--gsc-text-color-100);
-        min-width: 20px;
-        text-align: center;
-      }
-      .bundle-{{ section.id }} .bundle-builder__badge {
-        display: inline-block;
-        padding: 2px 8px;
-        font-family: var(--gsc-body-font-family);
-        font-size: 11px;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        color: var(--gsc-primary-button-text-color);
-        background: var(--gsc-primary-button-bg-color);
-        border-radius: inherit;
-        margin-top: 4px;
-      }
-      .bundle-{{ section.id }} .bundle-builder__product-card--selected .product-card__inner {
-        box-shadow: 0 0 0 2px var(--gsc-primary-button-bg-color);
-        border-radius: inherit;
-      }
-      .bundle-{{ section.id }} .bundle-builder__cta {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        margin-top: 32px;
-        padding-top: 24px;
-      }
-      .bundle-{{ section.id }} .bundle-builder__add-to-cart {
-        min-width: 280px;
-      }
-      .bundle-{{ section.id }} .bundle-builder__add-to-cart.loading .bundle-builder__btn-text {
-        visibility: hidden;
-      }
-      .bundle-{{ section.id }} .bundle-builder__add-to-cart .loading-spinner {
-        display: none;
-      }
-      .bundle-{{ section.id }} .bundle-builder__add-to-cart.loading .loading-spinner {
-        display: block;
-      }
-      @media {% render 'media-queries', screen: 'md' %} {
-        .bundle-{{ section.id }} .bundle-builder__steps {
-          gap: 12px;
-          margin-bottom: 40px;
-        }
-        .bundle-{{ section.id }} .bundle-builder__step {
-          padding: 16px 32px;
-          min-width: 140px;
-        }
-        .bundle-{{ section.id }} .bundle-builder__cta {
-          margin-top: 48px;
-        }
-      }
-    {% endif %}
   {% endstyle %}
 {% endcapture %}
 
@@ -240,33 +74,6 @@
         <h2 class='collection__title {{ heading_size }}'>{{ heading }}</h2>
       </div>
     {%- endif -%}
-
-    {% if bundle_mode %}
-      <bundle-builder class='bundle-{{ section.id }}' data-section-id='{{ section.id }}'>
-    {% endif %}
-
-      {%- if bundle_mode and has_steps -%}
-        <div class='bundle-builder__steps'>
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'step' -%}
-              <button
-                type='button'
-                class='bundle-builder__step {% if forloop.index == 1 %}bundle-builder__step--active{% endif %}'
-                data-bundle-step
-                data-bundle-step-count='{{ block.settings.count }}'
-                {{ block.shopify_attributes }}
-              >
-                <span class='bundle-builder__step-label'>{{ block.settings.label }}</span>
-                <span class='bundle-builder__step-price'>{{ block.settings.price_text }}</span>
-              </button>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-
-        <div class='bundle-builder__status'>
-          Valgt: <span class='bundle-builder__status-count' data-bundle-counter>0 / {{ first_step_count }}</span>
-        </div>
-      {%- endif -%}
 
       <div class='slider-grid'>
         <div slider-grid-track class='slider-grid-track slider-grid__d-grid slider-grid__m-grid'>
@@ -373,29 +180,21 @@
               >
                 <div class='
                   product-card
-                  {% if bundle_mode %}bundle-builder__product-card{% endif %}
                   {% if card_style %}product-card--{{ card_style }}{% endif %}
-                  {% if bundle_mode %}product-card--center-alignment{% else %}product-card--{{ product_card_align }}-alignment{% endif %}
+                  product-card--{{ product_card_align }}-alignment
                   product-card--button-position-desktop-{{ settings.desktop_button_position }}
                   product-card--button-position-mobile-{{ settings.mobile_button_position }}
                   product-card--button-type-desktop-{{ settings.desktop_button_type }}
                   product-card--button-type-mobile-{{ settings.mobile_button_type }}
-                '
-                  {% if bundle_mode and variant_id_for_cart != blank %}
-                    data-bundle-product
-                    data-variant-id='{{ variant_id_for_cart }}'
-                  {% endif %}
-                >
+                '>
                   <div
                     class='product-card__inner shape shape--{{ img_ratio }} {% if img_ratio contains 'fit' %}shape--fit{% endif %}'
                     data-product-card-inner
                   >
                     <div class='product-card__images-wrapper {% if with_media_mix_mode %}multiply-mode{% endif %}'>
-                      {%- unless bundle_mode -%}
-                        {%- if card_link != blank -%}
-                          <a class='product-card__link' href='{{ card_link }}' aria-label='{{ card_title | strip_html | escape }}'></a>
-                        {%- endif -%}
-                      {%- endunless -%}
+                      {%- if card_link != blank -%}
+                        <a class='product-card__link' href='{{ card_link }}' aria-label='{{ card_title | strip_html | escape }}'></a>
+                      {%- endif -%}
                       <div class='product-card__images'>
                         {%- if card_image != blank -%}
                           <img
@@ -418,24 +217,16 @@
                     <div class='product-card__details-inner'>
                       <div class='product-card__info'>
                         {%- if card_title != blank -%}
-                          {%- if bundle_mode -%}
-                            <span class='product-card__title'>{{- card_title -}}</span>
-                          {%- else -%}
-                            <a
-                              class='product-card__title unstyled-link'
-                              {% if card_link != blank %}href='{{ card_link }}'{% endif %}
-                              aria-label='{{ card_title | strip_html | escape }}'
-                            >
-                              {{- card_title -}}
-                            </a>
-                          {%- endif -%}
+                          <a
+                            class='product-card__title unstyled-link'
+                            {% if card_link != blank %}href='{{ card_link }}'{% endif %}
+                            aria-label='{{ card_title | strip_html | escape }}'
+                          >
+                            {{- card_title -}}
+                          </a>
                         {%- endif -%}
 
-                        {%- if badge_text != blank -%}
-                          <span class='bundle-builder__badge'>{{ badge_text }}</span>
-                        {%- endif -%}
-
-                        {%- if card_price_text != blank and bundle_mode == false -%}
+                        {%- if card_price_text != blank -%}
                           <div class='product-card__price'>
                             <div class='product-card__price-cost'>
                               <div class='product-card__price-item {% if card_compare_price != blank and settings.product_card_highlight_sale_price %}product-card__price-item--highlight-sale{% endif %}'>
@@ -450,13 +241,6 @@
                           </div>
                         {%- endif -%}
 
-                        {%- if bundle_mode -%}
-                          <div class='bundle-builder__product-controls'>
-                            <button type='button' class='bundle-builder__qty-btn' data-bundle-remove disabled aria-label='Fjern'>−</button>
-                            <span class='bundle-builder__qty-count' data-bundle-item-count>0</span>
-                            <button type='button' class='bundle-builder__qty-btn' data-bundle-add aria-label='Tilføj'>+</button>
-                          </div>
-                        {%- endif -%}
                       </div>
                     </div>
                   </div>
@@ -467,167 +251,10 @@
         </div>
       </div>
 
-      {%- if bundle_mode -%}
-        <div class='bundle-builder__cta'>
-          <button
-            type='button'
-            class='btn btn--lg btn--{{ bundle_button_style }} bundle-builder__add-to-cart'
-            data-bundle-add-to-cart
-            disabled
-          >
-            <span class='bundle-builder__btn-text'>{{ bundle_button_label }}</span>
-            <div class='loading-spinner btn__loading-spinner'></div>
-          </button>
-        </div>
-      {%- endif -%}
-
-    {% if bundle_mode %}
-      </bundle-builder>
-    {% endif %}
-
   </div>
 </div>
 
 {% render 'save-section-data-in-global-scope', section: section %}
-
-{% if bundle_mode %}
-<script>
-  if (!customElements.get('bundle-builder')) {
-    class BundleBuilder extends HTMLElement {
-      connectedCallback() {
-        this.selectedItems = {};
-        this.maxItems = parseInt(this.querySelector('[data-bundle-step]')?.dataset.bundleStepCount || '1');
-
-        this.stepButtons = this.querySelectorAll('[data-bundle-step]');
-        this.productCards = this.querySelectorAll('[data-bundle-product]');
-        this.addToCartBtn = this.querySelector('[data-bundle-add-to-cart]');
-        this.counterDisplay = this.querySelector('[data-bundle-counter]');
-
-        this.stepButtons.forEach((btn) => {
-          btn.addEventListener('click', () => this.selectStep(btn));
-        });
-
-        this.productCards.forEach((card) => {
-          card.querySelector('[data-bundle-add]')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.addItem(card);
-          });
-          card.querySelector('[data-bundle-remove]')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.removeItem(card);
-          });
-        });
-
-        this.addToCartBtn?.addEventListener('click', () => this.addToCart());
-        this.updateUI();
-      }
-
-      selectStep(btn) {
-        const newMax = parseInt(btn.dataset.bundleStepCount);
-        this.stepButtons.forEach((b) => b.classList.remove('bundle-builder__step--active'));
-        btn.classList.add('bundle-builder__step--active');
-        this.maxItems = newMax;
-
-        if (this.getTotalItems() > newMax) {
-          this.selectedItems = {};
-        }
-        this.updateUI();
-      }
-
-      addItem(card) {
-        if (this.getTotalItems() >= this.maxItems) return;
-        const vid = card.dataset.variantId;
-        this.selectedItems[vid] = (this.selectedItems[vid] || 0) + 1;
-        this.updateUI();
-      }
-
-      removeItem(card) {
-        const vid = card.dataset.variantId;
-        if (!this.selectedItems[vid] || this.selectedItems[vid] <= 0) return;
-        this.selectedItems[vid]--;
-        if (this.selectedItems[vid] === 0) delete this.selectedItems[vid];
-        this.updateUI();
-      }
-
-      getTotalItems() {
-        return Object.values(this.selectedItems).reduce((s, q) => s + q, 0);
-      }
-
-      updateUI() {
-        const total = this.getTotalItems();
-        const atMax = total >= this.maxItems;
-
-        if (this.counterDisplay) {
-          this.counterDisplay.textContent = total + ' / ' + this.maxItems;
-        }
-
-        this.productCards.forEach((card) => {
-          const vid = card.dataset.variantId;
-          const qty = this.selectedItems[vid] || 0;
-          const addBtn = card.querySelector('[data-bundle-add]');
-          const removeBtn = card.querySelector('[data-bundle-remove]');
-          const countEl = card.querySelector('[data-bundle-item-count]');
-
-          if (countEl) countEl.textContent = qty;
-          if (addBtn) addBtn.disabled = atMax;
-          if (removeBtn) removeBtn.disabled = qty <= 0;
-          card.classList.toggle('bundle-builder__product-card--selected', qty > 0);
-        });
-
-        if (this.addToCartBtn) {
-          this.addToCartBtn.disabled = total === 0;
-        }
-      }
-
-      async addToCart() {
-        const items = Object.entries(this.selectedItems)
-          .filter(([, qty]) => qty > 0)
-          .map(([id, quantity]) => ({ id: parseInt(id), quantity }));
-
-        if (items.length === 0) return;
-
-        this.addToCartBtn.disabled = true;
-        this.addToCartBtn.classList.add('loading');
-
-        try {
-          const res = await fetch('/cart/add.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items }),
-          });
-
-          if (!res.ok) throw new Error('Cart error');
-
-          const cartRes = await fetch('/cart.js');
-          const cart = await cartRes.json();
-
-          document.querySelectorAll('[data-cart-count]').forEach((el) => {
-            el.textContent = cart.item_count;
-          });
-          document.dispatchEvent(new CustomEvent('cart:change', { detail: { cart } }));
-          document.dispatchEvent(new CustomEvent('cart:items-changed', { detail: { cart } }));
-
-          this.selectedItems = {};
-          this.updateUI();
-
-          const cartDrawer = document.querySelector('cart-drawer');
-          if (cartDrawer && typeof cartDrawer.open === 'function') {
-            cartDrawer.open();
-          } else {
-            window.location.href = '/cart';
-          }
-        } catch (err) {
-          console.error('Bundle add-to-cart failed:', err);
-        } finally {
-          this.addToCartBtn.disabled = false;
-          this.addToCartBtn.classList.remove('loading');
-        }
-      }
-    }
-    customElements.define('bundle-builder', BundleBuilder);
-  }
-</script>
-{% endif %}
 
 {% schema %}
 {
@@ -743,36 +370,6 @@
       "id": "product_card_align",
       "label": "Tekstjustering i kort",
       "default": "left"
-    },
-    {
-      "type": "header",
-      "content": "Bundle-tilstand"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_bundle",
-      "default": false,
-      "label": "Aktiver bundle",
-      "info": "Aktiverer trinvælger, +/− knapper og \"Læg i kurv\". Tilføj Trin-blokke for at konfigurere trin og priser."
-    },
-    {
-      "type": "text",
-      "id": "bundle_button_label",
-      "default": "Læg i kurv",
-      "label": "Kurv-knaptekst",
-      "visible_if": "{{ section.settings.enable_bundle }}"
-    },
-    {
-      "type": "select",
-      "id": "bundle_button_style",
-      "options": [
-        { "value": "primary", "label": "Primær" },
-        { "value": "secondary", "label": "Sekundær" },
-        { "value": "tertiary", "label": "Tertiær" }
-      ],
-      "default": "primary",
-      "label": "Knapstil",
-      "visible_if": "{{ section.settings.enable_bundle }}"
     },
     {
       "type": "header",
@@ -929,41 +526,12 @@
           "type": "text",
           "id": "custom_price",
           "label": "Brugerdefineret pris",
-          "info": "Fx \"299 kr\". Vises kun uden bundle-tilstand."
+          "info": "Fx \"299 kr\"."
         },
         {
           "type": "url",
           "id": "custom_link",
-          "label": "Brugerdefineret link",
-          "info": "Vises kun uden bundle-tilstand."
-        }
-      ]
-    },
-    {
-      "type": "step",
-      "name": "Trin (bundle)",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "range",
-          "id": "count",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 1,
-          "label": "Antal produkter"
-        },
-        {
-          "type": "text",
-          "id": "label",
-          "default": "1 parfume",
-          "label": "Trinlabel"
-        },
-        {
-          "type": "text",
-          "id": "price_text",
-          "default": "199 kr",
-          "label": "Prisvisning"
+          "label": "Brugerdefineret link"
         }
       ]
     }
