@@ -1816,8 +1816,15 @@
         {
           "type": "text",
           "id": "bundle_step_1_price",
-          "default": "199 kr",
+          "default": "649 kr/stk",
           "label": "Prisvisning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_step_1_unit_price",
+          "default": 649,
+          "label": "Stykpris (kr) — til beregning",
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
         {
@@ -1848,6 +1855,13 @@
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
         {
+          "type": "number",
+          "id": "bundle_step_2_unit_price",
+          "default": 599,
+          "label": "Stykpris (kr) — til beregning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
           "type": "header",
           "content": "Trin 3",
           "visible_if": "{{ block.settings.enable_bundle }}"
@@ -1875,6 +1889,13 @@
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
         {
+          "type": "number",
+          "id": "bundle_step_3_unit_price",
+          "default": 549,
+          "label": "Stykpris (kr) — til beregning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
           "type": "header",
           "content": "Trin 4 (valgfrit)",
           "visible_if": "{{ block.settings.enable_bundle }}"
@@ -1899,6 +1920,13 @@
           "type": "text",
           "id": "bundle_step_4_price",
           "label": "Prisvisning",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_step_4_unit_price",
+          "default": 499,
+          "label": "Stykpris (kr) — til beregning",
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
         {
