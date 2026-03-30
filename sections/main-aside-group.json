@@ -58,7 +58,7 @@
               "luma-kuffert-gron",
               "fjorn-premium-space-grey"
             ],
-            "in_cart_related_layout_desktop": "vertical-cards",
+            "in_cart_related_layout_desktop": "horizontal-cards",
             "in_cart_related_layout": "carousel-with-horizontal-cards",
             "cards_to_show": 10,
             "desktop_space_between_cards": 12,
