@@ -1978,6 +1978,18 @@
         },
         {
           "type": "header",
+          "content": "Priser per størrelse",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "textarea",
+          "id": "bundle_size_pricing",
+          "label": "Størrelses-priser",
+          "info": "Én linje per størrelse. Format: Størrelse|Tier1-pris|Tier2-pris|Tier3-pris. Eksempel:\nSmall|649|599|549\nMedium|749|699|649\nLarge|849|799|749",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
           "content": "Bundle-knap",
           "visible_if": "{{ block.settings.enable_bundle }}"
         },

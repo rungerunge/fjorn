@@ -334,6 +334,8 @@
       assign single_compare_display = sel_v.compare_at_price | money
     endif
 
+    assign pack_compare_display = sel_v.price | money
+
     assign lowest_tier_unit = block.settings.bundle_step_1_unit_price | default: 0
     if block.settings.bundle_step_2_unit_price > 0
       if block.settings.bundle_step_2_unit_price < lowest_tier_unit or lowest_tier_unit == 0
@@ -627,7 +629,7 @@
         </div>
         <div class='bpk__ms-prices'>
           <span class='bpk__ms-price' data-ms-single-price>{{ single_price_display }}</span>
-          {%- if single_compare_display -%}<span class='bpk__ms-compare'>{{ single_compare_display }}</span>{%- endif -%}
+          <span class='bpk__ms-compare' data-ms-single-compare>{%- if single_compare_display -%}{{ single_compare_display }}{%- endif -%}</span>
         </div>
       </label>
 
@@ -637,13 +639,11 @@
         <span class='bpk__ms-radio'></span>
         <div class='bpk__ms-info'>
           <span class='bpk__ms-label'>{{ pack_label }}</span>
-          {%- if pack_sublabel != blank -%}<span class='bpk__ms-sub'>{{ pack_sublabel }}</span>{%- endif -%}
+          <span class='bpk__ms-sub' data-ms-pack-sub>{%- if pack_sublabel != blank -%}{{ pack_sublabel }}{%- endif -%}</span>
         </div>
         <div class='bpk__ms-prices'>
-          {%- if lowest_tier_unit > 0 -%}
-            <span class='bpk__ms-price'>{{ lowest_tier_unit | times: 100 | money }}</span>
-          {%- endif -%}
-          {%- if single_compare_display -%}<span class='bpk__ms-compare'>{{ single_compare_display }}</span>{%- endif -%}
+          <span class='bpk__ms-price' data-ms-pack-price>{%- if lowest_tier_unit > 0 -%}{{ lowest_tier_unit | times: 100 | money }}{%- endif -%}</span>
+          <span class='bpk__ms-compare' data-ms-pack-compare>{{ pack_compare_display }}</span>
         </div>
       </label>
     </div>
@@ -786,6 +786,8 @@
         {%- endif -%}
       ]
     </script>
+    <script type='application/json' data-bundle-size-pricing>{{ block.settings.bundle_size_pricing | default: '' | escape }}</script>
+    <script type='application/json' data-bundle-variant-prices>[{%- for v in product.variants -%}{%- unless forloop.first -%},{%- endunless -%}{"id":{{ v.id }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"options":[{%- for o in v.options -%}{%- unless forloop.first -%},{%- endunless -%}{{ o | json }}{%- endfor -%}]}{%- endfor -%}]</script>
   </bundle-variant-picker>
 
   <script>
@@ -802,9 +804,19 @@
           this.sliderFill = this.querySelector('[data-slider-fill]');
           this.tierDots = this.querySelectorAll('[data-tier-dot]');
 
-          this.tiers = JSON.parse(this.querySelector('[data-bundle-tiers]')?.textContent || '[]');
-          this.tiers.sort((a, b) => a.count - b.count);
+          this.defaultTiers = JSON.parse(this.querySelector('[data-bundle-tiers]')?.textContent || '[]');
+          this.defaultTiers.sort((a, b) => a.count - b.count);
+          this.tiers = this.defaultTiers.map(t => ({...t}));
           this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
+
+          this.sizePricingMap = this._parseSizePricing(this.querySelector('[data-bundle-size-pricing]')?.textContent || '');
+          this.variantPrices = JSON.parse(this.querySelector('[data-bundle-variant-prices]')?.textContent || '[]');
+
+          this.msSinglePrice = this.querySelector('[data-ms-single-price]');
+          this.msSingleCompare = this.querySelector('[data-ms-single-compare]');
+          this.msPackPrice = this.querySelector('[data-ms-pack-price]');
+          this.msPackCompare = this.querySelector('[data-ms-pack-compare]');
+          this.msPackSub = this.querySelector('[data-ms-pack-sub]');
 
           this.modeCards = this.querySelectorAll('[data-mode-card]');
           this.modeInputs = this.querySelectorAll('[data-bundle-mode-input]');
@@ -832,6 +844,52 @@
           }
 
           this.onOptionChange();
+        }
+
+        _parseSizePricing(raw) {
+          const map = {};
+          if (!raw) return map;
+          raw.split('\n').forEach(line => {
+            const parts = line.trim().split('|');
+            if (parts.length < 2) return;
+            const size = parts[0].trim();
+            const prices = parts.slice(1).map(p => parseInt(p.trim()) || 0);
+            if (size) map[size] = prices;
+          });
+          return map;
+        }
+
+        _applySizePricing(sizeValue) {
+          const prices = sizeValue ? this.sizePricingMap[sizeValue] : null;
+          if (prices && prices.length) {
+            this.tiers = this.defaultTiers.map((t, i) => ({...t, unitPrice: prices[i] !== undefined ? prices[i] : t.unitPrice}));
+          } else {
+            this.tiers = this.defaultTiers.map(t => ({...t}));
+          }
+          this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
+          const lowest = this.tiers.length ? Math.min(...this.tiers.map(t => t.unitPrice)) : 0;
+
+          if (this.msPackPrice && lowest > 0) this.msPackPrice.textContent = this.fmtMoney(lowest);
+          if (this.msPackSub && lowest > 0) this.msPackSub.textContent = 'Helt ned til ' + lowest + ' kr per stk';
+        }
+
+        _updateCardPrices(sel) {
+          const pp = parseInt(this.primaryPos);
+          const matchOpts = {};
+          for (const [pos, val] of Object.entries(sel)) { matchOpts[parseInt(pos)] = val; }
+          const match = this.variantPrices.find(v => {
+            for (const [pos, val] of Object.entries(matchOpts)) {
+              if (v.options[pos - 1] !== val) return false;
+            }
+            return true;
+          });
+          if (match) {
+            const price = match.price;
+            const compare = match.compare > price ? match.compare : 0;
+            if (this.msSinglePrice) this.msSinglePrice.textContent = this.fmtMoney(price / 100);
+            if (this.msSingleCompare) this.msSingleCompare.textContent = compare ? this.fmtMoney(compare / 100) : '';
+            if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(price / 100);
+          }
         }
 
         setMode(mode) {
@@ -863,6 +921,7 @@
         }
 
         fmt(kr) { return kr.toLocaleString('da-DK') + ' kr'; }
+        fmtMoney(kr) { return kr.toLocaleString('da-DK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' kr'; }
 
         getSelectedOptions() {
           const sel = {};
@@ -879,6 +938,12 @@
         onOptionChange() {
           const sel = this.getSelectedOptions();
           const nonPrimaryKeys = Object.keys(sel).filter(k => k !== this.primaryPos);
+
+          const sizeValue = nonPrimaryKeys.length ? sel[nonPrimaryKeys[0]] : null;
+          if (Object.keys(this.sizePricingMap).length) {
+            this._applySizePricing(sizeValue);
+          }
+          this._updateCardPrices(sel);
 
           this.items.forEach(item => {
             if (nonPrimaryKeys.length === 0) { item.hidden = false; return; }
