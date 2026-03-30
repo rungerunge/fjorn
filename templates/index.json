@@ -586,6 +586,7 @@
     },
     "collection_list": {
       "type": "collection-list",
+      "disabled": true,
       "settings": {
         "collection_list": [],
         "desktop_layout": "grid",
@@ -1507,8 +1508,8 @@
             "icon_type": "custom",
             "icon": "discount-outline",
             "icon_size": 52,
-            "title": "FREE SHIPPING",
-            "text": "<p>We provide free and fast worldwide delivery via Express Shipping on orders above $150</p>",
+            "title": "GRATIS FRAGT OVER 599KR",
+            "text": "<p>Vi tilbyder gratis fragt på alle ordrer over 599kr.</p>",
             "link_text": "",
             "link_url": "",
             "btn_style": "link"
@@ -1520,8 +1521,8 @@
             "icon_type": "custom",
             "icon": "discount-outline",
             "icon_size": 52,
-            "title": "EASY RETURNS & EXCHANGES",
-            "text": "<p>Should you change your mind we will happily exchange or refund within 30 days of purchase</p>",
+            "title": "NEM RETUR/OMBYTNING",
+            "text": "<p>Skulle du ændre mening, så har du 30 dages nem returnering.</p>",
             "link_text": "",
             "link_url": "",
             "btn_style": "link"
@@ -1533,8 +1534,8 @@
             "icon_type": "custom",
             "icon": "discount-outline",
             "icon_size": 52,
-            "title": "24/7 SUPPORT",
-            "text": "<p>Should you have questions about delivery, returns, and technical issues, we are always here to help</p>",
+            "title": "DANSK BRAND",
+            "text": "<p>Et dansk brand skabt med fokus på kvalitet og detaljer.</p>",
             "link_text": "",
             "link_url": "",
             "btn_style": "link"
@@ -1571,7 +1572,7 @@
         "container_size": "large",
         "round_level": "default",
         "color_scheme_variant": "own",
-        "color_scheme": "1",
+        "color_scheme": "10",
         "show_background": true,
         "add_desktop_side_paddings": true,
         "add_mobile_side_paddings": true,
