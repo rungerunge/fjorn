@@ -680,25 +680,25 @@
             {%- if block.settings.bundle_step_1_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_1_label }}</span>
-                {%- if block.settings.bundle_step_1_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_1_price }}</span>{%- endif -%}
+                <span class='bpk__slider-price' data-tier-price-label='0'>{{ sel_v.price | money_without_trailing_zeros }}/stk</span>
               </div>
             {%- endif -%}
             {%- if block.settings.bundle_step_2_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_2_label }}</span>
-                {%- if block.settings.bundle_step_2_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_2_price }}</span>{%- endif -%}
+                <span class='bpk__slider-price' data-tier-price-label='1'>{%- if block.settings.bundle_step_2_price != blank -%}{{ block.settings.bundle_step_2_price }}{%- endif -%}</span>
               </div>
             {%- endif -%}
             {%- if block.settings.bundle_step_3_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_3_label }}</span>
-                {%- if block.settings.bundle_step_3_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_3_price }}</span>{%- endif -%}
+                <span class='bpk__slider-price' data-tier-price-label='2'>{%- if block.settings.bundle_step_3_price != blank -%}{{ block.settings.bundle_step_3_price }}{%- endif -%}</span>
               </div>
             {%- endif -%}
             {%- if block.settings.bundle_step_4_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_4_label }}</span>
-                {%- if block.settings.bundle_step_4_price != blank -%}<span class='bpk__slider-price'>{{ block.settings.bundle_step_4_price }}</span>{%- endif -%}
+                <span class='bpk__slider-price' data-tier-price-label='3'>{%- if block.settings.bundle_step_4_price != blank -%}{{ block.settings.bundle_step_4_price }}{%- endif -%}</span>
               </div>
             {%- endif -%}
           </div>
@@ -867,10 +867,15 @@
 
           if (this.msPackPrice && lowest > 0) this.msPackPrice.textContent = this.fmtMoney(lowest);
           if (this.msPackSub && lowest > 0) this.msPackSub.textContent = 'Helt ned til ' + lowest + ' kr per stk';
+
+          this.tiers.forEach((t, i) => {
+            if (i === 0) return;
+            const el = this.querySelector(`[data-tier-price-label="${t.index}"]`);
+            if (el) el.textContent = this.fmtMoney(t.unitPrice) + '/stk';
+          });
         }
 
         _updateCardPrices(sel) {
-          const pp = parseInt(this.primaryPos);
           const matchOpts = {};
           for (const [pos, val] of Object.entries(sel)) { matchOpts[parseInt(pos)] = val; }
           const match = this.variantPrices.find(v => {
@@ -882,9 +887,20 @@
           if (match) {
             const price = match.price;
             const compare = match.compare > price ? match.compare : 0;
-            if (this.msSinglePrice) this.msSinglePrice.textContent = this.fmtMoney(price / 100);
-            if (this.msSingleCompare) this.msSingleCompare.textContent = compare ? this.fmtMoney(compare / 100) : '';
-            if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(price / 100);
+            const priceKr = price / 100;
+            if (this.msSinglePrice) this.msSinglePrice.textContent = this.fmtMoney(priceKr);
+            if (this.msSingleCompare) {
+              this.msSingleCompare.textContent = compare ? this.fmtMoney(compare / 100) : '';
+              this.msSingleCompare.style.display = compare ? '' : 'none';
+            }
+            if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(priceKr);
+
+            if (this.tiers.length) {
+              this.tiers[0].unitPrice = priceKr;
+              this.baseUnitPrice = Math.max(...this.tiers.map(t => t.unitPrice));
+            }
+            const label0 = this.querySelector('[data-tier-price-label="0"]');
+            if (label0) label0.textContent = this.fmtMoney(priceKr) + '/stk';
           }
         }
 
