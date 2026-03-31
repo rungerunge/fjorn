@@ -1008,11 +1008,6 @@
                       </button>
                     {% endif %}
 
-                    <div class='cart-drawer-subtotal__payment-icons' style='display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding-top:10px;'>
-                      {%- for type in shop.enabled_payment_types -%}
-                        {{ type | payment_type_svg_tag }}
-                      {%- endfor -%}
-                    </div>
                   </cart-drawer-buttons-block>
 
                   {%- if show_dynamic_checkout_buttons -%}
@@ -1025,6 +1020,12 @@
                       {{ content_for_additional_checkout_buttons }}
                     </div>
                   {%- endif -%}
+
+                  <div style='display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding-top:12px;'>
+                    {%- for type in shop.enabled_payment_types -%}
+                      {{ type | payment_type_svg_tag }}
+                    {%- endfor -%}
+                  </div>
                 </div>
               </div>
             </cart-drawer-footer>
