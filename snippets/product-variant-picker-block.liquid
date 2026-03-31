@@ -1102,6 +1102,33 @@
       }
       customElements.define('bundle-variant-picker', BundleVariantPicker);
     }
+
+    if (!window.__bvpGlobalInit) {
+      window.__bvpGlobalInit = true;
+
+      new MutationObserver(mutations => {
+        for (const m of mutations) {
+          for (const node of m.addedNodes) {
+            if (node.nodeType !== 1) continue;
+            const bvp = node.matches?.('bundle-variant-picker') ? node : node.querySelector?.('bundle-variant-picker');
+            if (bvp && typeof bvp.onOptionChange === 'function') {
+              requestAnimationFrame(() => bvp.onOptionChange());
+            }
+          }
+        }
+      }).observe(document.body, { childList: true, subtree: true });
+
+      document.addEventListener('change', e => {
+        if (!e.target.closest('[data-variant-picker-option-inputs]')) return;
+        const section = e.target.closest('.shopify-section');
+        if (!section) return;
+        setTimeout(() => {
+          section.querySelectorAll('bundle-variant-picker').forEach(bvp => {
+            if (typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
+          });
+        }, 50);
+      });
+    }
   </script>
 {%- endif -%}
 

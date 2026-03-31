@@ -842,14 +842,6 @@
               </notification-component>
 
               <div class='cart-drawer-subtotal cart-drawer__element-for-non-empty-cart' data-swipe-area>
-                {% render 'cart-order-notes',
-                  show_apply_button: true,
-                  view_mode: 'popup',
-                  show_order_note: section.settings.show_order_note,
-                  show_discount_code: section.settings.show_discount_code,
-                  show_shipping_calculator: section.settings.show_shipping_calculator,
-                  header_with_border: true
-                %}
 
                 <div class='cart-drawer-subtotal__main-content'>
                   <div>
@@ -994,15 +986,11 @@
                   {% endif %}
 
                   <cart-drawer-buttons-block class='cart-drawer-subtotal__cta'>
-                    {%- if settings.cart_type != 'drawer_only' -%}
-                      <a
-                        class='btn btn--{{cart_button_style}} btn--lg cart-drawer-subtotal__btn cart-drawer-subtotal__cart-link'
-                        href='{{ routes.cart_url }}'
-                        aria-label='{{- 'general.subtotal.screen_reader.text_for_go_to_cart_button' | t -}}'
-                      >
-                        {{- 'general.subtotal.store_front.text_for_go_to_cart_button' | t -}}
-                      </a>
-                    {%- endif -%}
+                    <div class='cart-drawer-subtotal__payment-icons' style='display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding-bottom:10px;'>
+                      {%- for type in shop.enabled_payment_types -%}
+                        {{ type | payment_type_svg_tag }}
+                      {%- endfor -%}
+                    </div>
 
                     {% if show_submit_button %}
                       <button
@@ -1013,6 +1001,7 @@
                         form='CartDrawerForm'
                         data-cart-checkout-button
                         aria-label='{{ 'general.subtotal.screen_reader.text_for_checkout_button' | t }}'
+                        style='width:100%;'
                         {% if cart == empty %}
                           disabled
                         {% endif %}
