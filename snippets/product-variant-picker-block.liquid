@@ -876,15 +876,31 @@
           });
         }
 
-        _updateCardPrices(sel) {
+        _getSelectedVariant(sel) {
+          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
+            || document.querySelector('variant-picker');
+          const jsonEl = vp?.querySelector('[data-selected-variant-json]');
+          if (jsonEl) {
+            try {
+              const sv = JSON.parse(jsonEl.textContent);
+              if (sv?.id) {
+                const found = this.variantPrices.find(v => v.id === sv.id);
+                if (found) return found;
+              }
+            } catch (e) {}
+          }
           const matchOpts = {};
           for (const [pos, val] of Object.entries(sel)) { matchOpts[parseInt(pos)] = val; }
-          const match = this.variantPrices.find(v => {
+          return this.variantPrices.find(v => {
             for (const [pos, val] of Object.entries(matchOpts)) {
               if (v.options[pos - 1] !== val) return false;
             }
             return true;
           });
+        }
+
+        _updateCardPrices(sel) {
+          const match = this._getSelectedVariant(sel);
           if (match) {
             const price = match.price;
             const compare = match.compare > price ? match.compare : 0;
