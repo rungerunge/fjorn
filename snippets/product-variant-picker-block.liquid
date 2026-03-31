@@ -876,31 +876,15 @@
           });
         }
 
-        _getSelectedVariant(sel) {
-          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
-            || document.querySelector('variant-picker');
-          const jsonEl = vp?.querySelector('[data-selected-variant-json]');
-          if (jsonEl) {
-            try {
-              const sv = JSON.parse(jsonEl.textContent);
-              if (sv?.id) {
-                const found = this.variantPrices.find(v => v.id === sv.id);
-                if (found) return found;
-              }
-            } catch (e) {}
-          }
+        _updateCardPrices(sel) {
           const matchOpts = {};
           for (const [pos, val] of Object.entries(sel)) { matchOpts[parseInt(pos)] = val; }
-          return this.variantPrices.find(v => {
+          const match = this.variantPrices.find(v => {
             for (const [pos, val] of Object.entries(matchOpts)) {
               if (v.options[pos - 1] !== val) return false;
             }
             return true;
           });
-        }
-
-        _updateCardPrices(sel) {
-          const match = this._getSelectedVariant(sel);
           if (match) {
             const price = match.price;
             const compare = match.compare > price ? match.compare : 0;
@@ -1117,17 +1101,6 @@
           }
         }
       }).observe(document.body, { childList: true, subtree: true });
-
-      document.addEventListener('change', e => {
-        if (!e.target.closest('[data-variant-picker-option-inputs]')) return;
-        const section = e.target.closest('.shopify-section');
-        if (!section) return;
-        setTimeout(() => {
-          section.querySelectorAll('bundle-variant-picker').forEach(bvp => {
-            if (typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
-          });
-        }, 50);
-      });
     }
   </script>
 {%- endif -%}
