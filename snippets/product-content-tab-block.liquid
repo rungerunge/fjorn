@@ -6,6 +6,7 @@
   assign body_size = options.body_size
   assign text = options.text
   assign page = options.page
+  assign metafield_key = options.metafield_key
 
   assign icon_type = options.icon_type
   assign custom_icon_image = options.custom_icon_image
@@ -15,9 +16,20 @@
   assign image = options.image
   assign video = options.video
 
+  assign metafield_content = blank
+  if metafield_key != blank
+    assign mf_parts = metafield_key | split: '.'
+    if mf_parts.size == 2
+      assign mf = product.metafields[mf_parts[0]][mf_parts[1]]
+      if mf != blank and mf.value != blank
+        assign metafield_content = mf
+      endif
+    endif
+  endif
+
   assign is_to_render = false
 
-  if title != blank and text != blank or page != blank or image != blank or video != blank
+  if title != blank and text != blank or page != blank or image != blank or video != blank or metafield_content != blank
     assign is_to_render = true
   endif
 -%}
@@ -43,7 +55,9 @@
       </accordeon-button>
       <div class='accordeon-plus__content-wrap body-font-weight-from-global-settings' data-accordeon-content-wrap>
         <div class='accordeon-plus__content product-content-tab__content' data-accordeon-content>
-          {% if text != blank %}
+          {% if metafield_content != blank %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ metafield_content | metafield_tag }}</div>
+          {% elsif text != blank %}
             <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ text }}</div>
           {% endif %}
 
@@ -95,9 +109,11 @@
           {{ title }}
         </div>
       {% endif %}
-      {% if text != blank or image != blank or video != blank or page != blank %}
+      {% if text != blank or image != blank or video != blank or page != blank or metafield_content != blank %}
         <div class='product-content-tab__content'>
-          {% if text != blank %}
+          {% if metafield_content != blank %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ metafield_content | metafield_tag }}</div>
+          {% elsif text != blank %}
             <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ text }}</div>
           {% endif %}
 
