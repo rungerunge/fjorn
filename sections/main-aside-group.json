@@ -94,7 +94,7 @@
         "show_order_note": true,
         "show_discount_code": false,
         "show_shipping_calculator": true,
-        "show_taxes_and_shipping_costs": true,
+        "show_taxes_and_shipping_costs": false,
         "show_currency_code": true,
         "show_dynamic_buttons": false,
         "cart_button_style": "secondary",
