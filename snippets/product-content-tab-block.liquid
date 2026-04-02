@@ -108,6 +108,46 @@
           {%- endif -%}
         </div>
       </div>
+      {%- if is_variant_metafield and metafield_key != blank -%}
+        <script type='application/json' data-variant-mf-map='{{ block.id }}'>{
+          {%- assign vmf_sep = '' -%}
+          {%- for v in product.variants -%}
+            {%- assign vmf = v.metafields[mf_parts[0]][mf_parts[1]] -%}
+            {{ vmf_sep }}{{ v.id | json }}:{% if vmf != blank and vmf.value != blank %}{{ vmf | metafield_tag | json }}{% else %}""{% endif %}
+            {%- assign vmf_sep = ',' -%}
+          {%- endfor -%}
+        }</script>
+        <script>
+          (function(){
+            var bid = {{ block.id | json }};
+            var mapEl = document.querySelector('[data-variant-mf-map="' + bid + '"]');
+            if (!mapEl) return;
+            var map = JSON.parse(mapEl.textContent);
+            function getContentEl() {
+              return document.querySelector('[data-mf-content="' + bid + '"]');
+            }
+            function update() {
+              var jsonEl = document.querySelector('[data-selected-variant-json]');
+              if (!jsonEl) return;
+              try {
+                var v = JSON.parse(jsonEl.textContent);
+                if (v && v.id) {
+                  var html = map[v.id] || '';
+                  var el = getContentEl();
+                  if (el) {
+                    el.innerHTML = html;
+                    el.style.display = html ? '' : 'none';
+                  }
+                }
+              } catch(e) {}
+            }
+            document.addEventListener('change', function(e) {
+              if (!e.target.matches('input[type="radio"]')) return;
+              setTimeout(update, 120);
+            });
+          })();
+        </script>
+      {%- endif -%}
     </accordeon-component>
   {%- else -%}
     <div
@@ -166,49 +206,46 @@
           {%- endif -%}
         </div>
       {% endif %}
-    </div>
-  {%- endif -%}
-
-  {%- if is_variant_metafield and metafield_key != blank -%}
-    <script type='application/json' data-variant-mf-map='{{ block.id }}'>
-      {
-        {%- assign vmf_sep = '' -%}
-        {%- for v in product.variants -%}
-          {%- assign vmf = v.metafields[mf_parts[0]][mf_parts[1]] -%}
-          {{ vmf_sep }}{{ v.id | json }}:{% if vmf != blank and vmf.value != blank %}{{ vmf | metafield_tag | json }}{% else %}""{% endif %}
-          {%- assign vmf_sep = ',' -%}
-        {%- endfor -%}
-      }
-    </script>
-    <script>
-      (function(){
-        var bid = {{ block.id | json }};
-        var mapEl = document.querySelector('[data-variant-mf-map="' + bid + '"]');
-        if (!mapEl) return;
-        var map = JSON.parse(mapEl.textContent);
-        function getContentEl() {
-          return document.querySelector('[data-mf-content="' + bid + '"]');
-        }
-        function update() {
-          var jsonEl = document.querySelector('[data-selected-variant-json]');
-          if (!jsonEl) return;
-          try {
-            var v = JSON.parse(jsonEl.textContent);
-            if (v && v.id) {
-              var html = map[v.id] || '';
-              var el = getContentEl();
-              if (el) {
-                el.innerHTML = html;
-                el.style.display = html ? '' : 'none';
-              }
+      {%- if is_variant_metafield and metafield_key != blank -%}
+        <script type='application/json' data-variant-mf-map='{{ block.id }}'>{
+          {%- assign vmf_sep = '' -%}
+          {%- for v in product.variants -%}
+            {%- assign vmf = v.metafields[mf_parts[0]][mf_parts[1]] -%}
+            {{ vmf_sep }}{{ v.id | json }}:{% if vmf != blank and vmf.value != blank %}{{ vmf | metafield_tag | json }}{% else %}""{% endif %}
+            {%- assign vmf_sep = ',' -%}
+          {%- endfor -%}
+        }</script>
+        <script>
+          (function(){
+            var bid = {{ block.id | json }};
+            var mapEl = document.querySelector('[data-variant-mf-map="' + bid + '"]');
+            if (!mapEl) return;
+            var map = JSON.parse(mapEl.textContent);
+            function getContentEl() {
+              return document.querySelector('[data-mf-content="' + bid + '"]');
             }
-          } catch(e) {}
-        }
-        document.addEventListener('change', function(e) {
-          if (!e.target.matches('input[type="radio"]')) return;
-          setTimeout(update, 120);
-        });
-      })();
-    </script>
+            function update() {
+              var jsonEl = document.querySelector('[data-selected-variant-json]');
+              if (!jsonEl) return;
+              try {
+                var v = JSON.parse(jsonEl.textContent);
+                if (v && v.id) {
+                  var html = map[v.id] || '';
+                  var el = getContentEl();
+                  if (el) {
+                    el.innerHTML = html;
+                    el.style.display = html ? '' : 'none';
+                  }
+                }
+              } catch(e) {}
+            }
+            document.addEventListener('change', function(e) {
+              if (!e.target.matches('input[type="radio"]')) return;
+              setTimeout(update, 120);
+            });
+          })();
+        </script>
+      {%- endif -%}
+    </div>
   {%- endif -%}
 {% endif %}
