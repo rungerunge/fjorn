@@ -81,6 +81,7 @@
             "icon_size": 24,
             "text": "<p>Pair image with text to tell more about your product: care instructions, country of origin, manufacturer information, matching colors and accessories.</p>",
             "page": "",
+            "metafield_key": "",
             "body_size": "body3",
             "media_type": "image",
             "image_width": 100
@@ -134,6 +135,20 @@
             "bundle_step_4_label": "",
             "bundle_step_4_price": "",
             "bundle_step_4_unit_price": 499,
+            "bundle_selector_heading": "Køb mere, spar mere",
+            "bundle_single_label": "1 stk",
+            "bundle_single_sublabel": "Standard pris",
+            "bundle_pack_label": "Pakkepris",
+            "bundle_pack_sublabel": "",
+            "bundle_pack_badge": "Mest populær!",
+            "bundle_size_1_name": "Small",
+            "bundle_size_1_tier1": 649,
+            "bundle_size_1_tier2": 599,
+            "bundle_size_1_tier3": 549,
+            "bundle_size_2_name": "",
+            "bundle_size_3_name": "",
+            "bundle_size_4_name": "",
+            "bundle_size_5_name": "",
             "bundle_button_label": "Læg i kurv",
             "bundle_button_style": "primary"
           }
@@ -214,6 +229,7 @@
             "icon_size": 24,
             "text": "<p><strong>Fjorn Premium – Sølv</strong> er skabt til dig, der ønsker en kuffert med et eksklusivt udtryk og en stærk konstruktion. Det elegante aluminiumdesign kombinerer et stilrent look med høj holdbarhed, så du får en kuffert, der både føles premium og er bygget til at blive brugt.</p><p>Den robuste aluminiumsramme og zipperless lukning giver et solidt og gennemført design, mens TSA-låsen sørger for ekstra tryghed på rejsen. Med letkørende 360° spinnerhjul er kufferten nem at manøvrere gennem lufthavne, hoteller og gader, og det hårde håndtag fuldender den eksklusive oplevelse.</p><p><strong>Fjorn Premium – Sølv</strong> er det oplagte valg til dig, der vil rejse med stil, orden og kvalitet i fokus.</p><p><strong>Fordele:</strong></p><ul><li>Eksklusivt design i aluminium</li><li>Stærk og slidstærk aluminiumsramme</li><li>Zipperless lukning for et rent og moderne look</li><li>TSA-lås for ekstra sikkerhed</li><li>360° spinnerhjul for let og smidig transport</li><li>Robust konstruktion skabt til rejser</li><li>Vandtæt</li></ul>",
             "page": "",
+            "metafield_key": "",
             "body_size": "body3",
             "media_type": "image",
             "image_width": 60
@@ -230,6 +246,7 @@
             "icon_size": 24,
             "text": "<p><strong>Vælg den størrelse der passer til din rejse</strong></p><p><strong>Lille: 20” Carry-on</strong><br/><br/>Perfekt som håndbagage til korte ture og weekendrejser.</p><ul><li>355 × 195 × 490 mm<br/></li><li>Ca. 33L<br/></li><li>4,1 kg</li></ul><p></p><p><strong>Mellem: 24” Checked-in</strong><br/><br/>Ideel til længere rejser, hvor du har brug for ekstra plads.</p><ul><li>445 × 260 × 680 mm<br/></li><li>Ca. 63L<br/></li><li>6,4 kg</li></ul><p>Små afvigelser kan forekomme*</p>",
             "page": "",
+            "metafield_key": "",
             "body_size": "body3",
             "media_type": "image",
             "image_width": 60
@@ -246,6 +263,7 @@
             "icon_size": 24,
             "text": "<p>Din kuffert bliver sendt inden for 1-2 hverdage - du modtager alt information på mail inkl. tracking.</p>",
             "page": "",
+            "metafield_key": "",
             "body_size": "body3",
             "media_type": "image",
             "image_width": 60
