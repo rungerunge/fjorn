@@ -75,10 +75,10 @@
       </accordeon-button>
       <div class='accordeon-plus__content-wrap body-font-weight-from-global-settings' data-accordeon-content-wrap>
         <div class='accordeon-plus__content product-content-tab__content' data-accordeon-content>
-          {% if metafield_content != blank or is_variant_metafield %}
-            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}'>
-              {%- if metafield_content != blank -%}{{ metafield_content | metafield_tag }}{%- endif -%}
-            </div>
+          {% if metafield_content != blank %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}'>{{ metafield_content | metafield_tag }}</div>
+          {% elsif is_variant_metafield %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}' style='display:none'></div>
           {% elsif text != blank %}
             <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ text }}</div>
           {% endif %}
@@ -133,10 +133,10 @@
       {% endif %}
       {% if text != blank or image != blank or video != blank or page != blank or metafield_content != blank or is_variant_metafield %}
         <div class='product-content-tab__content'>
-          {% if metafield_content != blank or is_variant_metafield %}
-            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}'>
-              {%- if metafield_content != blank -%}{{ metafield_content | metafield_tag }}{%- endif -%}
-            </div>
+          {% if metafield_content != blank %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}'>{{ metafield_content | metafield_tag }}</div>
+          {% elsif is_variant_metafield %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}' style='display:none'></div>
           {% elsif text != blank %}
             <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ text }}</div>
           {% endif %}
@@ -197,7 +197,10 @@
             if (v && v.id) {
               var html = map[v.id] || '';
               var el = getContentEl();
-              if (el) el.innerHTML = html;
+              if (el) {
+                el.innerHTML = html;
+                el.style.display = html ? '' : 'none';
+              }
             }
           } catch(e) {}
         }
