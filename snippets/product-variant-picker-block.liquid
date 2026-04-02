@@ -783,7 +783,21 @@
         {%- endif -%}
       ]
     </script>
-    <script type='application/json' data-bundle-size-pricing>{{ block.settings.bundle_size_pricing | default: '' | escape }}</script>
+    <script type='application/json' data-bundle-size-pricing>{
+      {%- assign bsp_sep = '' -%}
+      {%- for i in (1..5) -%}
+        {%- assign bsp_name_key = 'bundle_size_' | append: i | append: '_name' -%}
+        {%- assign bsp_name = block.settings[bsp_name_key] -%}
+        {%- if bsp_name != blank -%}
+          {%- assign bsp_t1_key = 'bundle_size_' | append: i | append: '_tier1' -%}
+          {%- assign bsp_t2_key = 'bundle_size_' | append: i | append: '_tier2' -%}
+          {%- assign bsp_t3_key = 'bundle_size_' | append: i | append: '_tier3' -%}
+          {%- assign bsp_t4_key = 'bundle_size_' | append: i | append: '_tier4' -%}
+          {{ bsp_sep }}{{ bsp_name | json }}: [{{ block.settings[bsp_t1_key] | default: 0 }},{{ block.settings[bsp_t2_key] | default: 0 }},{{ block.settings[bsp_t3_key] | default: 0 }},{{ block.settings[bsp_t4_key] | default: 0 }}]
+          {%- assign bsp_sep = ',' -%}
+        {%- endif -%}
+      {%- endfor -%}
+    }</script>
     <script type='application/json' data-bundle-variant-prices>[{%- for v in product.variants -%}{%- unless forloop.first -%},{%- endunless -%}{"id":{{ v.id }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"options":[{%- for o in v.options -%}{%- unless forloop.first -%},{%- endunless -%}{{ o | json }}{%- endfor -%}]}{%- endfor -%}]</script>
   </bundle-variant-picker>
 
@@ -806,7 +820,7 @@
           this.tiers = this.defaultTiers.map(t => ({...t}));
           this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
 
-          this.sizePricingMap = this._parseSizePricing(this.querySelector('[data-bundle-size-pricing]')?.textContent || '');
+          this.sizePricingMap = this._parseSizePricing(this.querySelector('[data-bundle-size-pricing]')?.textContent || '{}');
           this.variantPrices = JSON.parse(this.querySelector('[data-bundle-variant-prices]')?.textContent || '[]');
 
           this.msSinglePrice = this.querySelector('[data-ms-single-price]');
@@ -844,16 +858,7 @@
         }
 
         _parseSizePricing(raw) {
-          const map = {};
-          if (!raw) return map;
-          raw.split('\n').forEach(line => {
-            const parts = line.trim().split('|');
-            if (parts.length < 2) return;
-            const size = parts[0].trim();
-            const prices = parts.slice(1).map(p => parseInt(p.trim()) || 0);
-            if (size) map[size] = prices;
-          });
-          return map;
+          try { return JSON.parse(raw) || {}; } catch(e) { return {}; }
         }
 
         _applySizePricing(sizeValue) {

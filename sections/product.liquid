@@ -1978,14 +1978,187 @@
         },
         {
           "type": "header",
-          "content": "Priser per størrelse",
+          "content": "Størrelse 1 — priser",
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
         {
-          "type": "textarea",
-          "id": "bundle_size_pricing",
-          "label": "Størrelses-priser",
-          "info": "Én linje per størrelse. Format: Størrelse|Tier1-pris|Tier2-pris|Tier3-pris. Eksempel:\nSmall|649|599|549\nMedium|749|699|649\nLarge|849|799|749",
+          "type": "text",
+          "id": "bundle_size_1_name",
+          "label": "Størrelses-navn",
+          "info": "F.eks. Small. Lad stå tomt for at deaktivere.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_1_tier1",
+          "label": "Trin 1 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_1_tier2",
+          "label": "Trin 2 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_1_tier3",
+          "label": "Trin 3 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_1_tier4",
+          "label": "Trin 4 — stykpris (kr)",
+          "info": "Kun relevant hvis trin 4 er konfigureret ovenfor.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Størrelse 2 — priser",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_size_2_name",
+          "label": "Størrelses-navn",
+          "info": "F.eks. Medium. Lad stå tomt for at deaktivere.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_2_tier1",
+          "label": "Trin 1 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_2_tier2",
+          "label": "Trin 2 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_2_tier3",
+          "label": "Trin 3 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_2_tier4",
+          "label": "Trin 4 — stykpris (kr)",
+          "info": "Kun relevant hvis trin 4 er konfigureret ovenfor.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Størrelse 3 — priser",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_size_3_name",
+          "label": "Størrelses-navn",
+          "info": "F.eks. Large. Lad stå tomt for at deaktivere.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_3_tier1",
+          "label": "Trin 1 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_3_tier2",
+          "label": "Trin 2 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_3_tier3",
+          "label": "Trin 3 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_3_tier4",
+          "label": "Trin 4 — stykpris (kr)",
+          "info": "Kun relevant hvis trin 4 er konfigureret ovenfor.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Størrelse 4 — priser",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_size_4_name",
+          "label": "Størrelses-navn",
+          "info": "Lad stå tomt for at deaktivere.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_4_tier1",
+          "label": "Trin 1 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_4_tier2",
+          "label": "Trin 2 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_4_tier3",
+          "label": "Trin 3 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_4_tier4",
+          "label": "Trin 4 — stykpris (kr)",
+          "info": "Kun relevant hvis trin 4 er konfigureret ovenfor.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "header",
+          "content": "Størrelse 5 — priser",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "text",
+          "id": "bundle_size_5_name",
+          "label": "Størrelses-navn",
+          "info": "Lad stå tomt for at deaktivere.",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_5_tier1",
+          "label": "Trin 1 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_5_tier2",
+          "label": "Trin 2 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_5_tier3",
+          "label": "Trin 3 — stykpris (kr)",
+          "visible_if": "{{ block.settings.enable_bundle }}"
+        },
+        {
+          "type": "number",
+          "id": "bundle_size_5_tier4",
+          "label": "Trin 4 — stykpris (kr)",
+          "info": "Kun relevant hvis trin 4 er konfigureret ovenfor.",
           "visible_if": "{{ block.settings.enable_bundle }}"
         },
         {
