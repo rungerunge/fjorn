@@ -1179,7 +1179,7 @@
               if (compareEl) {
                 const hasDiscount = basePrice > tierPrice && tierPrice > 0;
                 compareEl.textContent = hasDiscount ? this.fmtMoney(basePrice) : '';
-                compareEl.style.display = hasDiscount ? '' : 'none';
+                compareEl.style.display = hasDiscount ? 'block' : 'none';
               }
             }
           });
