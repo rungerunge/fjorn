@@ -7,6 +7,7 @@
   assign text = options.text
   assign page = options.page
   assign metafield_key = options.metafield_key
+  assign metafield_source = options.metafield_source | default: 'product'
 
   assign icon_type = options.icon_type
   assign custom_icon_image = options.custom_icon_image
@@ -17,19 +18,38 @@
   assign video = options.video
 
   assign metafield_content = blank
+  assign is_variant_metafield = false
+  assign any_variant_has_mf = false
+
   if metafield_key != blank
     assign mf_parts = metafield_key | split: '.'
     if mf_parts.size == 2
-      assign mf = product.metafields[mf_parts[0]][mf_parts[1]]
-      if mf != blank and mf.value != blank
-        assign metafield_content = mf
+      if metafield_source == 'variant'
+        assign is_variant_metafield = true
+        assign sel_variant = product.selected_or_first_available_variant
+        assign mf = sel_variant.metafields[mf_parts[0]][mf_parts[1]]
+        if mf != blank and mf.value != blank
+          assign metafield_content = mf
+        endif
+        for v in product.variants
+          assign vmf = v.metafields[mf_parts[0]][mf_parts[1]]
+          if vmf != blank and vmf.value != blank
+            assign any_variant_has_mf = true
+            break
+          endif
+        endfor
+      else
+        assign mf = product.metafields[mf_parts[0]][mf_parts[1]]
+        if mf != blank and mf.value != blank
+          assign metafield_content = mf
+        endif
       endif
     endif
   endif
 
   assign is_to_render = false
 
-  if title != blank and text != blank or page != blank or image != blank or video != blank or metafield_content != blank
+  if title != blank and text != blank or page != blank or image != blank or video != blank or metafield_content != blank or any_variant_has_mf
     assign is_to_render = true
   endif
 -%}
@@ -55,8 +75,10 @@
       </accordeon-button>
       <div class='accordeon-plus__content-wrap body-font-weight-from-global-settings' data-accordeon-content-wrap>
         <div class='accordeon-plus__content product-content-tab__content' data-accordeon-content>
-          {% if metafield_content != blank %}
-            <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ metafield_content | metafield_tag }}</div>
+          {% if metafield_content != blank or is_variant_metafield %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}'>
+              {%- if metafield_content != blank -%}{{ metafield_content | metafield_tag }}{%- endif -%}
+            </div>
           {% elsif text != blank %}
             <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ text }}</div>
           {% endif %}
@@ -109,10 +131,12 @@
           {{ title }}
         </div>
       {% endif %}
-      {% if text != blank or image != blank or video != blank or page != blank or metafield_content != blank %}
+      {% if text != blank or image != blank or video != blank or page != blank or metafield_content != blank or is_variant_metafield %}
         <div class='product-content-tab__content'>
-          {% if metafield_content != blank %}
-            <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ metafield_content | metafield_tag }}</div>
+          {% if metafield_content != blank or is_variant_metafield %}
+            <div class='rte product-content-tab__rte {{ body_size }} body-color' data-mf-content='{{ block.id }}'>
+              {%- if metafield_content != blank -%}{{ metafield_content | metafield_tag }}{%- endif -%}
+            </div>
           {% elsif text != blank %}
             <div class='rte product-content-tab__rte {{ body_size }} body-color'>{{ text }}</div>
           {% endif %}
@@ -143,5 +167,45 @@
         </div>
       {% endif %}
     </div>
+  {%- endif -%}
+
+  {%- if is_variant_metafield and metafield_key != blank -%}
+    <script type='application/json' data-variant-mf-map='{{ block.id }}'>
+      {
+        {%- assign vmf_sep = '' -%}
+        {%- for v in product.variants -%}
+          {%- assign vmf = v.metafields[mf_parts[0]][mf_parts[1]] -%}
+          {{ vmf_sep }}{{ v.id | json }}:{% if vmf != blank and vmf.value != blank %}{{ vmf | metafield_tag | json }}{% else %}""{% endif %}
+          {%- assign vmf_sep = ',' -%}
+        {%- endfor -%}
+      }
+    </script>
+    <script>
+      (function(){
+        var bid = {{ block.id | json }};
+        var mapEl = document.querySelector('[data-variant-mf-map="' + bid + '"]');
+        if (!mapEl) return;
+        var map = JSON.parse(mapEl.textContent);
+        function getContentEl() {
+          return document.querySelector('[data-mf-content="' + bid + '"]');
+        }
+        function update() {
+          var jsonEl = document.querySelector('[data-selected-variant-json]');
+          if (!jsonEl) return;
+          try {
+            var v = JSON.parse(jsonEl.textContent);
+            if (v && v.id) {
+              var html = map[v.id] || '';
+              var el = getContentEl();
+              if (el) el.innerHTML = html;
+            }
+          } catch(e) {}
+        }
+        document.addEventListener('change', function(e) {
+          if (!e.target.matches('input[type="radio"]')) return;
+          setTimeout(update, 120);
+        });
+      })();
+    </script>
   {%- endif -%}
 {% endif %}

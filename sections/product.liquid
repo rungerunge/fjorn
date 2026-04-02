@@ -3841,8 +3841,19 @@
         {
           "type": "text",
           "id": "metafield_key",
-          "label": "Produkt metafelt",
-          "info": "Angiv metafelt-nøgle for dynamisk indhold, f.eks. custom.beskrivelse eller custom.mal_str. Overskriver tekst-feltet ovenfor."
+          "label": "Metafelt-nøgle",
+          "info": "F.eks. custom.beskrivelse eller custom.mal_str. Overskriver tekst-feltet ovenfor."
+        },
+        {
+          "type": "select",
+          "id": "metafield_source",
+          "label": "Metafelt-kilde",
+          "options": [
+            { "value": "product", "label": "Produkt" },
+            { "value": "variant", "label": "Variant (opdaterer ved variant-skift)" }
+          ],
+          "default": "product",
+          "visible_if": "{{ block.settings.metafield_key != blank }}"
         },
         {
           "type": "select",
