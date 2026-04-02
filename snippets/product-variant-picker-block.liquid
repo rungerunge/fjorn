@@ -687,19 +687,19 @@
             {%- if block.settings.bundle_step_2_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_2_label }}</span>
-                <span class='bpk__slider-price' data-tier-price-label='1'>{%- if block.settings.bundle_step_2_price != blank -%}{{ block.settings.bundle_step_2_price }}{%- endif -%}</span>
+                <span class='bpk__slider-price' data-tier-price-label='1'>{%- if block.settings.bundle_step_2_unit_price > 0 -%}{{ block.settings.bundle_step_2_unit_price }} kr/stk{%- endif -%}</span>
               </div>
             {%- endif -%}
             {%- if block.settings.bundle_step_3_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_3_label }}</span>
-                <span class='bpk__slider-price' data-tier-price-label='2'>{%- if block.settings.bundle_step_3_price != blank -%}{{ block.settings.bundle_step_3_price }}{%- endif -%}</span>
+                <span class='bpk__slider-price' data-tier-price-label='2'>{%- if block.settings.bundle_step_3_unit_price > 0 -%}{{ block.settings.bundle_step_3_unit_price }} kr/stk{%- endif -%}</span>
               </div>
             {%- endif -%}
             {%- if block.settings.bundle_step_4_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_4_label }}</span>
-                <span class='bpk__slider-price' data-tier-price-label='3'>{%- if block.settings.bundle_step_4_price != blank -%}{{ block.settings.bundle_step_4_price }}{%- endif -%}</span>
+                <span class='bpk__slider-price' data-tier-price-label='3'>{%- if block.settings.bundle_step_4_unit_price > 0 -%}{{ block.settings.bundle_step_4_unit_price }} kr/stk{%- endif -%}</span>
               </div>
             {%- endif -%}
           </div>
