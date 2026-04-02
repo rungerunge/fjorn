@@ -311,6 +311,16 @@
     assign bundle_btn_label = block.settings.bundle_button_label | default: 'Læg i kurv'
     assign bundle_btn_style = block.settings.bundle_button_style | default: 'primary'
 
+    assign bundle_size_option = nil
+    assign bundle_size_pos = nil
+    for option in product.options_with_values
+      if option.position != bundle_primary_pos
+        assign bundle_size_option = option
+        assign bundle_size_pos = option.position
+        break
+      endif
+    endfor
+
     assign step_count = 0
     if block.settings.bundle_step_1_label != blank
       assign step_count = 1
@@ -479,6 +489,27 @@
       .bpk-{{ block.id }} .bpk__bundle-content { display: none; margin-top: 16px; }
       .bpk-{{ block.id }}[data-mode="bundle"] .bpk__bundle-content { display: block; }
 
+      /* ── Size filter tabs ── */
+      .bpk-{{ block.id }} .bpk__size-tabs {
+        display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+      }
+      .bpk-{{ block.id }} .bpk__size-tab {
+        padding: 6px 14px;
+        border: 1px solid var(--gsc-border-color-100);
+        border-radius: 999px; background: transparent; cursor: pointer;
+        font-family: var(--gsc-body-font-family);
+        font-size: calc(1.2rem * var(--gsc-body-font-scale));
+        color: var(--gsc-text-color-70); transition: all 0.2s;
+      }
+      .bpk-{{ block.id }} .bpk__size-tab:hover {
+        border-color: var(--gsc-text-color-100); color: var(--gsc-text-color-100);
+      }
+      .bpk-{{ block.id }} .bpk__size-tab--active {
+        background: var(--gsc-primary-button-bg-color);
+        color: var(--gsc-primary-button-text-color);
+        border-color: var(--gsc-primary-button-bg-color);
+      }
+
       /* ── Step slider ── */
       .bpk-{{ block.id }} .bpk__slider {
         background: var(--gsc-foreground-color-5);
@@ -616,7 +647,7 @@
   {% endcapture %}
   {% render 'inline-css-minifier', css: bundle_css %}
 
-  <bundle-variant-picker class='bpk-{{ block.id }}' data-block-id='{{ block.id }}' data-primary-option-position='{{ bundle_primary_pos }}' data-primary-option-name='{{ bundle_primary_name | escape }}' data-section-id='{{ sectionId }}' data-mode='single'>
+  <bundle-variant-picker class='bpk-{{ block.id }}' data-block-id='{{ block.id }}' data-primary-option-position='{{ bundle_primary_pos }}' data-primary-option-name='{{ bundle_primary_name | escape }}' {% if bundle_size_pos %}data-size-option-position='{{ bundle_size_pos }}'{% endif %} data-section-id='{{ sectionId }}' data-mode='single'>
 
     <!-- ── Mode selector ── -->
     <div class='bpk__ms-heading'>{{ selector_heading }}</div>
@@ -681,7 +712,7 @@
             {%- if block.settings.bundle_step_1_label != blank -%}
               <div class='bpk__slider-label-group'>
                 <span class='bpk__slider-label'>{{ block.settings.bundle_step_1_label }}</span>
-                <span class='bpk__slider-price' data-tier-price-label='0'>{{ sel_v.price | money_without_trailing_zeros }}/stk</span>
+                <span class='bpk__slider-price' data-tier-price-label='0'>{%- if bundle_size_option -%}fra {%- endif -%}{{ sel_v.price | money_without_trailing_zeros }}/stk</span>
               </div>
             {%- endif -%}
             {%- if block.settings.bundle_step_2_label != blank -%}
@@ -706,17 +737,37 @@
         </div>
       {%- endif -%}
 
+      {%- if bundle_size_option -%}
+        <div class='bpk__size-tabs' data-bundle-tabs>
+          <button type='button' class='bpk__size-tab bpk__size-tab--active' data-bundle-tab='all'>Alle</button>
+          {%- for sv in bundle_size_option.values -%}
+            <button type='button' class='bpk__size-tab' data-bundle-tab='{{ sv | escape }}'>{{ sv }}</button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
       <div class='bpk__list' data-bundle-list>
         {%- for v in product.variants -%}
           {%- liquid
             assign v_image = v.featured_image | default: product.featured_image
             assign v_primary_label = v.option1
+            assign v_size_value = ''
             case bundle_primary_pos
               when 2
                 assign v_primary_label = v.option2
               when 3
                 assign v_primary_label = v.option3
             endcase
+            if bundle_size_pos
+              case bundle_size_pos
+                when 1
+                  assign v_size_value = v.option1
+                when 2
+                  assign v_size_value = v.option2
+                when 3
+                  assign v_size_value = v.option3
+              endcase
+            endif
           -%}
           <div
             class='bpk__item {% unless v.available %}bpk__item--unavailable{% endunless %}'
@@ -725,6 +776,7 @@
             data-option1='{{ v.option1 | escape }}'
             {% if v.option2 %}data-option2='{{ v.option2 | escape }}'{% endif %}
             {% if v.option3 %}data-option3='{{ v.option3 | escape }}'{% endif %}
+            {% if v_size_value != blank %}data-size-value='{{ v_size_value | escape }}'{% endif %}
           >
             <div class='bpk__item-img'>
               {%- if v_image != blank -%}
@@ -735,16 +787,7 @@
             </div>
             <div class='bpk__item-info'>
               <span class='bpk__item-name'>{{ v_primary_label }}</span>
-              {%- for opt in product.options -%}
-                {%- assign opt_pos = forloop.index -%}
-                {%- if opt_pos != bundle_primary_pos -%}
-                  {%- case opt_pos -%}
-                    {%- when 1 -%}<span class='bpk__item-tag'>{{ v.option1 }}</span>
-                    {%- when 2 -%}<span class='bpk__item-tag'>{{ v.option2 }}</span>
-                    {%- when 3 -%}<span class='bpk__item-tag'>{{ v.option3 }}</span>
-                  {%- endcase -%}
-                {%- endif -%}
-              {%- endfor -%}
+              {%- if v_size_value != blank -%}<span class='bpk__item-tag'>{{ v_size_value }}</span>{%- endif -%}
             </div>
             <div class='bpk__item-action'>
               <button type='button' class='bpk__item-add' data-bundle-add-one aria-label='Tilføj'>Tilføj +</button>
@@ -807,6 +850,8 @@
         connectedCallback() {
           this.selectedItems = {};
           this.primaryPos = this.dataset.primaryOptionPosition || '1';
+          this.sizePos = this.dataset.sizeOptionPosition || null;
+          this.currentTab = 'all';
           this.items = this.querySelectorAll('[data-bundle-product]');
           this.addToCartBtn = this.querySelector('[data-bundle-add-to-cart]');
           this.btnPriceWrap = this.querySelector('[data-bundle-btn-price]');
@@ -818,7 +863,6 @@
           this.defaultTiers = JSON.parse(this.querySelector('[data-bundle-tiers]')?.textContent || '[]');
           this.defaultTiers.sort((a, b) => a.count - b.count);
           this.tiers = this.defaultTiers.map(t => ({...t}));
-          this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
 
           this.sizePricingMap = this._parseSizePricing(this.querySelector('[data-bundle-size-pricing]')?.textContent || '{}');
           this.variantPrices = JSON.parse(this.querySelector('[data-bundle-variant-prices]')?.textContent || '[]');
@@ -834,8 +878,18 @@
           this._blocksFound = false;
           this.blocksToToggle = [];
 
+          this.tabs = this.querySelectorAll('[data-bundle-tab]');
+
+          this._computeMinTierPrices();
+          this._updateProgressBarPrices();
+          this._updatePackCard();
+
           this.modeInputs.forEach(input => {
             input.addEventListener('change', () => this.setMode(input.value));
+          });
+
+          this.tabs.forEach(tab => {
+            tab.addEventListener('click', () => this.onTabChange(tab.dataset.bundleTab));
           });
 
           this.items.forEach(item => {
@@ -846,42 +900,50 @@
 
           this.addToCartBtn?.addEventListener('click', () => this.addToCart());
 
-          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
-            || document.querySelector('variant-picker');
-          if (vp) {
-            vp.querySelectorAll('[data-variant-picker-option-inputs] input[type="radio"]').forEach(r => {
-              r.addEventListener('change', () => this.onOptionChange());
-            });
-          }
-
-          this.onOptionChange();
+          this.onTabChange('all');
         }
 
         _parseSizePricing(raw) {
           try { return JSON.parse(raw) || {}; } catch(e) { return {}; }
         }
 
-        _applySizePricing(sizeValue) {
-          const prices = sizeValue ? this.sizePricingMap[sizeValue] : null;
-          if (prices && prices.length) {
-            this.tiers = this.defaultTiers.map((t, i) => ({...t, unitPrice: prices[i] !== undefined ? prices[i] : t.unitPrice}));
-          } else {
-            this.tiers = this.defaultTiers.map(t => ({...t}));
-          }
-          this.baseUnitPrice = this.tiers.length ? Math.max(...this.tiers.map(t => t.unitPrice)) : 0;
-          const lowest = this.tiers.length ? Math.min(...this.tiers.map(t => t.unitPrice)) : 0;
-
-          if (this.msPackPrice && lowest > 0) this.msPackPrice.textContent = this.fmtMoney(lowest);
-          if (this.msPackSub && lowest > 0) this.msPackSub.textContent = 'Helt ned til ' + lowest + ' kr per stk';
-
-          this.tiers.forEach((t, i) => {
-            if (i === 0) return;
-            const el = this.querySelector(`[data-tier-price-label="${t.index}"]`);
-            if (el) el.textContent = this.fmtMoney(t.unitPrice) + '/stk';
+        _computeMinTierPrices() {
+          this.minTierPrices = this.defaultTiers.map((t, i) => {
+            let min = t.unitPrice;
+            for (const prices of Object.values(this.sizePricingMap)) {
+              if (prices[i] > 0 && (prices[i] < min || min === 0)) min = prices[i];
+            }
+            return min;
           });
         }
 
-        _updateCardPrices(sel) {
+        _updateProgressBarPrices() {
+          const hasSizes = Object.keys(this.sizePricingMap).length > 0;
+          this.defaultTiers.forEach((t, i) => {
+            const el = this.querySelector(`[data-tier-price-label="${t.index}"]`);
+            if (!el) return;
+            const price = this.minTierPrices[i] || t.unitPrice;
+            if (price > 0) {
+              el.textContent = (hasSizes && i > 0 ? 'fra ' : '') + this.fmtMoney(price) + '/stk';
+            }
+          });
+        }
+
+        _updatePackCard() {
+          const lowest = this.minTierPrices.length ? Math.min(...this.minTierPrices.filter(p => p > 0)) : 0;
+          if (this.msPackPrice && lowest > 0) this.msPackPrice.textContent = this.fmtMoney(lowest);
+          if (this.msPackSub && lowest > 0) this.msPackSub.textContent = 'Helt ned til ' + lowest + ' kr per stk';
+        }
+
+        _updateSingleCardPrices() {
+          const sel = {};
+          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
+            || document.querySelector('variant-picker');
+          if (!vp) return;
+          vp.querySelectorAll('[data-variant-picker-option-inputs]').forEach(g => {
+            const c = g.querySelector('input[type="radio"]:checked');
+            if (c) { const m = c.name.match(/-(\d+)$/); if (m) sel[m[1]] = c.value; }
+          });
           const matchOpts = {};
           for (const [pos, val] of Object.entries(sel)) { matchOpts[parseInt(pos)] = val; }
           const match = this.variantPrices.find(v => {
@@ -891,23 +953,29 @@
             return true;
           });
           if (match) {
-            const price = match.price;
-            const compare = match.compare > price ? match.compare : 0;
-            const priceKr = price / 100;
+            const priceKr = match.price / 100;
+            const compare = match.compare > match.price ? match.compare : 0;
             if (this.msSinglePrice) this.msSinglePrice.textContent = this.fmtMoney(priceKr);
             if (this.msSingleCompare) {
               this.msSingleCompare.textContent = compare ? this.fmtMoney(compare / 100) : '';
               this.msSingleCompare.style.display = compare ? '' : 'none';
             }
             if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(priceKr);
-
-            if (this.tiers.length) {
-              this.tiers[0].unitPrice = priceKr;
-              this.baseUnitPrice = Math.max(...this.tiers.map(t => t.unitPrice));
-            }
-            const label0 = this.querySelector('[data-tier-price-label="0"]');
-            if (label0) label0.textContent = this.fmtMoney(priceKr) + '/stk';
           }
+        }
+
+        _getItemTierPrice(item, tierIndex) {
+          const sizeValue = item.dataset.sizeValue || '';
+          const sizePrices = this.sizePricingMap[sizeValue];
+          if (sizePrices && sizePrices[tierIndex] > 0) return sizePrices[tierIndex];
+          const variant = this.variantPrices.find(v => v.id === parseInt(item.dataset.variantId));
+          if (tierIndex === 0 && variant) return variant.price / 100;
+          return this.defaultTiers[tierIndex]?.unitPrice || 0;
+        }
+
+        _getItemBasePrice(item) {
+          const variant = this.variantPrices.find(v => v.id === parseInt(item.dataset.variantId));
+          return variant ? variant.price / 100 : 0;
         }
 
         setMode(mode) {
@@ -926,11 +994,11 @@
             }
           }
           this.blocksToToggle.forEach(b => { b.style.display = mode === 'bundle' ? 'none' : ''; });
-          const optName = this.dataset.primaryOptionName;
-          if (optName) {
-            const block = this.closest('[data-product-block]') || this.parentElement;
-            const picker = block?.querySelector(`[option-picker-name="${optName}"]`);
-            if (picker) picker.style.display = mode === 'bundle' ? 'none' : '';
+          const block = this.closest('[data-product-block]') || this.parentElement;
+          if (block) {
+            block.querySelectorAll('[option-picker-name]').forEach(picker => {
+              picker.style.display = mode === 'bundle' ? 'none' : '';
+            });
           }
           if (mode === 'single') {
             this.selectedItems = {};
@@ -941,48 +1009,28 @@
         fmt(kr) { return kr.toLocaleString('da-DK') + ' kr'; }
         fmtMoney(kr) { return kr.toLocaleString('da-DK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' kr'; }
 
-        getSelectedOptions() {
-          const sel = {};
-          const vp = this.closest('[data-product-block]')?.closest('.product__info')?.querySelector('variant-picker')
-            || document.querySelector('variant-picker');
-          if (!vp) return sel;
-          vp.querySelectorAll('[data-variant-picker-option-inputs]').forEach(g => {
-            const c = g.querySelector('input[type="radio"]:checked');
-            if (c) { const m = c.name.match(/-(\d+)$/); if (m) sel[m[1]] = c.value; }
+        onTabChange(tabValue) {
+          this.currentTab = tabValue;
+          this.tabs.forEach(tab => {
+            tab.classList.toggle('bpk__size-tab--active', tab.dataset.bundleTab === tabValue);
           });
-          return sel;
-        }
-
-        onOptionChange() {
-          const sel = this.getSelectedOptions();
-          const nonPrimaryKeys = Object.keys(sel).filter(k => k !== this.primaryPos);
-
-          const sizeValue = nonPrimaryKeys.length ? sel[nonPrimaryKeys[0]] : null;
-          if (Object.keys(this.sizePricingMap).length) {
-            this._applySizePricing(sizeValue);
-          }
-          this._updateCardPrices(sel);
-
           this.items.forEach(item => {
-            if (nonPrimaryKeys.length === 0) { item.hidden = false; return; }
-            let show = true;
-            for (const pos of nonPrimaryKeys) {
-              const cv = item.dataset['option' + pos];
-              if (cv && cv !== sel[pos]) { show = false; break; }
+            if (tabValue === 'all') {
+              item.hidden = false;
+            } else {
+              item.hidden = (item.dataset.sizeValue || '') !== tabValue;
             }
-            item.hidden = !show;
-          });
-
-          Object.keys(this.selectedItems).forEach(vid => {
-            const el = this.querySelector(`[data-variant-id="${vid}"]`);
-            if (el && el.hidden) delete this.selectedItems[vid];
           });
           this.updateUI();
         }
 
+        onOptionChange() {
+          this._updateSingleCardPrices();
+        }
+
         getCurrentTier(total) {
-          let tier = this.tiers[0] || null;
-          for (const t of this.tiers) { if (total >= t.count) tier = t; }
+          let tier = this.defaultTiers[0] || null;
+          for (const t of this.defaultTiers) { if (total >= t.count) tier = t; }
           return tier;
         }
 
@@ -1003,7 +1051,7 @@
         getTotalItems() { return Object.values(this.selectedItems).reduce((s, q) => s + q, 0); }
 
         updateSlider(tier) {
-          if (!this.sliderFill || !this.tiers.length) return;
+          if (!this.sliderFill || !this.defaultTiers.length) return;
           const totalDots = this.tierDots.length;
           const activeIdx = tier ? tier.index : -1;
           this.tierDots.forEach(dot => {
@@ -1020,11 +1068,10 @@
         updateUI() {
           const total = this.getTotalItems();
           const tier = this.getCurrentTier(total);
-          const unitPrice = tier ? tier.unitPrice : 0;
+          const tierIndex = tier ? tier.index : 0;
           this.updateSlider(total > 0 ? tier : null);
 
           this.items.forEach(item => {
-            if (item.hidden) return;
             const vid = item.dataset.variantId;
             const qty = this.selectedItems[vid] || 0;
             const addOneBtn = item.querySelector('[data-bundle-add-one]');
@@ -1046,14 +1093,22 @@
 
           if (this.addToCartBtn) this.addToCartBtn.disabled = total === 0;
 
+          let totalPrice = 0;
+          let totalCompare = 0;
+          for (const [vid, qty] of Object.entries(this.selectedItems)) {
+            if (qty <= 0) continue;
+            const item = this.querySelector(`[data-variant-id="${vid}"]`);
+            if (!item) continue;
+            totalPrice += qty * this._getItemTierPrice(item, tierIndex);
+            totalCompare += qty * this._getItemBasePrice(item);
+          }
+
           if (this.btnPriceWrap) {
-            if (total > 0 && unitPrice > 0) {
-              const tp = total * unitPrice;
-              const fp = total * this.baseUnitPrice;
+            if (total > 0 && totalPrice > 0) {
               this.btnPriceWrap.style.display = '';
-              this.btnTotalEl.textContent = this.fmt(tp);
-              const hasCompare = unitPrice < this.baseUnitPrice;
-              this.btnCompareEl.textContent = hasCompare ? this.fmt(fp) + ' ' : '';
+              this.btnTotalEl.textContent = this.fmt(totalPrice);
+              const hasCompare = totalCompare > totalPrice;
+              this.btnCompareEl.textContent = hasCompare ? this.fmt(totalCompare) + ' ' : '';
               this.btnCompareEl.style.display = hasCompare ? '' : 'none';
             } else {
               this.btnPriceWrap.style.display = 'none';
