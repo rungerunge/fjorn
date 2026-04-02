@@ -20,6 +20,7 @@
         },
         "9338fba6-0a76-473a-af2b-1ca5de5581a8": {
           "type": "countdown",
+          "disabled": true,
           "settings": {
             "hide_for_empty_cart": false,
             "mode": "fixed",
@@ -51,6 +52,7 @@
         },
         "cfe9eb93-b42b-4155-8a69-e1045e4e145f": {
           "type": "on_side_cart_related",
+          "disabled": true,
           "settings": {
             "recommendations_type": "manually",
             "featured_collection": "",
