@@ -32,6 +32,7 @@
             "custom_second_button_border_color": "#000000",
             "custom_link_color": "#000000",
             "page_condition": "all",
+            "pages": "",
             "product_tags": "",
             "when_show": "immediately",
             "time_delay": "5sec",
@@ -122,6 +123,7 @@
             "custom_second_button_border_color": "#000000",
             "custom_link_color": "#000000",
             "page_condition": "target",
+            "pages": "",
             "product_tags": "",
             "when_show": "immediately",
             "time_delay": "none",
@@ -137,6 +139,7 @@
             "disclaimer": "<p>Use the discount code above and save 15% on orders over $300.</p>",
             "content_alignment": "center",
             "promo_btn_label": "",
+            "promo_btn_url": "",
             "promo_btn_style": "solid",
             "close_btn_label": "",
             "close_btn_style": "outline",
@@ -187,6 +190,7 @@
         "3306bb10-98b2-4e81-b841-fe38de0f34bb",
         "e3de7ae5-6b9b-41e6-a565-d8e7b9da299f"
       ],
+      "disabled": true,
       "settings": {}
     }
   },
