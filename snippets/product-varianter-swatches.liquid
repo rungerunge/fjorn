@@ -23,6 +23,9 @@
     endif
   -%}
 
+  {%- if context == 'page' -%}
+    <div class="varianter-swatches__label heading-font-family">Farve</div>
+  {%- endif -%}
   <div class="varianter-swatches varianter-swatches--{{ context }}">
     {%- if current_color_src != '' -%}
       <a
