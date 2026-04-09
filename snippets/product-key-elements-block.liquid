@@ -22,7 +22,7 @@
     class='key-elements block-{{ block.id }}'
     {{ block.shopify_attributes }}
   >
-    <p class='key-elements__heading heading-font-family'>{{ heading | escape }}</p>
+    <p class='key-elements__heading caption2 heading-font-family'>{{ heading | escape }}</p>
     <div class='key-elements__grid'>
       {%- for i in (1..4) -%}
         {%- case i -%}
@@ -46,10 +46,10 @@
               </div>
             {%- endif -%}
             {%- if title != blank -%}
-              <p class='key-elements__card-title heading-font-family'>{{ title | escape }}</p>
+              <p class='key-elements__card-title body3 heading-font-family'>{{ title | escape }}</p>
             {%- endif -%}
             {%- if text != blank -%}
-              <p class='key-elements__card-text body-color body3'>{{ text | escape }}</p>
+              <p class='key-elements__card-text body3 body-color'>{{ text | escape }}</p>
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -63,7 +63,6 @@
     width: 100%;
   }
   .key-elements__heading {
-    font-size: 1rem;
     font-weight: 600;
     margin: 0 0 1rem;
   }
@@ -89,14 +88,10 @@
     display: block;
   }
   .key-elements__card-title {
-    font-size: 0.875rem;
     font-weight: 600;
     margin: 0 0 4px;
   }
   .key-elements__card-text {
     margin: 0;
-    font-size: 0.8125rem;
-    line-height: 1.4;
-    opacity: 0.75;
   }
 {% endstylesheet %}
