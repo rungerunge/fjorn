@@ -12,6 +12,12 @@
   assign current_color = product.metafields.custom.color.value
 -%}
 
+<!-- DEBUG varianter: {{ product.metafields.custom.varianter | json }} -->
+<!-- DEBUG varianter.value: {{ varianter | json }} -->
+<!-- DEBUG varianter size: {{ varianter.size }} -->
+<!-- DEBUG color: {{ product.metafields.custom.color | json }} -->
+<!-- DEBUG color.value: {{ current_color | json }} -->
+
 {%- if varianter != blank and varianter.size > 0 -%}
   <style>
     .product-card__price-row {
