@@ -1,0 +1,102 @@
+{%- comment -%}
+  Renders color swatches for linked product variants via metafields.
+  Uses custom.varianter (list.product_reference) and custom.color (file_reference image).
+
+  Usage:
+    {% render 'product-varianter-swatches', product: product, context: 'card' %}
+    {% render 'product-varianter-swatches', product: product, context: 'page' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign varianter = product.metafields.custom.varianter.value
+  assign current_color = product.metafields.custom.color.value
+-%}
+
+{%- if varianter != blank and varianter.size > 0 -%}
+  <style>
+    .product-card__price-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .varianter-swatches {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .varianter-swatches__item {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      transition: border-color 0.2s ease;
+      flex-shrink: 0;
+    }
+    .varianter-swatches__item:hover {
+      border-color: rgba(0, 0, 0, 0.6);
+    }
+    .varianter-swatches__item--active {
+      border-color: rgba(0, 0, 0, 0.8);
+    }
+    .varianter-swatches__item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .varianter-swatches--page {
+      padding-top: 12px;
+    }
+    .varianter-swatches--page .varianter-swatches__item {
+      width: 28px;
+      height: 28px;
+    }
+  </style>
+
+  <div class="varianter-swatches varianter-swatches--{{ context }}">
+    {%- comment -%} Current product swatch {%- endcomment -%}
+    {%- if current_color != blank -%}
+      <a
+        class="varianter-swatches__item varianter-swatches__item--active"
+        href="{{ product.url }}"
+        aria-label="{{ product.title | strip_html | escape }}"
+        title="{{ product.title | strip_html | escape }}"
+      >
+        <img
+          src="{{ current_color | image_url: width: 64 }}"
+          alt="{{ product.title | strip_html | escape }}"
+          width="20"
+          height="20"
+          loading="lazy"
+        >
+      </a>
+    {%- endif -%}
+
+    {%- comment -%} Linked product swatches {%- endcomment -%}
+    {%- for sibling in varianter -%}
+      {%- if sibling.id != product.id -%}
+        {%- assign sibling_color = sibling.metafields.custom.color.value -%}
+        {%- if sibling_color != blank -%}
+          <a
+            class="varianter-swatches__item"
+            href="{{ sibling.url }}"
+            aria-label="{{ sibling.title | strip_html | escape }}"
+            title="{{ sibling.title | strip_html | escape }}"
+          >
+            <img
+              src="{{ sibling_color | image_url: width: 64 }}"
+              alt="{{ sibling.title | strip_html | escape }}"
+              width="20"
+              height="20"
+              loading="lazy"
+            >
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
