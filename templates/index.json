@@ -179,7 +179,7 @@
         "template--16797407314161__a12dd186-36ea-4f50-a508-21fed6170a2b-announcement-1": {
           "type": "announcement",
           "settings": {
-            "announcement_text": "ÅBNINGSUDSALG",
+            "announcement_text": "SPAR 20% PÅ HELE SHOPPEN",
             "font_family": "body",
             "font_style": "solid",
             "font_size": 16,
@@ -187,7 +187,7 @@
             "top_spacing": 20,
             "bottom_spacing": 20,
             "spacing_between_messages": 26,
-            "link": "",
+            "link": "shopify://collections/all",
             "icon_type": "none",
             "icon": "shipping-box",
             "icon_size": 24,
@@ -481,6 +481,82 @@
         "section_spacing_bottom": "l"
       }
     },
+    "testimonials_FgKRWB": {
+      "type": "testimonials",
+      "blocks": {
+        "quote_jVDTpc": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Nu har jeg brugt Fjorns kufferter et par gange, og de lever fuldstændig op til forventningerne. Det er en super nem og praktisk løsning, som bare gør hele turen nemmere.</p>",
+            "author_name": "Silas",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
+        },
+        "quote_Rwj4Lw": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Jeg er blevet forelsket i Stratum serien og har købt 1 lille og 1 stor kuffert nu - man får rigtig meget for pengene og det fungerer  godt. Kan klart anbefales.</p>",
+            "author_name": "Sissel",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
+        },
+        "quote_QRBcPW": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Har intet dårligt at sige om Fjorn. Fantastisk service og fantastiske produkter i høj kvalitet.</p>",
+            "author_name": "Andreas",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "quote_jVDTpc",
+        "quote_Rwj4Lw",
+        "quote_QRBcPW"
+      ],
+      "name": "t:sections.testimonials.name",
+      "settings": {
+        "desktop_layout": "bottom-slideshow",
+        "mobile_layout": "slideshow",
+        "cards_per_slide": 2,
+        "desktop_space_between_cards": 12,
+        "desktop_quote_alignment": "left",
+        "mobile_quote_alignment": "left",
+        "show_rating": true,
+        "stars_color": "#141416",
+        "color_testimonials": true,
+        "caption": "",
+        "title": "Oplevelser med Fjorn",
+        "heading_size": "h3",
+        "text": "",
+        "body_size": "body3",
+        "btn_text": "",
+        "btn_url": "",
+        "enable_overlay": false,
+        "overlay_color": "#0000005B",
+        "image_size": 25,
+        "autoplay_mode": "disabled",
+        "autoplay_interval": 3,
+        "container_size": "large",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxl",
+        "section_spacing_bottom": "xxl"
+      }
+    },
     "d31e75db-2f94-49b3-9015-a319fb18aa66": {
       "type": "countdown-banner",
       "blocks": {
@@ -540,6 +616,7 @@
         "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-countdown-1",
         "template--16771116597489__d31e75db-2f94-49b3-9015-a319fb18aa66-buttons-1"
       ],
+      "disabled": true,
       "settings": {
         "desktop_ratio": 0.4,
         "mobile_ratio": 1.7,
@@ -1584,6 +1661,7 @@
     "featured_navigation_hDXUgg",
     "collection_text",
     "variant_collection_grid_HQbELJ",
+    "testimonials_FgKRWB",
     "d31e75db-2f94-49b3-9015-a319fb18aa66",
     "collection_list",
     "image_scroller_eGkKhT",
