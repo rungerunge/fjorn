@@ -100,8 +100,8 @@
         "footer-1": {
           "type": "logo_with_text",
           "settings": {
-            "logo_img": "shopify://shop_images/fjornlogotestsort_2.svg",
-            "logo_width": 200,
+            "logo_img": "shopify://shop_images/Group_1.svg",
+            "logo_width": 100,
             "title": "",
             "heading_size": "caption2",
             "text": "<p>Hos Fjorn finder du kufferter, hvor æstetik og funktion går hånd i hånd. Designet til moderne rejser med fokus på kvalitet, komfort og holdbarhed.</p><p>CVR: 43937790</p>",
