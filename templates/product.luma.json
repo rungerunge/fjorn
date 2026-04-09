@@ -88,12 +88,12 @@
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "option_type": "button-solid",
+            "option_type": "dropdown-outline",
             "show_swatches": true,
             "primary_swatch_option_type": "swatches",
             "secondary_swatch_option_type": "swatches",
             "hide_single_value_options": true,
-            "enable_option_svg_row": true,
+            "enable_option_svg_row": false,
             "option_svg_target_name": "Størrelse",
             "option_svg_match_1": "Small",
             "option_svg_image_1": "shopify://shop_images/Frame_2147226298_1.svg",
