@@ -503,7 +503,7 @@
         "color_scheme": "",
         "show_background": false,
         "add_desktop_side_paddings": true,
-        "add_mobile_side_paddings": false,
+        "add_mobile_side_paddings": true,
         "section_spacing_top": "m",
         "section_spacing_bottom": "xxxl"
       }
