@@ -386,55 +386,55 @@
         "variant_card_rWxKaR": {
           "type": "variant_card",
           "settings": {
-            "product": "luma-kuffert-gron",
-            "variant_id": "57669996904793",
+            "product": "stratum-aluminium-solv",
+            "variant_id": "",
             "badge_text": "",
-            "custom_title": "Luma - Creme Hvid",
-            "custom_price": "fra 599 kr",
+            "custom_title": "",
+            "custom_price": "",
             "custom_link": ""
           }
         },
         "variant_card_RfijxC": {
           "type": "variant_card",
           "settings": {
-            "product": "luma-kuffert-gron",
-            "variant_id": "57669996839257",
+            "product": "stratum-aluminium-space-grey",
+            "variant_id": "",
             "badge_text": "",
-            "custom_title": "Luma - Grøn",
-            "custom_price": "fra 599 kr",
+            "custom_title": "",
+            "custom_price": "",
             "custom_link": ""
           }
         },
         "variant_card_XghqcX": {
           "type": "variant_card",
           "settings": {
-            "product": "luma-kuffert-gron",
-            "variant_id": "57669996970329",
+            "product": "stratum-aluminium-sort",
+            "variant_id": "",
             "badge_text": "",
-            "custom_title": "Luma - Lilla",
-            "custom_price": "fra 599 kr",
+            "custom_title": "",
+            "custom_price": "",
             "custom_link": ""
           }
         },
         "variant_card_RAwzdA": {
           "type": "variant_card",
           "settings": {
-            "product": "fjorn-premium-space-grey",
-            "variant_id": "57669110268249",
+            "product": "stratum-aluminium-gron",
+            "variant_id": "",
             "badge_text": "",
-            "custom_title": "Prima Aluminium - Sølv",
-            "custom_price": "fra 2.995 kr",
+            "custom_title": "",
+            "custom_price": "",
             "custom_link": ""
           }
         },
         "variant_card_f7wf3F": {
           "type": "variant_card",
           "settings": {
-            "product": "fjorn-premium-space-grey",
-            "variant_id": "57668961075545",
+            "product": "stratum-aluminium-rose",
+            "variant_id": "",
             "badge_text": "",
-            "custom_title": "Prima Aluminium - Space Grey",
-            "custom_price": "fra 2.995 kr",
+            "custom_title": "",
+            "custom_price": "",
             "custom_link": ""
           }
         },
@@ -470,9 +470,6 @@
         "img_ratio": "default",
         "img_ratio_resize": "fill",
         "product_card_align": "left",
-        "enable_bundle": false,
-        "bundle_button_label": "Læg i kurv",
-        "bundle_button_style": "primary",
         "container_size": "page-width",
         "round_level": "default",
         "color_scheme_variant": "default",
