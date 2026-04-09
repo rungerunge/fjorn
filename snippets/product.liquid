@@ -202,6 +202,8 @@
 
                   <div class='product-information-drawer__viewport' data-product-information-drawer-viewport>
                     <div class='product-information-drawer__content body-color product-information-drawer__content--restrict-top-space'>
+                      {% render 'product-size-guide-cards', product: product %}
+
                       {% if text != blank %}
                         <div class='rte {{ information_drawer_body_size }}'>
                           {{ text }}

@@ -65,6 +65,8 @@
             render 'in-cart-banner', section: section, block: block, class: 'product-promo-banner'
           when 'product_usps'
             render 'product-usps-block', block: block
+          when 'key_elements'
+            render 'product-key-elements-block', product: product, section: section, block: block
           when 'varianter'
             render 'product-varianter-swatches', product: product, context: 'page'
         endcase

@@ -1,0 +1,165 @@
+{%- comment -%}
+  RIMOWA-style size guide with variant cards.
+  Renders inside the existing size guide drawer.
+
+  Uses variant metafields (optional):
+    custom.dimensions  - e.g. "55 x 40 x 23 cm"
+    custom.weight      - e.g. "4,3 kg"
+    custom.volume      - e.g. "35 L"
+    custom.outfits     - e.g. "4 outfits"
+    custom.days        - e.g. "2-3 dage"
+{%- endcomment -%}
+
+{%- liquid
+  assign size_option_name = ''
+  for option in product.options_with_values
+    assign opt_down = option.name | downcase
+    if opt_down == 'størrelse' or opt_down == 'size'
+      assign size_option_name = option.name
+      assign size_option_position = option.position
+      break
+    endif
+  endfor
+-%}
+
+{%- if size_option_name != blank -%}
+  <div class='size-guide-cards'>
+    <div class='size-guide-cards__heading heading-font-family'>{{ product.title }}</div>
+    <div class='size-guide-cards__grid'>
+      {%- assign shown_values = '' -%}
+      {%- for variant in product.variants -%}
+        {%- liquid
+          assign size_value = ''
+          case size_option_position
+            when 1
+              assign size_value = variant.option1
+            when 2
+              assign size_value = variant.option2
+            when 3
+              assign size_value = variant.option3
+          endcase
+
+          assign already_shown = shown_values | split: '|||' | where: size_value
+        -%}
+
+        {%- if size_value != blank and already_shown.size == 0 -%}
+          {%- liquid
+            assign shown_values = shown_values | append: size_value | append: '|||'
+
+            assign v_dimensions = variant.metafields.custom.dimensions.value | default: ''
+            assign v_weight = variant.metafields.custom.weight.value | default: ''
+            assign v_volume = variant.metafields.custom.volume.value | default: ''
+            assign v_outfits = variant.metafields.custom.outfits.value | default: ''
+            assign v_days = variant.metafields.custom.days.value | default: ''
+          -%}
+
+          <div class='size-guide-card {% if variant.selected %}size-guide-card--selected{% endif %}'>
+            <div class='size-guide-card__image'>
+              {%- if variant.featured_image != blank -%}
+                <img
+                  src='{{ variant.featured_image | image_url: width: 300 }}'
+                  alt='{{ size_value | escape }}'
+                  width='150'
+                  height='150'
+                  loading='lazy'
+                >
+              {%- elsif product.featured_image != blank -%}
+                <img
+                  src='{{ product.featured_image | image_url: width: 300 }}'
+                  alt='{{ size_value | escape }}'
+                  width='150'
+                  height='150'
+                  loading='lazy'
+                >
+              {%- endif -%}
+            </div>
+
+            <p class='size-guide-card__name heading-font-family'>{{ size_value }}</p>
+
+            {%- if v_dimensions != blank -%}
+              <p class='size-guide-card__spec'>{{ v_dimensions }}</p>
+            {%- endif -%}
+            {%- if v_weight != blank -%}
+              <p class='size-guide-card__spec'>{{ v_weight }}</p>
+            {%- endif -%}
+            {%- if v_volume != blank -%}
+              <p class='size-guide-card__spec'>{{ v_volume }}</p>
+            {%- endif -%}
+
+            {%- if v_outfits != blank or v_days != blank -%}
+              <div class='size-guide-card__usage'>
+                {%- if v_outfits != blank -%}
+                  <p class='size-guide-card__spec'>{{ v_outfits }}</p>
+                {%- endif -%}
+                {%- if v_days != blank -%}
+                  <p class='size-guide-card__spec'>{{ v_days }}</p>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .size-guide-cards {
+    width: 100%;
+  }
+  .size-guide-cards__heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem;
+  }
+  .size-guide-cards__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .size-guide-card {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: outline 0.15s ease;
+    outline: 2px solid transparent;
+  }
+  .size-guide-card--selected {
+    outline: 2px solid #000;
+  }
+  .size-guide-card__image {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .size-guide-card__image img {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+  .size-guide-card__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .size-guide-card__spec {
+    font-size: 0.8125rem;
+    margin: 0 0 2px;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+  .size-guide-card__usage {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    margin-top: 8px;
+    padding-top: 8px;
+    width: 100%;
+    text-align: center;
+  }
+{% endstylesheet %}
