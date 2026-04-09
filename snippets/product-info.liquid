@@ -65,10 +65,10 @@
             render 'in-cart-banner', section: section, block: block, class: 'product-promo-banner'
           when 'product_usps'
             render 'product-usps-block', block: block
+          when 'varianter'
+            render 'product-varianter-swatches', product: product, context: 'page'
         endcase
       endfor
     -%}
-
-    {% render 'product-varianter-swatches', product: product, context: 'page' %}
   </div>
 </product-info>

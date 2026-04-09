@@ -802,6 +802,10 @@
                       if block.settings.show_in_quick_view
                         render 'product-siblings-block', product: product, section: section, block: block, sectionId: sectionId
                       endif
+                    when 'varianter'
+                      if block.settings.show_in_quick_view
+                        render 'product-varianter-swatches', product: product, context: 'page'
+                      endif
                     when 'promo_banner'
                       if block.settings.show_in_quick_view
                         render 'in-cart-banner', section: section, block: block, class: 'product-promo-banner'

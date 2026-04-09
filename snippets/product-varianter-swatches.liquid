@@ -1,6 +1,7 @@
 {%- comment -%}
   Renders color swatches for linked product variants via metafields.
   Uses custom.varianter (list.product_reference) and custom.color (file_reference image).
+  Falls back to product featured image if custom.color is not set.
 
   Usage:
     {% render 'product-varianter-swatches', product: product, context: 'card' %}
@@ -9,63 +10,21 @@
 
 {%- liquid
   assign varianter = product.metafields.custom.varianter.value
-  assign current_color = product.metafields.custom.color.value
 -%}
 
-<!-- DEBUG varianter: {{ product.metafields.custom.varianter | json }} -->
-<!-- DEBUG varianter.value: {{ varianter | json }} -->
-<!-- DEBUG varianter size: {{ varianter.size }} -->
-<!-- DEBUG color: {{ product.metafields.custom.color | json }} -->
-<!-- DEBUG color.value: {{ current_color | json }} -->
-
 {%- if varianter != blank and varianter.size > 0 -%}
-  <style>
-    .product-card__price-row {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .varianter-swatches {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .varianter-swatches__item {
-      display: block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      transition: border-color 0.2s ease;
-      flex-shrink: 0;
-    }
-    .varianter-swatches__item:hover {
-      border-color: rgba(0, 0, 0, 0.6);
-    }
-    .varianter-swatches__item--active {
-      border-color: rgba(0, 0, 0, 0.8);
-    }
-    .varianter-swatches__item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .varianter-swatches--page {
-      padding-top: 12px;
-    }
-    .varianter-swatches--page .varianter-swatches__item {
-      width: 28px;
-      height: 28px;
-    }
-  </style>
+  {%- liquid
+    assign current_color = product.metafields.custom.color.value
+    assign current_color_src = ''
+    if current_color != blank
+      assign current_color_src = current_color | image_url: width: 80
+    elsif product.featured_image != blank
+      assign current_color_src = product.featured_image | image_url: width: 80
+    endif
+  -%}
 
   <div class="varianter-swatches varianter-swatches--{{ context }}">
-    {%- comment -%} Current product swatch {%- endcomment -%}
-    {%- if current_color != blank -%}
+    {%- if current_color_src != '' -%}
       <a
         class="varianter-swatches__item varianter-swatches__item--active"
         href="{{ product.url }}"
@@ -73,7 +32,7 @@
         title="{{ product.title | strip_html | escape }}"
       >
         <img
-          src="{{ current_color | image_url: width: 64 }}"
+          src="{{ current_color_src }}"
           alt="{{ product.title | strip_html | escape }}"
           width="20"
           height="20"
@@ -82,11 +41,18 @@
       </a>
     {%- endif -%}
 
-    {%- comment -%} Linked product swatches {%- endcomment -%}
     {%- for sibling in varianter -%}
       {%- if sibling.id != product.id -%}
-        {%- assign sibling_color = sibling.metafields.custom.color.value -%}
-        {%- if sibling_color != blank -%}
+        {%- liquid
+          assign sibling_color = sibling.metafields.custom.color.value
+          assign sibling_color_src = ''
+          if sibling_color != blank
+            assign sibling_color_src = sibling_color | image_url: width: 80
+          elsif sibling.featured_image != blank
+            assign sibling_color_src = sibling.featured_image | image_url: width: 80
+          endif
+        -%}
+        {%- if sibling_color_src != '' -%}
           <a
             class="varianter-swatches__item"
             href="{{ sibling.url }}"
@@ -94,7 +60,7 @@
             title="{{ sibling.title | strip_html | escape }}"
           >
             <img
-              src="{{ sibling_color | image_url: width: 64 }}"
+              src="{{ sibling_color_src }}"
               alt="{{ sibling.title | strip_html | escape }}"
               width="20"
               height="20"

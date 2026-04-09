@@ -29,6 +29,50 @@
       render 'vite-tag' with 'main.css', preload_stylesheet: true
       render 'vite-tag' with 'main.ts'
     %}
+
+    <style>
+      .product-card__price-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .varianter-swatches {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .varianter-swatches__item {
+        display: block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        transition: border-color 0.2s ease;
+        flex-shrink: 0;
+      }
+      .varianter-swatches__item:hover {
+        border-color: rgba(0, 0, 0, 0.6);
+      }
+      .varianter-swatches__item--active {
+        border-color: rgba(0, 0, 0, 0.8);
+      }
+      .varianter-swatches__item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .varianter-swatches--page {
+        padding: 12px 0;
+      }
+      .varianter-swatches--page .varianter-swatches__item {
+        width: 28px;
+        height: 28px;
+      }
+    </style>
     
     {% render 'fonts' %}
 
