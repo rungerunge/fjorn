@@ -88,6 +88,12 @@
             "image_width": 100
           }
         },
+        "varianter_cpf8Ey": {
+          "type": "varianter",
+          "settings": {
+            "show_in_quick_view": true
+          }
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -312,6 +318,7 @@
         "price",
         "product_usps_main",
         "collapsible_row",
+        "varianter_cpf8Ey",
         "variant_picker",
         "inventory_status",
         "quantity_selector",
