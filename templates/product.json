@@ -672,6 +672,82 @@
         "section_spacing_bottom": "l"
       }
     },
+    "testimonials_BiqzqY": {
+      "type": "testimonials",
+      "blocks": {
+        "quote_FgW4JN": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Nu har jeg brugt Fjorns kufferter et par gange, og de lever fuldstændig op til forventningerne. Det er en super nem og praktisk løsning, som bare gør hele turen nemmere.</p>",
+            "author_name": "Silas",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
+        },
+        "quote_KhRLyJ": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Jeg er blevet forelsket i Stratum serien og har købt 1 lille og 1 stor kuffert nu - man får rigtig meget for pengene og det fungerer  godt. Kan klart anbefales.</p>",
+            "author_name": "Sissel",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
+        },
+        "quote_n9PRMg": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Har intet dårligt at sige om Fjorn. Fantastisk service og fantastiske produkter i høj kvalitet.</p>",
+            "author_name": "Andreas",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "quote_FgW4JN",
+        "quote_KhRLyJ",
+        "quote_n9PRMg"
+      ],
+      "name": "t:sections.testimonials.name",
+      "settings": {
+        "desktop_layout": "bottom-slideshow",
+        "mobile_layout": "slideshow",
+        "cards_per_slide": 2,
+        "desktop_space_between_cards": 12,
+        "desktop_quote_alignment": "left",
+        "mobile_quote_alignment": "left",
+        "show_rating": true,
+        "stars_color": "#141416",
+        "color_testimonials": true,
+        "caption": "",
+        "title": "Oplevelser med Fjorn",
+        "heading_size": "h3",
+        "text": "",
+        "body_size": "body3",
+        "btn_text": "",
+        "btn_url": "",
+        "enable_overlay": false,
+        "overlay_color": "#0000005B",
+        "image_size": 25,
+        "autoplay_mode": "disabled",
+        "autoplay_interval": 3,
+        "container_size": "large",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxl",
+        "section_spacing_bottom": "xxl"
+      }
+    },
     "faq_qwt4tA": {
       "type": "faq",
       "blocks": {
@@ -990,118 +1066,6 @@
         "section_spacing_top": "xxl",
         "section_spacing_bottom": "xxl"
       }
-    },
-    "testimonials_BiqzqY": {
-      "type": "testimonials",
-      "blocks": {
-        "quote_FgW4JN": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Add authentic testimonials of your customers talking about your products or brand in their own words, so that future customers can identify with them and their needs. Testimonials provide social proof and build trust with customers. By reading about the positive experiences of other customers, potential customers are more likely to take the next step and to buy from you. What's more, customer testimonials are high-quality content that is relevant to your target audience, so they can help to boost your SEO.</p>",
-            "author_name": "Author name",
-            "author_details": "Author details",
-            "quote_product": "",
-            "link": ""
-          }
-        },
-        "quote_KhRLyJ": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Add authentic testimonials of your customers talking about your products or brand in their own words, so that future customers can identify with them and their needs. Testimonials provide social proof and build trust with customers. By reading about the positive experiences of other customers, potential customers are more likely to take the next step and to buy from you. What's more, customer testimonials are high-quality content that is relevant to your target audience, so they can help to boost your SEO.</p>",
-            "author_name": "Author name",
-            "author_details": "Author details",
-            "quote_product": "",
-            "link": ""
-          }
-        },
-        "quote_iGc3RU": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Add authentic testimonials of your customers talking about your products or brand in their own words, so that future customers can identify with them and their needs. Testimonials provide social proof and build trust with customers. By reading about the positive experiences of other customers, potential customers are more likely to take the next step and to buy from you. What's more, customer testimonials are high-quality content that is relevant to your target audience, so they can help to boost your SEO.</p>",
-            "author_name": "Author name",
-            "author_details": "Author details",
-            "quote_product": "",
-            "link": ""
-          }
-        },
-        "quote_jxgBab": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Add authentic testimonials of your customers talking about your products or brand in their own words, so that future customers can identify with them and their needs. Testimonials provide social proof and build trust with customers. By reading about the positive experiences of other customers, potential customers are more likely to take the next step and to buy from you. What's more, customer testimonials are high-quality content that is relevant to your target audience, so they can help to boost your SEO.</p>",
-            "author_name": "Author name",
-            "author_details": "Author details",
-            "quote_product": "",
-            "link": ""
-          }
-        },
-        "quote_UqbTAx": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Add authentic testimonials of your customers talking about your products or brand in their own words, so that future customers can identify with them and their needs. Testimonials provide social proof and build trust with customers. By reading about the positive experiences of other customers, potential customers are more likely to take the next step and to buy from you. What's more, customer testimonials are high-quality content that is relevant to your target audience, so they can help to boost your SEO.</p>",
-            "author_name": "Author name",
-            "author_details": "Author details",
-            "quote_product": "",
-            "link": ""
-          }
-        },
-        "quote_tBHXJx": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Add authentic testimonials of your customers talking about your products or brand in their own words, so that future customers can identify with them and their needs. Testimonials provide social proof and build trust with customers. By reading about the positive experiences of other customers, potential customers are more likely to take the next step and to buy from you. What's more, customer testimonials are high-quality content that is relevant to your target audience, so they can help to boost your SEO.</p>",
-            "author_name": "Author name",
-            "author_details": "Author details",
-            "quote_product": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "quote_FgW4JN",
-        "quote_KhRLyJ",
-        "quote_iGc3RU",
-        "quote_jxgBab",
-        "quote_UqbTAx",
-        "quote_tBHXJx"
-      ],
-      "name": "t:sections.testimonials.name",
-      "settings": {
-        "desktop_layout": "bottom-slideshow",
-        "mobile_layout": "slideshow",
-        "cards_per_slide": 2,
-        "desktop_space_between_cards": 12,
-        "desktop_quote_alignment": "left",
-        "mobile_quote_alignment": "left",
-        "show_rating": true,
-        "stars_color": "#141416",
-        "color_testimonials": true,
-        "caption": "",
-        "title": "Ord fra medrejsende",
-        "heading_size": "h3",
-        "text": "<p>Show customer reviews: tweets, blog posts, or interviews. Invite customers to share their impressions of your products.</p>",
-        "body_size": "body3",
-        "btn_text": "",
-        "btn_url": "",
-        "enable_overlay": false,
-        "overlay_color": "#0000005B",
-        "image_size": 25,
-        "autoplay_mode": "disabled",
-        "autoplay_interval": 3,
-        "container_size": "large",
-        "round_level": "default",
-        "color_scheme_variant": "default",
-        "color_scheme": "",
-        "show_background": false,
-        "add_desktop_side_paddings": true,
-        "add_mobile_side_paddings": true,
-        "section_spacing_top": "xxl",
-        "section_spacing_bottom": "xxl"
-      }
     }
   },
   "order": [
@@ -1111,7 +1075,7 @@
     "collection_list",
     "product-recommendations",
     "1774620534a459c597",
-    "faq_qwt4tA",
-    "testimonials_BiqzqY"
+    "testimonials_BiqzqY",
+    "faq_qwt4tA"
   ]
 }
