@@ -24,7 +24,8 @@
   -%}
 
   {%- if context == 'page' -%}
-    <div class="product-variant-picker__option-label"><span class="heading-font-family">Farve</span></div>
+    <div class="product-variant-picker" data-product-block>
+      <div class="product-variant-picker__option-label"><span class="heading-font-family">Farve</span></div>
   {%- endif -%}
   <div class="varianter-swatches varianter-swatches--{{ context }}">
     {%- if current_color_src != '' -%}
@@ -74,4 +75,7 @@
       {%- endif -%}
     {%- endfor -%}
   </div>
+  {%- if context == 'page' -%}
+    </div>
+  {%- endif -%}
 {%- endif -%}
