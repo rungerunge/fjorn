@@ -1315,28 +1315,35 @@
       const dimRe = /(\d[\d,\.]*\s*x\s*\d[\d,\.]*(?:\s*x\s*\d[\d,\.]*)?\s*cm)/i;
       const section = document.currentScript.closest('.shopify-section');
       if (!section) return;
+      let updating = false;
 
       function wrapDimsInSpan(span) {
         if (span.querySelector('.variant-dims')) return;
         const m = span.textContent.match(dimRe);
         if (!m) return;
         const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
+        updating = true;
         span.innerHTML = before + ' <span class="variant-dims">' + m[1] + '</span>';
+        updating = false;
       }
 
       function wrapDims(el) {
         if (!el) return;
-        el.querySelectorAll('span').forEach(wrapDimsInSpan);
+        el.querySelectorAll('span:not(.variant-dims)').forEach(wrapDimsInSpan);
       }
 
       /* Process toggle labels + watch for theme JS overwriting them */
       section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(label => {
         wrapDims(label);
-        new MutationObserver(() => wrapDims(label)).observe(label, { childList: true, subtree: true, characterData: true });
+        new MutationObserver(() => {
+          if (updating) return;
+          wrapDims(label);
+        }).observe(label, { childList: true, subtree: true, characterData: true });
       });
 
       /* Process dropdown items (they live in templates, so observe for when they appear) */
       new MutationObserver(mutations => {
+        if (updating) return;
         for (const mut of mutations) {
           for (const node of mut.addedNodes) {
             if (node.nodeType !== 1) continue;
