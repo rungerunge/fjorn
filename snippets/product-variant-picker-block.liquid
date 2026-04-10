@@ -604,17 +604,18 @@
         font-size: calc(1.1rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-70); margin-top: 2px; line-height: 1.3;
       }
-      .bpk-{{ block.id }} .bpk__item-price { flex-shrink: 0; text-align: right; margin-left: auto; }
+      .bpk-{{ block.id }} .bpk__item-price { margin-top: 4px; }
       .bpk-{{ block.id }} .bpk__item-price-current {
-        display: block; font-family: var(--gsc-headings-font-family);
+        display: inline; font-family: var(--gsc-headings-font-family);
         font-weight: var(--gsc-headings-font-weight, 600);
-        font-size: calc(1.25rem * var(--gsc-body-font-scale));
+        font-size: calc(1.2rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-100); white-space: nowrap;
       }
       .bpk-{{ block.id }} .bpk__item-price-compare {
         display: none; font-family: var(--gsc-body-font-family);
         font-size: calc(1rem * var(--gsc-body-font-scale));
         color: var(--gsc-text-color-70); text-decoration: line-through; white-space: nowrap;
+        margin-left: 6px;
       }
       .bpk-{{ block.id }} .bpk__item-action { flex-shrink: 0; }
       .bpk-{{ block.id }} .bpk__item-add {
@@ -832,10 +833,10 @@
             <div class='bpk__item-info'>
               <span class='bpk__item-name'>{{ v_primary_label }}</span>
               {%- if v_size_value != blank -%}<span class='bpk__item-tag'>{{ v_size_value }}</span>{%- endif -%}
-            </div>
-            <div class='bpk__item-price' data-bundle-item-price>
-              <span class='bpk__item-price-current'></span>
-              <span class='bpk__item-price-compare'></span>
+              <div class='bpk__item-price' data-bundle-item-price>
+                <span class='bpk__item-price-current'></span>
+                <span class='bpk__item-price-compare'></span>
+              </div>
             </div>
             <div class='bpk__item-action'>
               <button type='button' class='bpk__item-add' data-bundle-add-one aria-label='Tilføj'>Tilføj +</button>
@@ -1048,7 +1049,7 @@
           const sizePrices = this.sizePricingMap[sizeValue];
           if (sizePrices && sizePrices[tierIndex] > 0) return sizePrices[tierIndex];
           const variant = this.variantPrices.find(v => v.id === parseInt(item.dataset.variantId));
-          if (tierIndex === 0 && variant) return variant.price / 100;
+          if (variant) return variant.price / 100;
           return this.defaultTiers[tierIndex]?.unitPrice || 0;
         }
 
@@ -1179,7 +1180,7 @@
               if (compareEl) {
                 const hasDiscount = basePrice > tierPrice && tierPrice > 0;
                 compareEl.textContent = hasDiscount ? this.fmtMoney(basePrice) : '';
-                compareEl.style.display = hasDiscount ? 'block' : 'none';
+                compareEl.style.display = hasDiscount ? 'inline' : 'none';
               }
             }
           });
