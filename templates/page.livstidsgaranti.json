@@ -320,6 +320,7 @@
         "question_yzmKd8",
         "question_ENDYAw"
       ],
+      "disabled": true,
       "name": "t:sections.faq.name",
       "settings": {
         "section_layout": "bottom-tabs",
