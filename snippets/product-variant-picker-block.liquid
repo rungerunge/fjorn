@@ -1316,22 +1316,24 @@
       const section = document.currentScript.closest('.shopify-section');
       if (!section) return;
 
-      function wrapDims(el) {
-        if (!el || el.querySelector('.variant-dims')) return;
-        const spans = el.querySelectorAll('span');
-        spans.forEach(span => {
-          if (span.querySelector('.variant-dims')) return;
-          const m = span.textContent.match(dimRe);
-          if (m) {
-            const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
-            const dims = m[1];
-            span.innerHTML = before + ' <span class="variant-dims">' + dims + '</span>';
-          }
-        });
+      function wrapDimsInSpan(span) {
+        if (span.querySelector('.variant-dims')) return;
+        const m = span.textContent.match(dimRe);
+        if (!m) return;
+        const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
+        span.innerHTML = before + ' <span class="variant-dims">' + m[1] + '</span>';
       }
 
-      /* Process toggle label */
-      section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(wrapDims);
+      function wrapDims(el) {
+        if (!el) return;
+        el.querySelectorAll('span').forEach(wrapDimsInSpan);
+      }
+
+      /* Process toggle labels + watch for theme JS overwriting them */
+      section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(label => {
+        wrapDims(label);
+        new MutationObserver(() => wrapDims(label)).observe(label, { childList: true, subtree: true, characterData: true });
+      });
 
       /* Process dropdown items (they live in templates, so observe for when they appear) */
       new MutationObserver(mutations => {
@@ -1343,23 +1345,6 @@
           }
         }
       }).observe(section, { childList: true, subtree: true });
-
-      /* Also re-wrap toggle label when variant changes */
-      document.addEventListener('variant:change', () => {
-        requestAnimationFrame(() => {
-          section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(el => {
-            const spans = el.querySelectorAll('span');
-            spans.forEach(span => {
-              if (span.querySelector('.variant-dims')) return;
-              const m = span.textContent.match(dimRe);
-              if (m) {
-                const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
-                span.innerHTML = before + ' <span class="variant-dims">' + m[1] + '</span>';
-              }
-            });
-          });
-        });
-      });
     })();
   </script>
 {%- endif -%}
