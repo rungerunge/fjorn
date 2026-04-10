@@ -1,0 +1,352 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "show_heading": true,
+        "container_size": "xsmall",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "default",
+        "show_background": true,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxxl",
+        "section_spacing_bottom": "xxxl"
+      }
+    },
+    "faq_AGPkWa": {
+      "type": "faq",
+      "blocks": {
+        "category_M6DkMd": {
+          "type": "category",
+          "settings": {
+            "title": "Produkt & kvalitet",
+            "category_heading_size": "h6",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24
+          }
+        },
+        "question_Utmnya": {
+          "type": "question",
+          "settings": {
+            "title": "Hvilket materiale er jeres kufferter lavet af?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Vores kufferter er fremstillet i aluminium eller ABS/PC med fokus på holdbarhed, stabilitet og et tidløst udtryk. Du kan se materialet på hver enkelt produktside.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_UGLVQC": {
+          "type": "question",
+          "settings": {
+            "title": "Har I kufferter der er godkendt som håndbagage?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Vores cabin-modeller, også kaldet carry on, er designet med håndbagage i tankerne. Vi anbefaler dog altid, at du tjekker målene op mod det flyselskab, du rejser med, da reglerne kan variere.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_U8UJVP": {
+          "type": "question",
+          "settings": {
+            "title": "Har I kufferter med TSA lås?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vi har kufferter som er udstyret med en integreret TSA-lås, som gør den mere praktisk og sikker til rejser. Blandt andet vores Luma og Prima kollektioner har det - det vil også fremstå på produktsiderne</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_bnHNa8": {
+          "type": "question",
+          "settings": {
+            "title": "Kan hjulene dreje 360 grader?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vores kufferter har primært 4 spinnerhjul, der kan dreje 360°, så de er let at manøvrere i alle retninger.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_MEMhBz": {
+          "type": "question",
+          "settings": {
+            "title": "Kan håndtaget justeres?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vores kufferter har justerbare håndtag, så de passer bedre til dig.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "category_yeTtCb": {
+          "type": "category",
+          "settings": {
+            "title": "Levering, retur & garanti",
+            "category_heading_size": "h6",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24
+          }
+        },
+        "question_f3PAmB": {
+          "type": "question",
+          "settings": {
+            "title": "Hvor lang tid tager levering?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Den typisk estimerede leveringstid er 1-5 dage.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_wBhjpb": {
+          "type": "question",
+          "settings": {
+            "title": "Hvad koster fragt?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Der er gratis fragt på ordre over 599kr. Fragtprisen afhænger af leveringsmetode og destination. Du kan altid se den endelige fragtpris, inden du gennemfører din ordre.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_4cHH7w": {
+          "type": "question",
+          "settings": {
+            "title": "Hvor lang returret har jeg?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Du har 30 dages returret på ubrugte varer i original emballage - kontakt os for at starte din returnering.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_LWVrRY": {
+          "type": "question",
+          "settings": {
+            "title": "Hvordan returnerer jeg min kuffert?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Hvis du ønsker at returnere din ordre, kan du kontakte os, så guider vi dig gennem returprocessen.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_pwPMQi": {
+          "type": "question",
+          "settings": {
+            "title": "Tilbyder I garanti?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, vi står inde for kvaliteten af vores produkter. Eventuelle garantivilkår fremgår på produktsiden.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_cBgdiK": {
+          "type": "question",
+          "settings": {
+            "title": "Hvad gør jeg, hvis min kuffert ankommer med en fejl eller skade?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Kontakt os hurtigst muligt efter modtagelse med billeder og en kort beskrivelse, så hjælper vi dig videre.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "category_fKTqPd": {
+          "type": "category",
+          "settings": {
+            "title": "Bestilling & betaling",
+            "category_heading_size": "h6",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24
+          }
+        },
+        "question_kJjWxh": {
+          "type": "question",
+          "settings": {
+            "title": "Hvilke betalingsmetoder accepterer I?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Vi accepterer de mest almindelige betalingsmetoder inkl. MobilePay. De aktuelle muligheder vises ved checkout.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_X8Agha": {
+          "type": "question",
+          "settings": {
+            "title": "Kan jeg ændre eller annullere min ordre?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Hvis din ordre endnu ikke er sendt, gør vi vores bedste for at hjælpe. Kontakt os hurtigst muligt efter bestilling.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_fQDWzX": {
+          "type": "question",
+          "settings": {
+            "title": "Sender I til udlandet?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Det afhænger af destinationen. Du kan se de tilgængelige leveringsmuligheder ved checkout eller kontakte os for at høre mere.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_yzmKd8": {
+          "type": "question",
+          "settings": {
+            "title": "Får jeg tracking på min ordre?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, så snart din ordre er sendt, modtager du en tracking-mail, så du kan følge pakken.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        },
+        "question_ENDYAw": {
+          "type": "question",
+          "settings": {
+            "title": "Kan jeg kontakte jer, hvis jeg er i tvivl om, hvilken model jeg skal vælge?",
+            "heading_size": "caption2",
+            "icon_type": "none",
+            "icon": "settings",
+            "icon_size": 24,
+            "text": "<p>Ja, du er altid velkommen til at kontakte os, hvis du ønsker hjælp til at vælge den rette kuffert.</p>",
+            "page": "",
+            "body_size": "body3",
+            "media_type": "image",
+            "image_width": 100
+          }
+        }
+      },
+      "block_order": [
+        "category_M6DkMd",
+        "question_Utmnya",
+        "question_UGLVQC",
+        "question_U8UJVP",
+        "question_bnHNa8",
+        "question_MEMhBz",
+        "category_yeTtCb",
+        "question_f3PAmB",
+        "question_wBhjpb",
+        "question_4cHH7w",
+        "question_LWVrRY",
+        "question_pwPMQi",
+        "question_cBgdiK",
+        "category_fKTqPd",
+        "question_kJjWxh",
+        "question_X8Agha",
+        "question_fQDWzX",
+        "question_yzmKd8",
+        "question_ENDYAw"
+      ],
+      "name": "t:sections.faq.name",
+      "settings": {
+        "section_layout": "bottom-tabs",
+        "color_tabs": "content_tabs_separately",
+        "expand_first_tab": false,
+        "title": "Ofte stillede spørgsmål",
+        "heading_size": "h5",
+        "text": "Få svar på de mest gængse spørgsmål",
+        "body_size": "body3",
+        "content_alignment": "center",
+        "btn_text": "",
+        "btn_url": "",
+        "btn_style": "primary",
+        "container_size": "xsmall",
+        "round_level": "default",
+        "color_scheme_variant": "default",
+        "color_scheme": "",
+        "show_background": false,
+        "add_desktop_side_paddings": true,
+        "add_mobile_side_paddings": true,
+        "section_spacing_top": "xxl",
+        "section_spacing_bottom": "xxl"
+      }
+    }
+  },
+  "order": [
+    "page",
+    "faq_AGPkWa"
+  ]
+}
