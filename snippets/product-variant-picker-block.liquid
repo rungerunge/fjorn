@@ -1309,10 +1309,89 @@
         if (bvp && typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
       });
     }
+
+    /* Wrap dimension text (e.g. "36 x 22 x 56 cm") in a styled span */
+    (function() {
+      const dimRe = /(\d[\d,\.]*\s*x\s*\d[\d,\.]*(?:\s*x\s*\d[\d,\.]*)?\s*cm)/i;
+      const section = document.currentScript.closest('.shopify-section');
+      if (!section) return;
+
+      function wrapDims(el) {
+        if (!el || el.querySelector('.variant-dims')) return;
+        const spans = el.querySelectorAll('span');
+        spans.forEach(span => {
+          if (span.querySelector('.variant-dims')) return;
+          const m = span.textContent.match(dimRe);
+          if (m) {
+            const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
+            const dims = m[1];
+            span.innerHTML = before + ' <span class="variant-dims">' + dims + '</span>';
+          }
+        });
+      }
+
+      /* Process toggle label */
+      section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(wrapDims);
+
+      /* Process dropdown items (they live in templates, so observe for when they appear) */
+      new MutationObserver(mutations => {
+        for (const mut of mutations) {
+          for (const node of mut.addedNodes) {
+            if (node.nodeType !== 1) continue;
+            if (node.matches?.('.variant-picker-dropdown__item')) wrapDims(node);
+            node.querySelectorAll?.('.variant-picker-dropdown__item')?.forEach(wrapDims);
+          }
+        }
+      }).observe(section, { childList: true, subtree: true });
+
+      /* Also re-wrap toggle label when variant changes */
+      document.addEventListener('variant:change', () => {
+        requestAnimationFrame(() => {
+          section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(el => {
+            const spans = el.querySelectorAll('span');
+            spans.forEach(span => {
+              if (span.querySelector('.variant-dims')) return;
+              const m = span.textContent.match(dimRe);
+              if (m) {
+                const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
+                span.innerHTML = before + ' <span class="variant-dims">' + m[1] + '</span>';
+              }
+            });
+          });
+        });
+      });
+    })();
   </script>
 {%- endif -%}
 
 {% stylesheet %}
+  /* Variant dimensions styling */
+  .variant-dims {
+    font-size: 0.82em;
+    opacity: 0.6;
+  }
+  .variant-picker-dropdown__toggle-label .variant-dims {
+    font-size: 0.82em;
+    opacity: 0.6;
+  }
+  .variant-picker-dropdown__item {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .variant-picker-dropdown__item > span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .variant-picker-dropdown__item .variant-dims {
+    margin-left: auto;
+    padding-left: 12px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
   /* Udsolgt: skrå streg på farveprik kun — tekst uden streg, bare dæmpet */
   .product-variant-picker__pill-list label.pill[no-available] {
     position: relative;
