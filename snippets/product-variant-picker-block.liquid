@@ -1054,6 +1054,7 @@
               if (key.trim().toLowerCase() === lower) { sizePrices = prices; break; }
             }
           }
+          console.log('[BPK price]', { sizeValue, tierIndex, sizePrices, matched: !!(sizePrices && sizePrices[tierIndex] > 0), result: sizePrices ? sizePrices[tierIndex] : 'no match' });
           if (sizePrices && sizePrices[tierIndex] > 0) return sizePrices[tierIndex];
           /* Tier-specific fallback from default tiers */
           if (this.defaultTiers[tierIndex] && this.defaultTiers[tierIndex].unitPrice > 0) {
@@ -1162,6 +1163,7 @@
           const total = this.getTotalItems();
           const tier = this.getCurrentTier(total);
           const tierIndex = tier ? tier.index : 0;
+          console.log('[BPK debug]', { total, tierIndex, tierCount: tier?.count, sizePricingMap: this.sizePricingMap, defaultTiers: this.defaultTiers });
           this.updateSlider(total > 0 ? tier : null);
 
           this.items.forEach(item => {
