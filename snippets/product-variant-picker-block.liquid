@@ -1232,11 +1232,11 @@
             const compareEl = item.querySelector('.bpk__item-price-compare');
             if (priceEl) {
               const tierPrice = this._getItemTierPrice(item, tierIndex);
-              const tier0Price = this._getItemTierPrice(item, 0);
+              const basePrice = this._getItemBasePrice(item);
               priceEl.textContent = tierPrice > 0 ? this.fmtMoney(tierPrice) : '';
               if (compareEl) {
-                const hasDiscount = tierIndex > 0 && tier0Price > tierPrice && tierPrice > 0;
-                compareEl.textContent = hasDiscount ? this.fmtMoney(tier0Price) : '';
+                const hasDiscount = basePrice > tierPrice && tierPrice > 0;
+                compareEl.textContent = hasDiscount ? this.fmtMoney(basePrice) : '';
                 compareEl.style.display = hasDiscount ? 'inline' : 'none';
               }
             }
@@ -1251,14 +1251,14 @@
             const item = this.querySelector(`[data-variant-id="${vid}"]`);
             if (!item) continue;
             totalPrice += qty * this._getItemTierPrice(item, tierIndex);
-            totalCompare += qty * this._getItemTierPrice(item, 0);
+            totalCompare += qty * this._getItemBasePrice(item);
           }
 
           if (this.btnPriceWrap) {
             if (total > 0 && totalPrice > 0) {
               this.btnPriceWrap.style.display = '';
               this.btnTotalEl.textContent = this.fmtMoney(totalPrice);
-              const hasCompare = tierIndex > 0 && totalCompare > totalPrice;
+              const hasCompare = totalCompare > totalPrice;
               this.btnCompareEl.textContent = hasCompare ? this.fmtMoney(totalCompare) : '';
               this.btnCompareEl.style.display = hasCompare ? '' : 'none';
             } else {
