@@ -821,11 +821,16 @@
             assign v_tp_2 = v_base_price
             assign v_tp_3 = v_base_price
 
+            assign v_match_label = v_size_value
+            if v_match_label == blank
+              assign v_match_label = v_primary_label
+            endif
+
             for si in (1..5)
               assign si_name_key = 'bundle_size_' | append: si | append: '_name'
               assign si_name = block.settings[si_name_key] | default: ''
               assign si_name_d = si_name | strip | downcase
-              assign sv_d = v_size_value | strip | downcase
+              assign sv_d = v_match_label | strip | downcase
               if si_name_d == sv_d and si_name != blank
                 assign si_t1_key = 'bundle_size_' | append: si | append: '_tier1'
                 assign si_t2_key = 'bundle_size_' | append: si | append: '_tier2'
@@ -858,7 +863,7 @@
             data-option1='{{ v.option1 | escape }}'
             {% if v.option2 %}data-option2='{{ v.option2 | escape }}'{% endif %}
             {% if v.option3 %}data-option3='{{ v.option3 | escape }}'{% endif %}
-            {% if v_size_value != blank %}data-size-value='{{ v_size_value | escape }}'{% endif %}
+            data-size-value='{{ v_match_label | escape }}'
             data-tier-prices='[{{ v_tp_0 }},{{ v_tp_1 }},{{ v_tp_2 }},{{ v_tp_3 }}]'
           >
             <div class='bpk__item-img'>
