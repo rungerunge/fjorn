@@ -437,17 +437,6 @@
             "custom_price": "",
             "custom_link": ""
           }
-        },
-        "variant_card_c8xGtJ": {
-          "type": "variant_card",
-          "settings": {
-            "product": "fjorn-premium-space-grey",
-            "variant_id": "57668961108313",
-            "badge_text": "",
-            "custom_title": "Prima Aluminium - Sort",
-            "custom_price": "fra 2.995 kr",
-            "custom_link": ""
-          }
         }
       },
       "block_order": [
@@ -455,8 +444,7 @@
         "variant_card_RfijxC",
         "variant_card_XghqcX",
         "variant_card_RAwzdA",
-        "variant_card_f7wf3F",
-        "variant_card_c8xGtJ"
+        "variant_card_f7wf3F"
       ],
       "name": "Variant Collection Grid",
       "settings": {
@@ -542,7 +530,7 @@
         "btn_text": "",
         "btn_url": "",
         "enable_overlay": false,
-        "overlay_color": "#0000005B",
+        "overlay_color": "#0000005c",
         "image_size": 25,
         "autoplay_mode": "disabled",
         "autoplay_interval": 3,
