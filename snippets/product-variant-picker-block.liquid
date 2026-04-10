@@ -1094,6 +1094,18 @@
               this.msSingleCompare.style.display = compare ? '' : 'none';
             }
             if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(priceKr);
+
+            /* Update pack card price + sublabel for selected variant */
+            const matchItem = this.querySelector('[data-variant-id="' + match.id + '"]');
+            if (matchItem) {
+              let tierPrices = null;
+              try { tierPrices = JSON.parse(matchItem.dataset.tierPrices || 'null'); } catch(e) {}
+              if (tierPrices && tierPrices.length) {
+                const lowestTier = Math.min(...tierPrices.filter(p => p > 0));
+                if (this.msPackPrice && lowestTier > 0) this.msPackPrice.textContent = this.fmtMoney(lowestTier);
+                if (this.msPackSub && lowestTier > 0) this.msPackSub.textContent = 'Helt ned til ' + lowestTier.toLocaleString('da-DK') + ' kr per stk';
+              }
+            }
           }
         }
 
