@@ -1197,6 +1197,11 @@
           const total = this.getTotalItems();
           const tier = this.getCurrentTier(total);
           const tierIndex = tier ? tier.index : 0;
+          if (total > 0) {
+            const firstSelected = Object.keys(this.selectedItems)[0];
+            const firstItem = firstSelected ? this.querySelector(`[data-variant-id="${firstSelected}"]`) : null;
+            console.log('[BPK-bundle]', { total, tierIndex, tierPricesRaw: firstItem?.dataset?.tierPrices, price: firstItem ? this._getItemTierPrice(firstItem, tierIndex) : 'no item' });
+          }
           this.updateSlider(total > 0 ? tier : null);
 
           this.items.forEach(item => {
