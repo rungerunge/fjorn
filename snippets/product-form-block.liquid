@@ -205,27 +205,96 @@
         const variantMap = {};
         variants.forEach(v => { variantMap[v.id] = v; });
         const fmt = cents => (cents / 100).toLocaleString('da-DK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' kr';
+        const fmtKr = kr => kr.toLocaleString('da-DK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' kr';
 
-        function update(vid) {
+        /* ── Tier pricing from bundle config ── */
+        const section = wrap.closest('.shopify-section');
+        const bvp = section ? section.querySelector('bundle-variant-picker') : null;
+        let tierData = [];
+        let getTierPricesForVariant = null;
+
+        if (bvp) {
+          try { tierData = JSON.parse(bvp.querySelector('[data-bundle-tiers]')?.textContent || '[]'); } catch(e) {}
+          tierData.sort((a, b) => a.count - b.count);
+
+          getTierPricesForVariant = function(vid) {
+            const item = bvp.querySelector('[data-variant-id="' + vid + '"]');
+            if (!item) return null;
+            const raw = item.dataset.tierPrices;
+            if (!raw) return null;
+            try { return JSON.parse(raw); } catch(e) { return null; }
+          };
+        }
+
+        function getCurrentTierIndex(qty) {
+          if (!tierData.length) return 0;
+          let idx = 0;
+          for (const t of tierData) { if (qty >= t.count) idx = t.index; }
+          return idx;
+        }
+
+        let currentVid = null;
+
+        function update(vid, qty) {
+          currentVid = vid;
           const v = variantMap[vid];
           if (!v) return;
-          wrap.querySelectorAll('[data-btn-current-price]').forEach(el => { el.textContent = fmt(v.price); });
+          qty = qty || 1;
+
+          let unitPrice = v.price / 100;
+          let comparePrice = v.compare > v.price ? v.compare / 100 : v.price / 100;
+          let hasTierDiscount = false;
+
+          if (getTierPricesForVariant && tierData.length > 0) {
+            const tierPrices = getTierPricesForVariant(vid);
+            if (tierPrices) {
+              const tierIdx = getCurrentTierIndex(qty);
+              const tierPrice = tierPrices[tierIdx];
+              if (tierPrice > 0) {
+                const tier0Price = tierPrices[0] > 0 ? tierPrices[0] : v.price / 100;
+                unitPrice = tierPrice;
+                comparePrice = tier0Price;
+                hasTierDiscount = tierIdx > 0 && tier0Price > tierPrice;
+              }
+            }
+          }
+
+          const totalPrice = unitPrice * qty;
+          const totalCompare = comparePrice * qty;
+          const hasCompare = hasTierDiscount || (v.compare > v.price);
+
+          wrap.querySelectorAll('[data-btn-current-price]').forEach(el => { el.textContent = fmtKr(totalPrice); });
           wrap.querySelectorAll('[data-btn-compare-price]').forEach(el => {
-            const hasCompare = v.compare > v.price;
-            el.textContent = hasCompare ? fmt(v.compare) + ' ' : '';
+            el.textContent = hasCompare ? fmtKr(totalCompare) + ' ' : '';
             el.style.display = hasCompare ? '' : 'none';
           });
         }
 
+        function getQty() {
+          const pi = wrap.closest('.product__info') || document;
+          const qtyInput = pi.querySelector('[data-quantity-input]');
+          return qtyInput ? parseInt(qtyInput.value) || 1 : 1;
+        }
+
         const hiddenInput = wrap.querySelector('[data-product-form-variant]');
         if (hiddenInput) {
-          new MutationObserver(() => update(hiddenInput.value)).observe(hiddenInput, { attributes: true, attributeFilter: ['value'] });
-          update(hiddenInput.value);
+          new MutationObserver(() => update(hiddenInput.value, getQty())).observe(hiddenInput, { attributes: true, attributeFilter: ['value'] });
+          update(hiddenInput.value, getQty());
         }
 
         document.addEventListener('variant:change', e => {
-          if (e.detail?.variant?.id) update(e.detail.variant.id);
+          if (e.detail?.variant?.id) update(e.detail.variant.id, getQty());
         });
+
+        /* Listen for quantity changes */
+        const pi = wrap.closest('.product__info') || document;
+        const qtyInput = pi.querySelector('[data-quantity-input]');
+        if (qtyInput) {
+          const onQtyChange = () => { if (currentVid) update(currentVid, parseInt(qtyInput.value) || 1); };
+          qtyInput.addEventListener('change', onQtyChange);
+          qtyInput.addEventListener('input', onQtyChange);
+          new MutationObserver(() => onQtyChange()).observe(qtyInput, { attributes: true, attributeFilter: ['value'] });
+        }
       })();
     </script>
 
