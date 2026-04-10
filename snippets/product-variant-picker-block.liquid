@@ -1004,6 +1004,9 @@
 
           const firstTab = this.querySelector('[data-bundle-tab]');
           this.onTabChange(firstTab ? firstTab.dataset.bundleTab : 'all');
+
+          /* Set pack card prices for initially selected variant */
+          this._updateSingleCardPrices();
         }
 
         _parseSizePricing(raw) {
@@ -1320,6 +1323,14 @@
         const bvp = section.querySelector('bundle-variant-picker');
         if (bvp && typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
       });
+
+      document.addEventListener('variant:change', e => {
+        const el = e.target || document;
+        const section = el.closest?.('.shopify-section') || document.querySelector('.shopify-section');
+        if (!section) return;
+        const bvp = section.querySelector('bundle-variant-picker');
+        if (bvp && typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
+      });
     }
 
     /* Wrap dimension text (e.g. "36 x 22 x 56 cm") in a styled span */
@@ -1327,40 +1338,43 @@
       const dimRe = /(\d[\d,\.]*\s*x\s*\d[\d,\.]*(?:\s*x\s*\d[\d,\.]*)?\s*cm)/i;
       const section = document.currentScript.closest('.shopify-section');
       if (!section) return;
-      let updating = false;
 
-      function wrapDimsInSpan(span) {
+      function wrapSpan(span) {
         if (span.querySelector('.variant-dims')) return;
-        const m = span.textContent.match(dimRe);
+        const txt = span.textContent;
+        const m = txt.match(dimRe);
         if (!m) return;
-        const before = span.textContent.slice(0, span.textContent.indexOf(m[1])).trimEnd();
-        updating = true;
+        const idx = txt.indexOf(m[1]);
+        const before = txt.slice(0, idx).trimEnd();
         span.innerHTML = before + ' <span class="variant-dims">' + m[1] + '</span>';
-        updating = false;
       }
 
-      function wrapDims(el) {
-        if (!el) return;
-        el.querySelectorAll('span:not(.variant-dims)').forEach(wrapDimsInSpan);
+      function processLabels() {
+        section.querySelectorAll('[data-dropdown-variant-picker-label] > span').forEach(wrapSpan);
       }
 
-      /* Process toggle labels + watch for theme JS overwriting them */
-      section.querySelectorAll('[data-dropdown-variant-picker-label]').forEach(label => {
-        wrapDims(label);
-        new MutationObserver(() => {
-          if (updating) return;
-          wrapDims(label);
-        }).observe(label, { childList: true, subtree: true, characterData: true });
+      function processDropdownItems() {
+        section.querySelectorAll('.variant-picker-dropdown__item > span').forEach(wrapSpan);
+      }
+
+      /* Initial run */
+      processLabels();
+
+      /* Re-run when variant changes (theme JS overwrites label text) */
+      document.addEventListener('variant:change', () => {
+        setTimeout(processLabels, 20);
+        setTimeout(processLabels, 100);
       });
 
-      /* Process dropdown items (they live in templates, so observe for when they appear) */
+      /* Process dropdown items when they appear (rendered from template on open) */
       new MutationObserver(mutations => {
-        if (updating) return;
         for (const mut of mutations) {
           for (const node of mut.addedNodes) {
             if (node.nodeType !== 1) continue;
-            if (node.matches?.('.variant-picker-dropdown__item')) wrapDims(node);
-            node.querySelectorAll?.('.variant-picker-dropdown__item')?.forEach(wrapDims);
+            if (node.matches?.('.variant-picker-dropdown__item')) {
+              node.querySelectorAll(':scope > span').forEach(wrapSpan);
+            }
+            node.querySelectorAll?.('.variant-picker-dropdown__item > span')?.forEach(wrapSpan);
           }
         }
       }).observe(section, { childList: true, subtree: true });
