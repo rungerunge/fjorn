@@ -191,7 +191,7 @@
             "icon_type": "none",
             "icon": "settings",
             "icon_size": 24,
-            "text": "<p>Ja, vi står inde for kvaliteten af vores produkter. Eventuelle garantivilkår fremgår på produktsiden. Læs mere om Livstidsgarani på udvalgte produkter <a href=\"/pages/livstidsgaranti\" title=\"Livstidsgaranti\">her</a></p>",
+            "text": "<p>Ja, vi står inde for kvaliteten af vores produkter. Eventuelle garantier fremgår på produktsiden. Læs mere om Livstidsgarani på udvalgte produkter <a href=\"/pages/livstidsgaranti\" title=\"Livstidsgaranti\">her</a></p>",
             "page": "",
             "body_size": "body3",
             "media_type": "image",
