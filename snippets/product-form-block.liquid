@@ -251,10 +251,14 @@
               const tierIdx = getCurrentTierIndex(qty);
               const tierPrice = tierPrices[tierIdx];
               if (tierPrice > 0) {
-                const tier0Price = tierPrices[0] > 0 ? tierPrices[0] : v.price / 100;
                 unitPrice = tierPrice;
-                comparePrice = tier0Price;
-                hasTierDiscount = tierIdx > 0 && tier0Price > tierPrice;
+                if (v.compare > v.price) {
+                  comparePrice = v.compare / 100;
+                } else {
+                  const tier0Price = tierPrices[0] > 0 ? tierPrices[0] : v.price / 100;
+                  comparePrice = tier0Price;
+                }
+                hasTierDiscount = comparePrice > unitPrice;
               }
             }
           }
