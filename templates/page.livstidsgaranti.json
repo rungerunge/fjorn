@@ -11,7 +11,6 @@
   "sections": {
     "page": {
       "type": "page",
-      "disabled": true,
       "settings": {
         "show_heading": true,
         "container_size": "xsmall",
