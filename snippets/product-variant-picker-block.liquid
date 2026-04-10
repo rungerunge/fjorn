@@ -813,6 +813,43 @@
                   assign v_size_value = v.option3
               endcase
             endif
+
+            assign v_base_price = v.price | divided_by: 100.0
+
+            assign v_tp_0 = v_base_price
+            assign v_tp_1 = v_base_price
+            assign v_tp_2 = v_base_price
+            assign v_tp_3 = v_base_price
+
+            for si in (1..5)
+              assign si_name_key = 'bundle_size_' | append: si | append: '_name'
+              assign si_name = block.settings[si_name_key] | default: ''
+              assign si_name_d = si_name | strip | downcase
+              assign sv_d = v_size_value | strip | downcase
+              if si_name_d == sv_d and si_name != blank
+                assign si_t1_key = 'bundle_size_' | append: si | append: '_tier1'
+                assign si_t2_key = 'bundle_size_' | append: si | append: '_tier2'
+                assign si_t3_key = 'bundle_size_' | append: si | append: '_tier3'
+                assign si_t4_key = 'bundle_size_' | append: si | append: '_tier4'
+                assign si_t1 = block.settings[si_t1_key] | default: 0
+                assign si_t2 = block.settings[si_t2_key] | default: 0
+                assign si_t3 = block.settings[si_t3_key] | default: 0
+                assign si_t4 = block.settings[si_t4_key] | default: 0
+                if si_t1 > 0
+                  assign v_tp_0 = si_t1
+                endif
+                if si_t2 > 0
+                  assign v_tp_1 = si_t2
+                endif
+                if si_t3 > 0
+                  assign v_tp_2 = si_t3
+                endif
+                if si_t4 > 0
+                  assign v_tp_3 = si_t4
+                endif
+                break
+              endif
+            endfor
           -%}
           <div
             class='bpk__item {% unless v.available %}bpk__item--unavailable{% endunless %}'
@@ -822,6 +859,7 @@
             {% if v.option2 %}data-option2='{{ v.option2 | escape }}'{% endif %}
             {% if v.option3 %}data-option3='{{ v.option3 | escape }}'{% endif %}
             {% if v_size_value != blank %}data-size-value='{{ v_size_value | escape }}'{% endif %}
+            data-tier-prices='[{{ v_tp_0 }},{{ v_tp_1 }},{{ v_tp_2 }},{{ v_tp_3 }}]'
           >
             <div class='bpk__item-img'>
               {%- if v_image != blank -%}
@@ -1045,22 +1083,13 @@
         }
 
         _getItemTierPrice(item, tierIndex) {
-          const sizeValue = (item.dataset.sizeValue || '').trim();
-          /* Try exact match first, then case-insensitive */
-          let sizePrices = this.sizePricingMap[sizeValue];
-          if (!sizePrices && sizeValue) {
-            const lower = sizeValue.toLowerCase();
-            for (const [key, prices] of Object.entries(this.sizePricingMap)) {
-              if (key.trim().toLowerCase() === lower) { sizePrices = prices; break; }
-            }
+          const tierPricesRaw = item.dataset.tierPrices;
+          if (tierPricesRaw) {
+            try {
+              const tierPrices = JSON.parse(tierPricesRaw);
+              if (tierPrices[tierIndex] > 0) return tierPrices[tierIndex];
+            } catch(e) {}
           }
-          console.log('[BPK price]', { sizeValue, tierIndex, sizePrices, matched: !!(sizePrices && sizePrices[tierIndex] > 0), result: sizePrices ? sizePrices[tierIndex] : 'no match' });
-          if (sizePrices && sizePrices[tierIndex] > 0) return sizePrices[tierIndex];
-          /* Tier-specific fallback from default tiers */
-          if (this.defaultTiers[tierIndex] && this.defaultTiers[tierIndex].unitPrice > 0) {
-            return this.defaultTiers[tierIndex].unitPrice;
-          }
-          /* Last resort: variant base price */
           const variant = this.variantPrices.find(v => v.id === parseInt(item.dataset.variantId));
           return variant ? variant.price / 100 : 0;
         }
@@ -1163,7 +1192,6 @@
           const total = this.getTotalItems();
           const tier = this.getCurrentTier(total);
           const tierIndex = tier ? tier.index : 0;
-          console.log('[BPK debug]', { total, tierIndex, tierCount: tier?.count, sizePricingMap: this.sizePricingMap, defaultTiers: this.defaultTiers });
           this.updateSlider(total > 0 ? tier : null);
 
           this.items.forEach(item => {
