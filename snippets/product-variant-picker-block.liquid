@@ -1045,12 +1045,23 @@
         }
 
         _getItemTierPrice(item, tierIndex) {
-          const sizeValue = item.dataset.sizeValue || '';
-          const sizePrices = this.sizePricingMap[sizeValue];
+          const sizeValue = (item.dataset.sizeValue || '').trim();
+          /* Try exact match first, then case-insensitive */
+          let sizePrices = this.sizePricingMap[sizeValue];
+          if (!sizePrices && sizeValue) {
+            const lower = sizeValue.toLowerCase();
+            for (const [key, prices] of Object.entries(this.sizePricingMap)) {
+              if (key.trim().toLowerCase() === lower) { sizePrices = prices; break; }
+            }
+          }
           if (sizePrices && sizePrices[tierIndex] > 0) return sizePrices[tierIndex];
+          /* Tier-specific fallback from default tiers */
+          if (this.defaultTiers[tierIndex] && this.defaultTiers[tierIndex].unitPrice > 0) {
+            return this.defaultTiers[tierIndex].unitPrice;
+          }
+          /* Last resort: variant base price */
           const variant = this.variantPrices.find(v => v.id === parseInt(item.dataset.variantId));
-          if (variant) return variant.price / 100;
-          return this.defaultTiers[tierIndex]?.unitPrice || 0;
+          return variant ? variant.price / 100 : 0;
         }
 
         _getItemBasePrice(item) {
@@ -1176,11 +1187,11 @@
             const compareEl = item.querySelector('.bpk__item-price-compare');
             if (priceEl) {
               const tierPrice = this._getItemTierPrice(item, tierIndex);
-              const basePrice = this._getItemBasePrice(item);
+              const tier0Price = this._getItemTierPrice(item, 0);
               priceEl.textContent = tierPrice > 0 ? this.fmtMoney(tierPrice) : '';
               if (compareEl) {
-                const hasDiscount = basePrice > tierPrice && tierPrice > 0;
-                compareEl.textContent = hasDiscount ? this.fmtMoney(basePrice) : '';
+                const hasDiscount = tierIndex > 0 && tier0Price > tierPrice && tierPrice > 0;
+                compareEl.textContent = hasDiscount ? this.fmtMoney(tier0Price) : '';
                 compareEl.style.display = hasDiscount ? 'inline' : 'none';
               }
             }
@@ -1195,14 +1206,14 @@
             const item = this.querySelector(`[data-variant-id="${vid}"]`);
             if (!item) continue;
             totalPrice += qty * this._getItemTierPrice(item, tierIndex);
-            totalCompare += qty * this._getItemBasePrice(item);
+            totalCompare += qty * this._getItemTierPrice(item, 0);
           }
 
           if (this.btnPriceWrap) {
             if (total > 0 && totalPrice > 0) {
               this.btnPriceWrap.style.display = '';
               this.btnTotalEl.textContent = this.fmtMoney(totalPrice);
-              const hasCompare = totalCompare > totalPrice;
+              const hasCompare = tierIndex > 0 && totalCompare > totalPrice;
               this.btnCompareEl.textContent = hasCompare ? this.fmtMoney(totalCompare) : '';
               this.btnCompareEl.style.display = hasCompare ? '' : 'none';
             } else {
