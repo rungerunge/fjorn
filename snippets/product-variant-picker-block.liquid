@@ -1096,7 +1096,8 @@
               this.msSingleCompare.textContent = compare ? this.fmtMoney(compare / 100) : '';
               this.msSingleCompare.style.display = compare ? '' : 'none';
             }
-            if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(priceKr);
+            const packComparePrice = compare > 0 ? compare / 100 : priceKr;
+            if (this.msPackCompare) this.msPackCompare.textContent = this.fmtMoney(packComparePrice);
 
             /* Update pack card price + sublabel for selected variant */
             const matchItem = this.querySelector('[data-variant-id="' + match.id + '"]');
@@ -1324,13 +1325,6 @@
         if (bvp && typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
       });
 
-      document.addEventListener('variant:change', e => {
-        const el = e.target || document;
-        const section = el.closest?.('.shopify-section') || document.querySelector('.shopify-section');
-        if (!section) return;
-        const bvp = section.querySelector('bundle-variant-picker');
-        if (bvp && typeof bvp.onOptionChange === 'function') bvp.onOptionChange();
-      });
     }
 
     /* Wrap dimension text (e.g. "36 x 22 x 56 cm") in a styled span */
@@ -1349,33 +1343,32 @@
         span.innerHTML = before + ' <span class="variant-dims">' + m[1] + '</span>';
       }
 
-      function processLabels() {
+      function processAll() {
         section.querySelectorAll('[data-dropdown-variant-picker-label] > span').forEach(wrapSpan);
-      }
-
-      function processDropdownItems() {
         section.querySelectorAll('.variant-picker-dropdown__item > span').forEach(wrapSpan);
       }
 
       /* Initial run */
-      processLabels();
+      processAll();
 
-      /* Re-run when variant changes (theme JS overwrites label text) */
-      document.addEventListener('variant:change', () => {
-        setTimeout(processLabels, 20);
-        setTimeout(processLabels, 100);
-      });
-
-      /* Process dropdown items when they appear (rendered from template on open) */
+      /* Watch for DOM changes: theme replaces all [data-product-block] on variant change */
       new MutationObserver(mutations => {
+        let needsProcess = false;
         for (const mut of mutations) {
           for (const node of mut.addedNodes) {
             if (node.nodeType !== 1) continue;
-            if (node.matches?.('.variant-picker-dropdown__item')) {
-              node.querySelectorAll(':scope > span').forEach(wrapSpan);
+            if (node.querySelector?.('[data-dropdown-variant-picker-label]') ||
+                node.matches?.('[data-dropdown-variant-picker-label]') ||
+                node.matches?.('.variant-picker-dropdown__item') ||
+                node.querySelector?.('.variant-picker-dropdown__item') ||
+                node.hasAttribute?.('data-product-block')) {
+              needsProcess = true;
             }
-            node.querySelectorAll?.('.variant-picker-dropdown__item > span')?.forEach(wrapSpan);
           }
+        }
+        if (needsProcess) {
+          /* Small delay to ensure DOM is settled after block replacement */
+          setTimeout(processAll, 10);
         }
       }).observe(section, { childList: true, subtree: true });
     })();
