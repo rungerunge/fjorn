@@ -550,6 +550,7 @@
         "slide_pCzhYV",
         "slide_3aMA3j"
       ],
+      "disabled": true,
       "name": "t:sections.image_scroller.name",
       "settings": {
         "scroller_type": "scroll_text",
@@ -685,17 +686,6 @@
             "link": ""
           }
         },
-        "quote_KhRLyJ": {
-          "type": "quote",
-          "settings": {
-            "rating": 5,
-            "text": "<p>Jeg er blevet forelsket i Stratum serien og har købt 1 lille og 1 stor kuffert nu - man får rigtig meget for pengene og det fungerer  godt. Kan klart anbefales.</p>",
-            "author_name": "Sissel",
-            "author_details": "",
-            "quote_product": "",
-            "link": ""
-          }
-        },
         "quote_n9PRMg": {
           "type": "quote",
           "settings": {
@@ -706,12 +696,23 @@
             "quote_product": "",
             "link": ""
           }
+        },
+        "quote_KhRLyJ": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Jeg er blevet forelsket i Stratum serien og har købt 1 lille og 1 stor kuffert nu - man får rigtig meget for pengene og det fungerer  godt. Kan klart anbefales.</p>",
+            "author_name": "Sissel",
+            "author_details": "",
+            "quote_product": "",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "quote_FgW4JN",
-        "quote_KhRLyJ",
-        "quote_n9PRMg"
+        "quote_n9PRMg",
+        "quote_KhRLyJ"
       ],
       "name": "t:sections.testimonials.name",
       "settings": {
